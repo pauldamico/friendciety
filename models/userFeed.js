@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const userFeedSchema = new Schema({
-  post: {    type: "string",    required: true,  },
+  post: { type: String, required: true },
+  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
 });
 
-
-module.exports(mongoose.Model("UserFeed", userFeedSchema))
+module.exports = mongoose.model("UserFeed", userFeedSchema);
