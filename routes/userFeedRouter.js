@@ -1,4 +1,5 @@
 const express = require('express')
+
 const UserFeed = require('../models/userFeed.js')
 const userFeedRouter = express.Router()
 
@@ -36,6 +37,31 @@ if(err){
 return res.send(newPost)
     })
 })
+
+userFeedRouter.delete('/:postId',(req, res, next)=>{
+    const postId = req.params.postId
+UserFeed.findOneAndDelete({_id:postId}, (err, deletedPost)=>{
+    console.log(deletedPost)
+if(err){
+    res.status(500)
+    return(next(err))
+}
+return res.send(`ID ${deletedPost} has been removed`)
+})
+})
+
+userFeedRouter.put('/:postId', (req, res, next)=>{
+    const updateId = req.params.postId
+  
+UserFeed.findOneAndUpdate({_id:updateId}, req.body, {new:true}, (err, updatedItem)=>{
+if(err){
+    res.status(500)
+    return next(err)
+}
+return res.send(updatedItem)
+})
+})
+
 
 
 module.exports = userFeedRouter
