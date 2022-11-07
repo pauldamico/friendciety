@@ -17,7 +17,7 @@ export default function UpdatePostModel (props) {
 
     return (
         <div>
-          <input name="editedPost" type ="text" value={updatePost.editedPost} onChange={editPostHandler} />
+          <textarea className = "edited-myfeed-input" name="editedPost" type ="text" value={updatePost.editedPost} onChange={editPostHandler} />
           <button onClick={savePost}>Save</button>
         </div>
     )

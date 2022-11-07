@@ -1,0 +1,134 @@
+*{
+    margin:0;
+}
+html{
+    background-color: rgb(225, 221, 221);
+}
+
+.app{
+    height:100vh;
+    display: grid;
+    grid-template-columns: repeat(10, 10%);
+    grid-template-rows:  repeat(10, 10%);
+}
+
+.nav-div{
+    display: grid;
+    grid-template-columns: repeat(10, 10%);
+    grid-template-rows: repeat(10, 10%);
+    grid-column: 1/-1;
+    background-color: white;
+    justify-content: space-around;
+    box-shadow: 2px 2px 2px 2px grey;
+}
+.nav-div>input{
+    margin-left: 10px;
+    grid-column:1/2 ;
+    grid-row:4/7 ;
+    border-radius: 10px;
+}
+.nav-div>div{
+    display: flex;
+    grid-column: 2/-1;
+    grid-row: 4/7;
+    justify-content: space-around;
+}
+.sidebar-div{
+ 
+ margin-top: 5px;
+    grid-column: 1/2;
+    grid-row: 2/-1;
+
+
+}
+.sidebar-div2{
+    display: flex;
+    margin-top: 10px;
+    margin-left: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.my-feed-div{
+    border-radius: 10px;
+    margin-top: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    grid-column: 4/8;
+    background-color: white;
+    grid-row: 2/-1;
+}
+.update-status-input{
+    width: 80%;
+}
+
+.update-status-form{
+    display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.myfeed-posted-div{
+    display: flex;
+    grid-template-columns: repeat(10, 10%);
+    padding:10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px grey;
+    min-height: 100px;
+    margin-bottom: 10px;
+}
+.myfeed-postproperty-div{
+    display: grid;
+    grid-template-columns: repeat(10, 10%);
+    grid-template-rows: repeat(10, 10%);
+width:100%;
+}
+
+
+
+.myfeed-postproperty-div>section{
+grid-row:1/3;
+grid-column: 10/11;
+font-size: 30px;
+font-weight: bold;
+}
+.myfeed-postproperty-div>h5{
+    grid-row:3/5;
+    grid-column: 1/10;
+    
+}
+
+.myfeed-postproperty-div>h1{
+    grid-row:6/9;
+    grid-column: 1/10;
+    
+}
+
+.myfeed-post-edit-del-div{
+    grid-row:4/8;
+    grid-column: 10/11;
+    
+}
+
+.myfeed-input{
+    grid-row:3/9;
+    grid-column: 1/10;
+}
+.edited-myfeed-input{
+    width:100%;
+    height:100%;
+}
+/* .my-feed-post-id{
+  
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.myfeed-post-edit-div{
+   
+    grid-column: 1/-1;
+    grid-row: 1/2;
+    
+} */
