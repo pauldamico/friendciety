@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import UpdatePostModel from "./UpdatePostModel"
+import UpdatePostModel from "../UpdatePostModel"
 
 export default function MyFeedPost (props){
 

@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import MyFeedPost from "./MyFeedPost";
-import {MyFeedContext } from "../myFeedContext";
+import {MyFeedContext } from "../../myFeedContext";
 
 export default function MyFeed() {
 

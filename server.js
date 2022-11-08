@@ -16,7 +16,7 @@ res.send("Welcome")
    })
 
    app.use('/myfeed', require('./routes/userFeedRouter.js'))
-   app.use('/createuser', require('./routes/userCreationRouter.js'))
+   app.use('/users', require('./routes/userRouter.js'))
 
    app.use((err, req, res, next)=>{
 res.send({errMsg:err.message})
