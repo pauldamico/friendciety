@@ -4,7 +4,7 @@ import { UserContext } from '../userContext'
 
 export default function Nav (){
 
-    const {useContext} = useContext(UserContext)
+    // const {useContext} = useContext(UserContext)
     return (
         <div className='nav-div'>
            
