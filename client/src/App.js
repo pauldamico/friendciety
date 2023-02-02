@@ -7,7 +7,7 @@ import MyFeed from './components/myfeed/MyFeed';
 import {Routes, Route} from 'react-router-dom'
 import './App.css';
 import SideBar from './components/SideBar';
-import {UserContextProvider} from './userContext';
+
 import {MyFeedContextProvider} from './myFeedContext.js';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div className="app">
-      <UserContextProvider><Nav/></UserContextProvider>
+     <Nav/>
       <SideBar/>
       <Routes>
       <Route path ='/' element={<Home/>} />

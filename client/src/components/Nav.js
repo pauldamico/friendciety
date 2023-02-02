@@ -1,10 +1,10 @@
 import {Link} from 'react-router-dom'
 import React, {useContext} from 'react'
-import { UserContext } from '../userContext'
+import { AuthContext } from '../authProvider'
 
 export default function Nav (){
 
-    // const {useContext} = useContext(UserContext)
+    const {} = useContext(AuthContext)
     return (
         <div className='nav-div'>
            

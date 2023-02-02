@@ -15,6 +15,7 @@ return res.send(currentUserFeed)
 })
 
 userFeedRouter.get('/:userId', (req, res, next)=>{
+    console.log(req.auth)
     const filterById = req.params.userId
     UserFeed.find({userId:{$in:[filterById]}}, (err, currentUserFeed)=>{
     if(err){

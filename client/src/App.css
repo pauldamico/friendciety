@@ -33,14 +33,46 @@ html{
     grid-row: 4/7;
     justify-content: space-around;
 }
-.sidebar-div{
- 
+.sidebar-div{ 
  margin-top: 5px;
     grid-column: 1/2;
     grid-row: 2/-1;
 
-
 }
+
+/* login */
+.login-div{  
+    margin-top: 5px;
+    grid-column: 5/8;
+    grid-row: 3/7;
+}
+.login-form{
+    display: flex;
+    flex-direction: column;    
+    width: 80%;
+    background-color: white;
+    padding:5%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.login-form>label {
+ font-size: 20px;
+ font-weight: 800;
+    }
+.login-form>input {
+margin-bottom: 5px;   
+height: 30px;
+}
+.login-form>button {
+    margin-bottom: 5px;   
+height: 40px;
+font-size: 20px;
+font-weight:700;
+color:white;
+background-color: rgb(6, 81, 255);
+border:none;
+    }
+
 .sidebar-div2{
     display: flex;
     margin-top: 10px;
