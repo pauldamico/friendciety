@@ -1,28 +1,41 @@
-import React, {useState, useEffect, createContext} from "react";
+import React, {useState, useEffect, createContext, useContext} from "react";
 import axios from "axios";
+import { AuthContext } from "./authProvider";
 
 const MyFeedContext = createContext()
 function MyFeedContextProvider (props){
+const {userId, token, logout} = useContext(AuthContext) 
 
-    const userId = "63675bf17160b45ef19c5c44";
+//Header Info for Axios users authentication
+const config = {headers:{Authorization: `Bearer ${token}`}}
+
+//State for myFeed array and state for addToFeed which is any new post change handler
     const [myFeed, setMyFeed] = useState([]);
     const [addToFeed, setAddToFeed] = useState({ post: "" });
   
-    useEffect(() => {
-      axios.get(`/myFeed/${userId}`).then((res) => setMyFeed(res.data));
-    }, []);
-    console.log(myFeed);
+
+    //gets current logged in user MyFeed posts.  Logout triggers it to render again so it changes on new user login
+    useEffect(() => {    
+      setMyFeed([])  
+      token && axios.get(`/auth/myFeed/currentUserPosts`, config)
+      .then((res) => setMyFeed(res.data));
+    }, [logout]);
+
   
-    const addToMyFeed = () => {
-      const postedItem = { post: addToFeed.post };
-  
+    const addToMyFeed = (event) => {
+      event.preventDefault()    
       axios
-        .post(`/myFeed/${userId}`, postedItem)
+        .post(`/auth/myFeed/addPost`, addToFeed, config)
         // .then(res=>setMyFeed(prev=>prev.map(item=>())))
-        .then((res) => setMyFeed([...myFeed, res.data]));
-      setAddToFeed((prev) => ({ post: "" }));
+        .then((res) => setMyFeed(prev=>([...prev, res.data])))
+        .catch(err=>console.log(err));
+        setAddToFeed({ post: "" })
+       
     };
-  
+    
+ 
+
+
     const addPostChangeHandler = (event) => {
       const { name, value } = event.target;
       setAddToFeed((prev) => ({ ...prev, [name]: value }));
@@ -32,6 +45,7 @@ function MyFeedContextProvider (props){
     console.log(id)
     axios.delete(`/myFeed/${id}`)
     .then(res=>setMyFeed(prev=>prev.filter(post=>id !== post._id && {...post})))
+
   }
   
   const updatePost = (id, editedPost)=>{

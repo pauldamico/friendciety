@@ -1,6 +1,6 @@
 const express = require('express')
 require('dotenv').config()
-const {expressjwt:jwt} = require('express-jwt')
+const {expressjwt} = require('express-jwt')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const app = express()
@@ -19,10 +19,7 @@ res.send("Welcome")
 
 
    app.use(require('./routes/userRouter.js'))
-   app.use("/auth", jwt({ secret: process.env.SECRET, algorithms: ["HS256"] }),   //add secret in env
-      
-    );
-
+   app.use("/auth", expressjwt({ secret: process.env.SECRET, algorithms:["HS256"] }))
    app.use('/auth/myfeed', require('./routes/userFeedRouter.js'))
 
    app.use((err, req, res, next)=>{

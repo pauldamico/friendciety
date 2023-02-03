@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router,} from 'react-router-dom'
 import App from './App';
 import { AuthContextProvider } from './authProvider';
+import { MyFeedContextProvider } from './myFeedProvider';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -11,7 +12,9 @@ root.render(
   <Router>
   <React.StrictMode>
     <AuthContextProvider>
+    <MyFeedContextProvider>
     <App />
+</MyFeedContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
   </Router>

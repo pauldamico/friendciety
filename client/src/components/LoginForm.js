@@ -1,29 +1,14 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../authProvider";
-
 
 
 export default function LoginForm(props) {
-  const { toggle, toggleSignUp, onSubmit } = props;
-const {signUpUser} = useContext(AuthContext)
-  const [loginFormData, setLoginFormData] = useState({username:"", password:""})
+  const { toggle, toggleSignUp, onSubmit, loginFormData, onChange} = props;
 
-  function onChange(event) {
-    const {name, value} = event.target;
-    setLoginFormData(prev=>({...prev, [name]:value}))
-  }
-
-  function submitUserInfo (event){
-    event.preventDefault()
-    signUpUser(loginFormData)
-    setLoginFormData(prev=>({...prev, username:"", password:""}))
-  }
 
  
   return (
     <div className="login-div">
       <div>
-        <form className="login-form" onSubmit={submitUserInfo}>
+        <form className="login-form" onSubmit={onSubmit}>
           <label>Username</label>
           <input name="username" value={loginFormData.username} onChange={onChange} type="text" />
           <label>Password</label>
