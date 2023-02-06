@@ -11,15 +11,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
 
 //State for myFeed array and state for addToFeed which is any new post change handler
     const [myFeed, setMyFeed] = useState([]);
-    const [addToFeed, setAddToFeed] = useState({ post: "" });
-  
-
-    //gets current logged in user MyFeed posts.  Logout triggers it to render again so it changes on new user login
-    useEffect(() => {    
-      setMyFeed([])  
-      token && axios.get(`/auth/myFeed/currentUserPosts`, config)
-      .then((res) => setMyFeed(res.data));
-    }, [logout]);
+    const [addToFeed, setAddToFeed] = useState({ post: "" }); 
 
   
 

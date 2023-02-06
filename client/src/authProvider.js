@@ -28,7 +28,9 @@ const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, us
     axios
       .post("/signup", userInfo)
       .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
-      setCurrentUser(prev=>(res.data)) })
+      setCurrentUser(prev=>(res.data)) 
+      pullAllUsers()
+    })
       .catch((err) => console.log(err));  
       localStorage.setItem("userInfo", JSON.stringify(userInfo))
   }
@@ -37,14 +39,24 @@ const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, us
     axios
       .post("/login", userInfo)  
       .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
-      setCurrentUser(prev=>(res.data)) })
+      setCurrentUser(prev=>(res.data))
+      pullAllUsers()
+    })
       .catch((err) => console.log(err));
   }
 
-  function getListOfAllUsers (filter){
+  function pullAllUsers (){
     axios.get('/auth/allusers', config)
-    .then(res=>setAllUsers(res.data.filter(user=>user.includes(filter))))
+    .then(res=>setAllUsers(res.data))
   }
+  function getListOfAllUsers (filter){
+  setAllUsers(prev=>prev.filter(user=>user.includes(filter)))
+  }
+
+  useEffect(()=>{
+    console.log("test")
+   token && pullAllUsers()
+  }, [])
 
   return (
     <AuthContext.Provider value={{userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers }}>

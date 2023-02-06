@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import MyFamily from "./components/MyFamily";
 import Nav from "./components/Nav";
-import Login from "./components/Login";
+import Login from "./components/login/Login";
 import Home from "./components/Home";
 import MyFeed from "./components/myfeed/MyFeed";
 import { Routes, Route, useNavigate } from "react-router-dom";
