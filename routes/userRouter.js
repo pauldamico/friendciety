@@ -32,9 +32,8 @@ req.body.username = req.body.username.toLowerCase()
 //controls user login
 userRouter.post('/login', (req, res, next)=>{
     console.log(req.body)
-   User.findOne({username:req.body.username}, (err, foundUser)=>{
-  
-    console.log(foundUser)
+   User.findOne({username:req.body.username}, (err, foundUser)=>{  
+   
 if(err){
     res.status(500)
     return next(err)
@@ -50,10 +49,21 @@ if(req.body.password !== foundUser?.password){
   res.status(500)
   return next(new Error("Password is incorrect"))
 }
-
 const token = jwt.sign({foundUser},  process.env.SECRET)
 return res.send({user:foundUser, token})
 }})
+})
+
+userRouter.get(`/auth/allusers`, (req, res, next)=>{
+    User.find( (err, foundUser)=>{
+        if(err){
+            res.status(500)
+            return next(new Error("No users have been found"))
+        }
+        res.status(200)
+res.send(foundUser.map(user=>user.username))
+    })
+
 })
 
 

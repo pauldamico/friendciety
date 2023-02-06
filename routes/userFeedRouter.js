@@ -13,8 +13,7 @@ return res.send(currentUserFeed)
 })
 })
 
-userFeedRouter.get('/currentUserPosts', (req, res, next)=>{
-    console.log(req.auth)
+userFeedRouter.get('/currentUserPosts', (req, res, next)=>{    
     const filterById = req.auth.foundUser._id
     UserFeed.find({userId:{$in:[filterById]}}, (err, currentUserFeed)=>{
        
@@ -41,8 +40,12 @@ res.send(newPost)
     })
 })
 
+// userFeedRouter.delete(`/:postId`, (req,res, next)=>{
+// console.log("test")
+// })
 
 userFeedRouter.delete('/:postId',(req, res, next)=>{
+    console.log("test")
     const postId = req.params.postId
 UserFeed.findOneAndDelete({_id:postId}, (err, deletedPost)=>{
     console.log(deletedPost)

@@ -21,13 +21,20 @@ html{
     justify-content: space-around;
     box-shadow: 2px 2px 2px 2px grey;
 }
+.search-user-div{
+    margin-left: 10px;
+    grid-column:1/2;
+    grid-row:4/7 ;
+    border-radius: 10px;
+    z-index: 100;
+}
 .nav-div>input{
     margin-left: 10px;
     grid-column:1/2 ;
     grid-row:4/7 ;
     border-radius: 10px;
 }
-.nav-div>div{
+.nav-div-div{
     display: flex;
     grid-column: 2/-1;
     grid-row: 4/7;

@@ -4,14 +4,18 @@ import axios from "axios";
 
 const AuthContext = createContext();
 function AuthContextProvider(props) {
+ 
     const navigate = useNavigate()
 const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, user:{}}
     const [currentUser, setCurrentUser] = useState(initValue)
     const [currentError, setCurrentError] = useState("")
+    const [allUsers, setAllUsers] = useState([])
 
     //deconstruct current User
     const {token}= currentUser
     const {username, _id:userId}= currentUser.user
+
+    const config = {headers:{Authorization: `Bearer ${token}`}}
 
     //logout
     function logout (){
@@ -37,9 +41,13 @@ const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, us
       .catch((err) => console.log(err));
   }
 
+  function getListOfAllUsers (filter){
+    axios.get('/auth/allusers', config)
+    .then(res=>setAllUsers(res.data.filter(user=>user.includes(filter))))
+  }
 
   return (
-    <AuthContext.Provider value={{userId, logout, signUpUser, loginUser, token, username }}>
+    <AuthContext.Provider value={{userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers }}>
       {props.children}
     </AuthContext.Provider>
   );

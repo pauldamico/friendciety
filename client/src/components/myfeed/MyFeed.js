@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useState, useContext} from "react";
 import MyFeedPost from "./MyFeedPost";
 import {MyFeedContext } from "../../myFeedProvider";
 
@@ -6,6 +6,10 @@ export default function MyFeed() {
 
   const {myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
 
+  // const [file, setFile] = useState("")
+  // function addImageHandler (event){
+  // setFile(URL.createObjectURL(event.target.files[0]))
+  // }
 
 
 
@@ -17,6 +21,7 @@ export default function MyFeed() {
   return (
   
     <div className="my-feed-div">
+      {/* <img src={file}/> */}
       <div  >
         <form className="update-status-form" onSubmit={addToMyFeed}>
         <input className="update-status-input"
@@ -25,7 +30,8 @@ export default function MyFeed() {
           value={addToFeed.post}
           type="text"
           onChange={addPostChangeHandler}
-        ></input>
+        />
+        {/* <input  type="file" onChange={addImageHandler}/> */}
         {/* <button >Add to Feed</button> */}
         </form>
       </div>

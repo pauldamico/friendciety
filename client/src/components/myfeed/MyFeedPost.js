@@ -6,6 +6,7 @@ export default function MyFeedPost (props){
     const [toggleEdit, setToggleEdit] = useState(false)
     const [toggleMenu, setToggleMenu] = useState(false)
 
+
     const toggleEditHandler = () =>{
 setToggleEdit(!toggleEdit)
     }
@@ -20,7 +21,7 @@ setToggleEdit(!toggleEdit)
    
             <div className ="myfeed-postproperty-div" >
             { !toggleEdit && <section onClick ={toggleMenuHandler}>...</section> }
-            { !toggleEdit &&<h5>{props._id}</h5>}
+            {/* { !toggleEdit &&<h5>{props._id}</h5>} */}
             { !toggleEdit &&<h1>{props.post}</h1>}
             { toggleEdit && <div className="myfeed-input"><UpdatePostModel post = {props.post} _id  ={props._id} updatePost={props.updatePost} toggleEditHandler={toggleEditHandler} toggleMenuHandler={toggleMenuHandler}/></div>}
             { toggleMenu &&  <div className="myfeed-post-edit-del-div">

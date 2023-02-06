@@ -22,39 +22,38 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     }, [logout]);
 
   
+
+  //adds new post for current user
     const addToMyFeed = (event) => {
       event.preventDefault()    
-      axios
-        .post(`/auth/myFeed/addPost`, addToFeed, config)
-        // .then(res=>setMyFeed(prev=>prev.map(item=>())))
+      axios.post(`/auth/myFeed/addPost`, addToFeed, config)    
         .then((res) => setMyFeed(prev=>([...prev, res.data])))
         .catch(err=>console.log(err));
-        setAddToFeed({ post: "" })
-       
+        setAddToFeed({ post: "" })       
     };
     
- 
-
-
+    //change handler for adding new post
     const addPostChangeHandler = (event) => {
       const { name, value } = event.target;
       setAddToFeed((prev) => ({ ...prev, [name]: value }));
     };
   
+    //deletes a post by id
   const deletePost = (id) => {
-    console.log(id)
-    axios.delete(`/myFeed/${id}`)
+    console.log(id)    
+    axios.delete(`/auth/myfeed/${id}`, config)
     .then(res=>setMyFeed(prev=>prev.filter(post=>id !== post._id && {...post})))
+    .catch(err=>console.log(err))
 
   }
   
-  const updatePost = (id, editedPost)=>{
+  //updates the post (component is UpdatePostModel.js)
+  const updatePost = (id, editedPost)=>{   
     const updatedPost= {post:editedPost}
-  axios.put(`/myFeed/${id}`, updatedPost)
-  .then(res=>setMyFeed(prev=>prev.map(post=>id === post._id ? {...post, post:editedPost} : {...post})))
-  
+    console.log(updatedPost)
+  axios.put(`/auth/myFeed/${id}`, updatedPost, config)
+  .then(res=>setMyFeed(prev=>prev.map(post=>id === post._id ? {...post, post:editedPost} : {...post})))  
   }
-
 
 
     return(
