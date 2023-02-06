@@ -4,7 +4,7 @@ import { AuthContext } from "./authProvider";
 
 const MyFeedContext = createContext()
 function MyFeedContextProvider (props){
-const {userId, token, logout} = useContext(AuthContext) 
+const {userId, token, logout, currentUser} = useContext(AuthContext) 
 
 //Header Info for Axios users authentication
 const config = {headers:{Authorization: `Bearer ${token}`}}
@@ -13,7 +13,13 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     const [myFeed, setMyFeed] = useState([]);
     const [addToFeed, setAddToFeed] = useState({ post: "" }); 
 
-  
+  function getMyFeed (){
+    setMyFeed([])
+    token && axios.get(`/auth/myFeed/currentUserPosts`, config)    
+    .then((res) => setMyFeed(prev=>(res.data)))
+    .catch(err=>console.log(err));
+      
+  }
 
   //adds new post for current user
     const addToMyFeed = (event) => {
@@ -47,6 +53,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
   .then(res=>setMyFeed(prev=>prev.map(post=>id === post._id ? {...post, post:editedPost} : {...post})))  
   }
 
+useEffect(getMyFeed,[currentUser])
 
     return(
         <MyFeedContext.Provider value={{userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>

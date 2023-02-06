@@ -59,7 +59,7 @@ const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, us
   }, [])
 
   return (
-    <AuthContext.Provider value={{userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers }}>
+    <AuthContext.Provider value={{currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers }}>
       {props.children}
     </AuthContext.Provider>
   );

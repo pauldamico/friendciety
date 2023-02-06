@@ -1,10 +1,22 @@
 export default function SelectedUser(props) {
-    
   const { user, toggleSearch } = props;
   function selectUser() {
     console.log(user);
     toggleSearch();
   }
 
-  return <p style={{textAlign:"center"}} onClick={selectUser}>{user}</p>;
+  return (
+    <div className="selected-user-list-div">
+      <p
+        onClick={() => {
+          toggleSearch();
+        }}
+      >
+        {user}
+      </p>{" "}
+      <section style={{ cursor: "pointer" }} onClick={selectUser}>
+        Add
+      </section>
+    </div>
+  );
 }
