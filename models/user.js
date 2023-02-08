@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: { type: String, unique:true, required: true}, 
   password: {type:String, required:true},
-  family:[{
-    user:{type:String}
-  }
+  family:[
+    {type:String, unique:true}
+  
     
   ]
 

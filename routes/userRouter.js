@@ -55,6 +55,7 @@ return res.send({user:foundUser, token})
 })
 
 userRouter.get(`/auth/allusers`, (req, res, next)=>{
+    console.log(req.auth)
     User.find( (err, foundUser)=>{
         if(err){
             res.status(500)
@@ -66,6 +67,17 @@ res.send(foundUser.map(user=>user.username))
 
 })
 
+userRouter.put(`/test`, (req, res, next)=>{
+User.findOneAndUpdate({userId:req.auth.foundUser._id}, {$addToSet:{family:req.body.user}},{new:true}, (err, foundUser)=>{
+
+
+res.send(foundUser)
+})
+
+
+    
+
+})
 
 
 

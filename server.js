@@ -21,7 +21,7 @@ res.send("Welcome")
    app.use(require('./routes/userRouter.js'))
    app.use("/auth", expressjwt({ secret: process.env.SECRET, algorithms:["HS256"] }))
    app.use('/auth/myfeed', require('./routes/userFeedRouter.js'))
-
+   app.use('/auth/update', require('./routes/userRouter.js'))
    app.use((err, req, res, next)=>{
 res.send({errMsg:err.message})
    })
