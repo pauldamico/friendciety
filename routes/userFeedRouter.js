@@ -2,7 +2,7 @@ const express = require('express')
 const UserFeed = require('../models/userFeed.js')
 const userFeedRouter = express.Router()
 
-
+//gets all posts from all usersadded to family
 userFeedRouter.get('/', (req, res, next)=>{
 UserFeed.find((err, currentUserFeed)=>{
 if(err){
@@ -12,11 +12,10 @@ if(err){
 return res.send(currentUserFeed)
 })
 })
-
+// list all posts by user
 userFeedRouter.get('/currentUserPosts', (req, res, next)=>{    
     const filterById = req.auth.foundUser._id
-    UserFeed.find({userId:{$in:[filterById]}}, (err, currentUserFeed)=>{
-       
+    UserFeed.find({userId:{$in:[filterById]}}, (err, currentUserFeed)=>{       
     if(err){
         res.status(500)
         return next(err)
@@ -25,7 +24,7 @@ userFeedRouter.get('/currentUserPosts', (req, res, next)=>{
     return res.send(currentUserFeed)
     })
     })
-
+//adds post to user feed
 userFeedRouter.post('/addPost', (req, res, next)=>{
     console.log(req.auth.foundUser._id)
     req.body.userId = req.auth.foundUser._id
@@ -40,10 +39,7 @@ res.send(newPost)
     })
 })
 
-// userFeedRouter.delete(`/:postId`, (req,res, next)=>{
-// console.log("test")
-// })
-
+//deletes post from user feed
 userFeedRouter.delete('/:postId',(req, res, next)=>{
     console.log("test")
     const postId = req.params.postId
@@ -57,9 +53,9 @@ return res.send(`ID ${deletedPost} has been removed`)
 })
 })
 
+//edits post from user feed
 userFeedRouter.put('/:postId', (req, res, next)=>{
-    const updateId = req.params.postId
-  
+    const updateId = req.params.postId  
 UserFeed.findOneAndUpdate({_id:updateId}, req.body, {new:true}, (err, updatedItem)=>{
 if(err){
     res.status(500)
