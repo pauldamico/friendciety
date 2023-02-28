@@ -8,6 +8,9 @@ const userSchema = new Schema({
   ],
   friendRequest:[
     {type:String, unique:true}
+  ],
+  pendingRequest:[
+    {type:String, unique:true}
   ]
 
 });

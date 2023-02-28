@@ -22,11 +22,11 @@ function searchUsersHandler (event){
         { token ? <SearchUserModal  toggleSearch={toggleSearch} searchToggle={searchToggle} searchUsersHandler={searchUsersHandler} allUsers={allUsers}/>: null    }
         {token ?<section>    Welcome {currentUser?.user?.username}</section> : null}
             {/* {!searchToggle &&<input onClick={toggleSearch} placeholder='Search Users...'/>} */}
-            <div onClick={()=>{setSearchToggle(false)}} className='nav-div-div'>
+            {token ?<div onClick={()=>{setSearchToggle(false)}} className='nav-div-div'>
             <Link to={token ? '/' : '/login'}> Home</Link>
             
             {!token ? <Link to='/login'> Login</Link> : <button onClick = {logout}> Logout</button>}
-            </div>
+            </div> : null}
             
         </div>
     )
