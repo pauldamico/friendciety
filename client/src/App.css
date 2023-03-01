@@ -133,7 +133,7 @@ html {
   grid-template-columns: repeat(10, 10%);
   padding: 10px;
   border-radius: 10px;
-  box-shadow: 2px 2px 2px 2px grey;
+  box-shadow: 2px 0px 11px 0px #efefeffa;
   min-height: 100px;
   margin-bottom: 10px;
 }
