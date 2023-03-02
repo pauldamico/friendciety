@@ -83,14 +83,14 @@ User.findOneAndUpdate({username:req.body.user}, {$addToSet:{friendRequest:req.au
 })
 })   
 })
-//accepts friend request--  removes it from friendRequest array and adds it to family array
+//accepts friend request--  removes it from friendRequest array and adds it to friends array
 userRouter.put(`/acceptfriend`, (req, res, next)=>{
-User.findOneAndUpdate({_id:req.auth.foundUser._id},{$addToSet:{family:req.body.user},$pull:{friendRequest:req.body.user}},{new:true},(err, acceptedUser)=>{
+User.findOneAndUpdate({_id:req.auth.foundUser._id},{$addToSet:{friends:req.body.user},$pull:{friendRequest:req.body.user}},{new:true},(err, acceptedUser)=>{
     if(err){
         res.status(500)
         return next(err)
     }
-    User.findOneAndUpdate({username:req.body.user},{$pull:{pendingRequest:req.auth.foundUser.username}, $addToSet:{family:req.auth.foundUser.username}},{new:true},(err, acceptedUser)=>{
+    User.findOneAndUpdate({username:req.body.user},{$pull:{pendingRequest:req.auth.foundUser.username}, $addToSet:{friends:req.auth.foundUser.username}},{new:true},(err, acceptedUser)=>{
         console.log(req.body.user)
         if(err){
             res.status(500)

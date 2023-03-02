@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import MyFamily from "./components/MyFamily";
+import FriendFeed from "./components/FriendFeed";
 import Nav from "./components/Nav";
 import Login from "./components/login/Login";
 import Home from "./components/Home";
@@ -20,7 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={token ? <Home /> : <Login />} />
         <Route path="/myfeed" element={token ? <MyFeed /> : <Login />} />
-        <Route path="/myfamily" element={token ? <MyFamily /> : <Login />} />
+        <Route path="/friendfeed" element={token ? <FriendFeed /> : <Login />} />
         <Route path="/login" element={!token ? <Login /> : <Home />} />
       </Routes>
     </div>

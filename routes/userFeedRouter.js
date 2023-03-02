@@ -2,7 +2,7 @@ const express = require('express')
 const UserFeed = require('../models/userFeed.js')
 const userFeedRouter = express.Router()
 
-//gets all posts from all usersadded to family
+//gets all posts from all usersadded to friends
 userFeedRouter.get('/', (req, res, next)=>{
 UserFeed.find((err, currentUserFeed)=>{
 if(err){

@@ -1,4 +1,4 @@
-export default function MyFamily (){
+export default function FriendFeed (){
 
     return(
         <div>

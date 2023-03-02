@@ -10,7 +10,7 @@ export default function SideBar () {
             {token ?
             <div className='sidebar-div2'>
            <Link to="/myfeed">MyFeed</Link>
-           <Link to="/myfamily">My Family</Link>
+           <Link to="/friendfeed">Friend Feed</Link>
            </div> : null}
         </div>
     )
