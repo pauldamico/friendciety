@@ -56,7 +56,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
 useEffect(getMyFeed,[currentUser])
 
     return(
-        <MyFeedContext.Provider value={{userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <MyFeedContext.Provider value={{config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </MyFeedContext.Provider>
     )

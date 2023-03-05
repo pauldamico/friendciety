@@ -69,9 +69,9 @@ res.send(foundUser.map(user=>user.username))
     })
 
 })
-//adds user to familyArray and adds friendrequest to friends friendsrequestarray
+//adds user to pendingfriend and   friendsrequestarray
 userRouter.put(`/addfriend`, (req, res, next)=>{   
-    
+
 User.findOneAndUpdate({_id:req.auth.foundUser._id}, {$addToSet:{pendingRequest:req.body.user}},{new:true}, (err, foundUser)=>{
     if(err){
         res.status(500)
@@ -82,6 +82,7 @@ User.findOneAndUpdate({username:req.body.user}, {$addToSet:{friendRequest:req.au
         res.status(500)
         return next(err)
     } 
+   
     res.send(foundUser)
 })
 })   

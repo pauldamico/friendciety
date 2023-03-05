@@ -11,15 +11,16 @@ export default function Nav (){
     function toggleSearch (){
         setSearchToggle(!searchToggle)
     }
-  console.log(currentUser?.user?.username)
+
 
 
 function searchUsersHandler (event){   
     getListOfAllUsers(event.target.value)
 }
     return (
-        <div className='nav-div' >    
-        { token ? <SearchUserModal  toggleSearch={toggleSearch} searchToggle={searchToggle} searchUsersHandler={searchUsersHandler} allUsers={allUsers}/>: null    }
+        <div className='nav-div' >  
+     
+        { token ? <SearchUserModal currentUser={currentUser} toggleSearch={toggleSearch} searchToggle={searchToggle} searchUsersHandler={searchUsersHandler} allUsers={allUsers}/>: null    }
         {token ?<section>    Welcome {currentUser?.user?.username}</section> : null}
             {/* {!searchToggle &&<input onClick={toggleSearch} placeholder='Search Users...'/>} */}
             {token ?<div onClick={()=>{setSearchToggle(false)}} className='nav-div-div'>

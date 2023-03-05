@@ -29,7 +29,7 @@ const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, us
       .post("/signup", userInfo)
       .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
       setCurrentUser(prev=>(res.data)) 
-      pullAllUsers()
+      getAllUsers()
     })
       .catch((err) => console.log(err));  
       localStorage.setItem("userInfo", JSON.stringify(userInfo))
@@ -40,26 +40,37 @@ const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, us
       .post("/login", userInfo)  
       .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
       setCurrentUser(prev=>(res.data))
-      pullAllUsers()
+      getAllUsers()
     })
       .catch((err) => console.log(err));
   }
-
-  function pullAllUsers (){
+// need to run this after adding friends or removing friends
+  function getAllUsers (){
     axios.get('/auth/allusers', config)
     .then(res=>setAllUsers(res.data))
   }
   function getListOfAllUsers (filter){
   setAllUsers(prev=>prev.filter(user=>user.includes(filter)))
   }
+// console.log(allUsers)
+// console.log(currentUser?.user.friends)
+const currentFriends = currentUser?.user?.friends?.filter(item=>allUsers?.indexOf(item)===-1 ).map(item=><p key={item.id}>{item.user}</p>)
 
+// send friend request to selected user
+function friendRequest (selectedUser){  
+  axios.put(`/auth/addfriend`, {user:selectedUser}, config)
+  .then(res=>{console.log(res)
+    setCurrentUser(prev=>({...prev, ...prev.user, pendingRequest:[res.data.pendingRequest]}))   
+  })
+  .catch(err=>console.log(err))
+}
+console.log(currentUser)
   useEffect(()=>{
-    console.log("test")
-   token && pullAllUsers()
+       token && getAllUsers()
   }, [])
 
   return (
-    <AuthContext.Provider value={{currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers }}>
+    <AuthContext.Provider value={{currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers, currentFriends, friendRequest }}>
       {props.children}
     </AuthContext.Provider>
   );
