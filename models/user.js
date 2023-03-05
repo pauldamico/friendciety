@@ -3,14 +3,11 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: { type: String, unique:true, required: true}, 
   password: {type:String, required:true},
-  friends:[
-    {type:String, unique:true}    
+  friends:[ {user:String, id:String, _id:false} ],
+ 
+  friendRequest:[   
   ],
-  friendRequest:[
-    {type:String, unique:true}
-  ],
-  pendingRequest:[
-    {type:String, unique:true}
+  pendingRequest:[    
   ]
 
 });

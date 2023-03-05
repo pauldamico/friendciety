@@ -17,12 +17,15 @@ if(foundUser[0]?.username){
 }       
 req.body.username = req.body.username.toLowerCase()
     const newSavedUser = new User(req.body)
+    console.log(newSavedUser)
     newSavedUser.save((err, foundUser)=>{
-        
+
         if(err){
+            
             res.status(500)
             return next(err)
         }      
+        
         const token = jwt.sign({foundUser}, process.env.SECRET)
        return  res.send({user:foundUser, token})
     })
@@ -68,7 +71,7 @@ res.send(foundUser.map(user=>user.username))
 })
 //adds user to familyArray and adds friendrequest to friends friendsrequestarray
 userRouter.put(`/addfriend`, (req, res, next)=>{   
-    console.log(req.auth.foundUser)
+    
 User.findOneAndUpdate({_id:req.auth.foundUser._id}, {$addToSet:{pendingRequest:req.body.user}},{new:true}, (err, foundUser)=>{
     if(err){
         res.status(500)
@@ -85,22 +88,67 @@ User.findOneAndUpdate({username:req.body.user}, {$addToSet:{friendRequest:req.au
 })
 //accepts friend request--  removes it from friendRequest array and adds it to friends array
 userRouter.put(`/acceptfriend`, (req, res, next)=>{
-User.findOneAndUpdate({_id:req.auth.foundUser._id},{$addToSet:{friends:req.body.user},$pull:{friendRequest:req.body.user}},{new:true},(err, acceptedUser)=>{
+
+    User.findOne({username:req.body.user}, (err, selectedUser)=>{
+        if(err){res.status(500)
+        return next(err)
+        }
+        console.log(selectedUser)
+        if(!selectedUser){
+            res.status(500)
+            return next(new Error("User not found"))
+        }
+User.findOneAndUpdate({_id:req.auth.foundUser._id},{$addToSet:{friends:{user:req.body.user, id:selectedUser.id} } ,$pull:{friendRequest:selectedUser.username}},{new:true},(err, currentUser)=>{
     if(err){
         res.status(500)
         return next(err)
     }
-    User.findOneAndUpdate({username:req.body.user},{$pull:{pendingRequest:req.auth.foundUser.username}, $addToSet:{friends:req.auth.foundUser.username}},{new:true},(err, acceptedUser)=>{
-        console.log(req.body.user)
+    User.findOneAndUpdate({username:req.body.user},{$pull:{pendingRequest:req.auth.foundUser.username}, $addToSet:{friends:{user:req.auth.foundUser.username, id:req.auth.foundUser._id}}},{new:true},(err, acceptedUser)=>{
+        
         if(err){
             res.status(500)
             return next(err)
         }
-        res.send(acceptedUser) 
+        res.send(currentUser) 
+    })
+})
+})
+})
+
+//declines friend request--  removes it from friendRequest array and pending
+userRouter.delete(`/declinefriend`, (req, res, next)=>{
+    User.findOneAndUpdate({_id:req.auth.foundUser._id},{$pull:{friendRequest:req.body.user}},{new:true},(err, currentUser)=>{
+        if(err){
+            res.status(500)
+            return next(err)
+        }
+        User.findOneAndUpdate({username:req.body.user},{$pull:{pendingRequest:req.auth.foundUser.username}},{new:true},(err, acceptedUser)=>{
+            console.log(req.body.user)
+            if(err){
+                res.status(500)
+                return next(err)
+            }
+            res.send(currentUser) 
+        })
+    })
     })
 
-})
-
-})
+    //removes friend from friends array
+userRouter.delete(`/removefriend`, (req, res, next)=>{
+    User.findOneAndUpdate({_id:req.auth.foundUser._id},{$pull:{"friends":{"user":req.body.user}}},{new:true},(err, currentUser)=>{
+        if(err){
+            res.status(500)
+            return next(err)
+        }
+        User.findOneAndUpdate({username:req.body.user},{$pull:{"friends":{"user":req.auth.foundUser.username}}},{new:true},(err, acceptedUser)=>{
+            console.log(req.body.user)
+            if(err){
+                res.status(500)
+                return next(err)
+            }
+            res.send(currentUser) 
+        })
+    })
+    })
 
 module.exports = userRouter
