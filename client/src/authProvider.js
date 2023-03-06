@@ -75,7 +75,7 @@ function friendRequest (selectedUser){
   }, [])
 
   return (
-    <AuthContext.Provider value={{search, currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers, currentFriends, friendRequest }}>
+    <AuthContext.Provider value={{getAllUsers, search, currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers, currentFriends, friendRequest }}>
       {props.children}
     </AuthContext.Provider>
   );
