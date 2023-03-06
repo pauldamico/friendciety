@@ -5,11 +5,13 @@ import SearchUserModal from './searchusers/SearchUserModal'
 
 export default function Nav (){
 
-    const {currentUser, getListOfAllUsers, token, logout, allUsers} = useContext(AuthContext)
+    const {search, currentUser, getListOfAllUsers, token, logout, allUsers} = useContext(AuthContext)
     const [searchToggle, setSearchToggle] = useState(false)
+    const [querySearch, setQuerySearch] = useState("")
 
     function toggleSearch (){
         setSearchToggle(!searchToggle)
+        
     }
 
 
@@ -20,7 +22,7 @@ function searchUsersHandler (event){
     return (
         <div className='nav-div' >  
      
-        { token ? <SearchUserModal currentUser={currentUser} toggleSearch={toggleSearch} searchToggle={searchToggle} searchUsersHandler={searchUsersHandler} allUsers={allUsers}/>: null    }
+        { token ? <SearchUserModal search ={search} currentUser={currentUser} toggleSearch={toggleSearch} searchToggle={searchToggle} searchUsersHandler={searchUsersHandler} allUsers={allUsers}/>: null    }
         {token ?<section>    Welcome {currentUser?.user?.username}</section> : null}
             {/* {!searchToggle &&<input onClick={toggleSearch} placeholder='Search Users...'/>} */}
             {token ?<div onClick={()=>{setSearchToggle(false)}} className='nav-div-div'>

@@ -10,6 +10,7 @@ const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, us
     const [currentUser, setCurrentUser] = useState(initValue)
     const [currentError, setCurrentError] = useState("")
     const [allUsers, setAllUsers] = useState([])
+    const [search, setSearch] = useState("")
 
     //deconstruct current User
     const {token}= currentUser
@@ -48,9 +49,13 @@ const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, us
   function getAllUsers (){
     axios.get('/auth/allusers', config)
     .then(res=>setAllUsers(res.data))
+    
   }
-  function getListOfAllUsers (filter){
-  setAllUsers(prev=>prev.filter(user=>user.includes(filter)))
+  function getListOfAllUsers (filter){/////////////////////////////////////////////
+    console.log(search)
+   
+  setSearch(filter)
+  console.log(search)
   }
 // console.log(allUsers)
 // console.log(currentUser?.user.friends)
@@ -64,13 +69,13 @@ function friendRequest (selectedUser){
   })
   .catch(err=>console.log(err))
 }
-console.log(currentUser)
+
   useEffect(()=>{
        token && getAllUsers()
   }, [])
 
   return (
-    <AuthContext.Provider value={{currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers, currentFriends, friendRequest }}>
+    <AuthContext.Provider value={{search, currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers, currentFriends, friendRequest }}>
       {props.children}
     </AuthContext.Provider>
   );
