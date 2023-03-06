@@ -1,26 +1,29 @@
-import React,{useContext} from "react";
+import React,{useState, useContext} from "react";
 import { AuthContext } from "../../authProvider";
 export default function SelectedUser(props) {
   const { user, toggleSearch } = props;
   const { getAllUsers, currentUser, friendRequest } = useContext(AuthContext);
+const [friendsListConditions, setFriendsListConditions] = useState(addFriend ())
 
 
   
-  function addNewFriend() {
-    getAllUsers()
+  function addNewFriend() {   
     friendRequest(user);
     toggleSearch();
+   setFriendsListConditions(addFriend())
   }
+
+console.log(currentUser)
 
 function addFriend () {
 if(currentUser?.user.friends.find((item) => item.user === user )) {
 return <section>Friend</section>
 }
-if(currentUser?.user.friends.find((item) => item.user !== user ) && currentUser?.user.pendingRequest.find((item) => item !== user )) {
-return <section style={{ cursor: "pointer" }} onClick={addNewFriend}>Add</section>
-  }
-if(currentUser?.user.pendingRequest.find((item) => item === user )) {
+
+if(currentUser?.user.pendingRequest.find((item) => item === user )|| currentUser?.user.friendRequest.find((item) => item === user )) {
   return <section>Pending</section>}
+else{return <section style={{ cursor: "pointer" }} onClick={addNewFriend}>Add</section> }
+  
 }
 
 
@@ -33,7 +36,7 @@ if(currentUser?.user.pendingRequest.find((item) => item === user )) {
       >
         {user}
       </p>{" "}
-     {addFriend()}
+     {friendsListConditions}
       
     </div>
   );

@@ -1,16 +1,17 @@
 import React, { useState, createContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
 const AuthContext = createContext();
-function AuthContextProvider(props) {
+function AuthContextProvider(props) { 
  
-    const navigate = useNavigate()
-const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, user:{}}
+    const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, user:{}}
     const [currentUser, setCurrentUser] = useState(initValue)
-    const [currentError, setCurrentError] = useState("")
+    // const [currentError, setCurrentError] = useState("")
     const [allUsers, setAllUsers] = useState([])
     const [search, setSearch] = useState("")
+
+  
 
     //deconstruct current User
     const {token}= currentUser
@@ -48,37 +49,43 @@ const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, us
 // need to run this after adding friends or removing friends
   function getAllUsers (){
     axios.get('/auth/allusers', config)
-    .then(res=>setAllUsers(res.data))
-    
+    .then(res=>setAllUsers(res.data))    
   }
-  function getListOfAllUsers (filter){/////////////////////////////////////////////
-    console.log(search)
-   
+
+  //refreshes user info
+  function refreshPage (){
+    console.log(currentUser.user)
+    axios.get('/auth/currentuser', config)    
+    .then(res=>setCurrentUser(prev=>({...prev, user:{...res.data}})))
+  }
+
+  //gets list of searchable users
+  function getListOfAllUsers (filter){
   setSearch(filter)
-  console.log(search)
   }
-// console.log(allUsers)
-// console.log(currentUser?.user.friends)
-const currentFriends = currentUser?.user?.friends?.filter(item=>allUsers?.indexOf(item)===-1 ).map(item=><p key={item.id}>{item.user}</p>)
 
 // send friend request to selected user
-function friendRequest (selectedUser){  
+function friendRequest (selectedUser){   
   axios.put(`/auth/addfriend`, {user:selectedUser}, config)
-  .then(res=>{console.log(res)
-    setCurrentUser(prev=>({...prev, ...prev.user, pendingRequest:[res.data.pendingRequest]}))   
+  .then(res=>{console.log(res.data)
+    setCurrentUser(prev=>({...prev, user:{...prev.user, pendingRequest:[...res.data]}})) 
+   console.log(currentUser)
   })
   .catch(err=>console.log(err))
+
 }
 
   useEffect(()=>{
        token && getAllUsers()
+       token && refreshPage()
   }, [])
 
   return (
-    <AuthContext.Provider value={{getAllUsers, search, currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers, currentFriends, friendRequest }}>
+    <AuthContext.Provider value={{getAllUsers, search, currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers,  friendRequest }}>
       {props.children}
     </AuthContext.Provider>
   );
 }
 
 export { AuthContext, AuthContextProvider };
+// const currentFriends = currentUser?.user?.friends?.filter(item=>allUsers?.indexOf(item)===-1 ).map(item=><p key={item.id}>{item.user}</p>)

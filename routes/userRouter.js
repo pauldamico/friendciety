@@ -56,9 +56,20 @@ const token = jwt.sign({foundUser},  process.env.SECRET)
 return res.send({user:foundUser, token})
 }})
 })
+userRouter.get(`/currentuser`, (req, res, next)=>{  
+    User.findOne({_id:req.auth.foundUser._id}, (err, foundUser)=>{
+        if(err){
+            res.status(500)
+            return next(new Error("No users have been found"))
+        }
+        res.status(200)
+res.send(foundUser)
+    })
+
+})
+
 // shows all users in database for search users function
-userRouter.get(`/auth/allusers`, (req, res, next)=>{
-    console.log(req.auth)
+userRouter.get(`/auth/allusers`, (req, res, next)=>{ 
     User.find( (err, foundUser)=>{
         if(err){
             res.status(500)
@@ -82,8 +93,8 @@ User.findOneAndUpdate({username:req.body.user}, {$addToSet:{friendRequest:req.au
         res.status(500)
         return next(err)
     } 
-   
-    res.send(foundUser)
+   console.log(foundUser)
+    res.send(foundUser.pendingRequest)
 })
 })   
 })
