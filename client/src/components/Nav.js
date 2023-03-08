@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom'
 import React, {useState, useContext} from 'react'
 import { AuthContext } from '../authProvider'
+import FriendRequests from './acceptfriend/FriendRequests'
 import SearchUserModal from './searchusers/SearchUserModal'
 
 export default function Nav (){
@@ -19,12 +20,14 @@ function searchUsersHandler (event){
     setSearchToggle(true)
 }
     return (
-        <div className='nav-div' >       
+        <div className='nav-div' >
+                  
         { token ? <SearchUserModal search ={search} currentUser={currentUser} toggleSearch={toggleSearch} searchToggle={searchToggle} searchUsersHandler={searchUsersHandler} allUsers={allUsers}/>: null    }
         {token ?<section>    Welcome {currentUser?.user?.username}</section> : null}
             {/* {!searchToggle &&<input onClick={toggleSearch} placeholder='Search Users...'/>} */}
             {token ?<div onClick={()=>{setSearchToggle(false)}} className='nav-div-div'>
-            <Link to={token ? '/' : '/login'}> Home</Link>            
+            <Link to={token ? '/' : '/login'}> Home</Link>   
+           { token ? <FriendRequests/> : null}
             {!token ? <Link to='/login'> Login</Link> : <button onClick = {logout}> Logout</button>}
             </div> : null}
             

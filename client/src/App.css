@@ -23,6 +23,7 @@ html {
 }
 .search-user-main-div {
   position: absolute;
+  width: 10%;
   top: 3%;
   display: flex;
   flex-direction: column;
@@ -60,6 +61,25 @@ html {
   grid-column: 1/-1;
   grid-row: 4/7;
   justify-content: space-around;
+}
+.friend-request-div{
+  position: absolute;
+width: 100px;  
+color: grey;
+    box-shadow: -1px 7px 11px 3px grey;
+    height: 60px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    overflow: auto;
+    border-radius: 5px;
+}
+.friend-request{  
+  display: flex;
+  justify-content: space-between;
+  margin-left: 7px;
+  margin-right: 7px;
 }
 .sidebar-div {
   margin-top: 5px;

@@ -43,6 +43,7 @@ function AuthContextProvider(props) {
       .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
       setCurrentUser(prev=>(res.data))
       getAllUsers()
+   
     })
       .catch((err) => console.log(err));
   }
@@ -66,6 +67,7 @@ function AuthContextProvider(props) {
 
 // send friend request to selected user
 function friendRequest (selectedUser){   
+  console.log("test")
   axios.put(`/auth/addfriend`, {user:selectedUser}, config)
   .then(res=>{console.log(res.data)
     setCurrentUser(prev=>({...prev, user:{...prev.user, pendingRequest:[...res.data]}})) 
