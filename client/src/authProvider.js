@@ -22,7 +22,8 @@ function AuthContextProvider(props) {
     //logout
     function logout (){
     localStorage.clear()
-    setCurrentUser(prev=>({...prev, token:null, user:{}}))   
+    setCurrentUser(prev=>({...prev, token:null, user:{}}))  
+    setSearch("") 
     }
 
     //signUp
@@ -47,17 +48,24 @@ function AuthContextProvider(props) {
     })
       .catch((err) => console.log(err));
   }
-// need to run this after adding friends or removing friends
+// need to run this after adding friends or removing friends    check this may not need it
   function getAllUsers (){
     axios.get('/auth/allusers', config)
-    .then(res=>setAllUsers(res.data))    
+    .then(res=>{      
+      setAllUsers(res.data)})    
+ 
   }
 
   //refreshes user info
-  function refreshPage (){
-    console.log(currentUser.user)
+  function refreshPage (){   
     axios.get('/auth/currentuser', config)    
-    .then(res=>setCurrentUser(prev=>({...prev, user:{...res.data}})))
+    .then(res=>{setCurrentUser(prev=>({...prev, user:{...res.data.user}    
+    }))  
+   localStorage.setItem("userInfo", JSON.stringify(res.data))
+    }
+  )
+
+  
   }
 
   //gets list of searchable users
@@ -70,12 +78,30 @@ function friendRequest (selectedUser){
   console.log("test")
   axios.put(`/auth/addfriend`, {user:selectedUser}, config)
   .then(res=>{console.log(res.data)
-    setCurrentUser(prev=>({...prev, user:{...prev.user, pendingRequest:[...res.data]}})) 
-   console.log(currentUser)
+    setCurrentUser(prev=>({...prev, user:{...prev.user, pendingRequest:[...prev.user.pendingRequest, res.data]}})) 
+
   })
   .catch(err=>console.log(err))
-
 }
+
+//Accept friend request or add friend
+function acceptFriendRequest (addedUser){
+axios.put('/auth/acceptfriend', {user:addedUser}, config)
+.then(res=>{
+  setCurrentUser(prev=>({...prev, user:{...prev.user, friends:[...prev.user.friends, res.data], friendRequest:prev.user.friendRequest.filter(item=>item !== addedUser )} }))
+  refreshPage ()
+})
+}
+//Decline friend request or add friend
+function declineFriendRequest (declinedUser){
+  axios.delete('/auth/declinefriend', { data:{user:declinedUser}, headers:{Authorization: `Bearer ${token}`}})
+  .then(res=>{
+    setCurrentUser(prev=>({...prev, user:{...prev.user, friendRequest:prev.user.friendRequest.filter(item=>item !== declinedUser )} }))
+    console.log(res.data)
+    refreshPage ()
+  })
+  console.log(config)
+  }
 
   useEffect(()=>{
        token && getAllUsers()
@@ -83,7 +109,7 @@ function friendRequest (selectedUser){
   }, [])
 
   return (
-    <AuthContext.Provider value={{getAllUsers, search, currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers,  friendRequest }}>
+    <AuthContext.Provider value={{declineFriendRequest, acceptFriendRequest, getAllUsers, search, currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers,  friendRequest }}>
       {props.children}
     </AuthContext.Provider>
   );

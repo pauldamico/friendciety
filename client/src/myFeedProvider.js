@@ -53,7 +53,9 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
   .then(res=>setMyFeed(prev=>prev.map(post=>id === post._id ? {...post, post:editedPost} : {...post})))  
   }
 
-useEffect(getMyFeed,[currentUser])
+useEffect(()=>{
+  getMyFeed()
+}, [])
 
     return(
         <MyFeedContext.Provider value={{config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
