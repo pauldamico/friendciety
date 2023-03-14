@@ -105,10 +105,10 @@ function declineFriendRequest (declinedUser){
   console.log(config)
   }
 
-  useEffect(()=>{
-       token && getAllUsers()
-       token && refreshPage()
-  }, [])
+  // useEffect(()=>{
+  //      token && getAllUsers()
+  //      token && refreshPage()
+  // }, [])
 
   return (
     <AuthContext.Provider value={{declineFriendRequest, acceptFriendRequest, getAllUsers, search, currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers,  friendRequest }}>

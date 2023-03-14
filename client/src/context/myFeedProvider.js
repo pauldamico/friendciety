@@ -14,11 +14,15 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     const [addToFeed, setAddToFeed] = useState({ post: "" }); 
 
   function getMyFeed (){
-    setMyFeed([])
+    // setMyFeed([])
     token && axios.get(`/auth/myFeed/currentUserPosts`, config)    
     .then((res) => setMyFeed(prev=>(res.data)))
-    .catch(err=>console.log(err));
-      
+    .catch(err=>console.log(err));      
+  }
+
+  // set feed to a empty array when logout is clicked
+  function clearMyFeed(){
+    setMyFeed([])
   }
 
   //adds new post for current user
@@ -37,8 +41,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     };
   
     //deletes a post by id
-  const deletePost = (id) => {
-    console.log(id)    
+  const deletePost = (id) => {    
     axios.delete(`/auth/myfeed/${id}`, config)
     .then(res=>setMyFeed(prev=>prev.filter(post=>id !== post._id && {...post})))
     .catch(err=>console.log(err))
@@ -58,7 +61,7 @@ useEffect(()=>{
 }, [logout])
 
     return(
-        <MyFeedContext.Provider value={{getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <MyFeedContext.Provider value={{clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </MyFeedContext.Provider>
     )

@@ -10,7 +10,7 @@ export default function MyFeed() {
   // function addImageHandler (event){
   // setFile(URL.createObjectURL(event.target.files[0]))
   // }
-console.log(myFeed)
+
 
 
   const myFeedElement = myFeed.map((feed) => (

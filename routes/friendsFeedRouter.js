@@ -15,8 +15,7 @@ const friendsArray =currentUser.friends
     if(err){
         res.status(500)
         return next(err)
-    }
-    console.log(currentUserFeed)
+    }    
     return res.send(currentUserFeed)
     })
 })

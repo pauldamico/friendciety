@@ -13,12 +13,15 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     const [friendsFeed, setFriendsFeed] = useState([]);
     const [addToFeed, setAddToFeed] = useState({ post: "" }); 
 
+    function clearFriendsFeed(){
+      setFriendsFeed([])
+    }
+
 
   function getFriendsFeed (){    
-    setFriendsFeed([])
+    // setFriendsFeed([])
     token && axios.get(`/auth/friendsFeed/${currentUser.user._id}`, config)    
-    .then((res) =>{ setFriendsFeed(prev=>(res.data))
-    console.log(res.data)
+    .then((res) =>{ setFriendsFeed(prev=>(res.data))   
     })
     .catch(err=>console.log(err));      
   }
@@ -29,7 +32,7 @@ useEffect(()=>{
 }, [signUpUser, loginUser])
 
     return(
-        <FriendsFeedContext.Provider value={{friendsFeed}}>
+        <FriendsFeedContext.Provider value={{clearFriendsFeed, friendsFeed}}>
 {props.children}
         </FriendsFeedContext.Provider>
     )

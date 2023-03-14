@@ -6,24 +6,28 @@ html {
 }
 
 .app {
-  height: 100vh;
-  display: grid;
-  grid-template-columns: repeat(10, 10%);
-  grid-template-rows: repeat(10, 10%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  align-items: center;
 }
 
 .nav-div {
+  position: fixed;
+  left: 0;
   display: grid;
   grid-template-columns: repeat(10, 10%);
   grid-template-rows: repeat(10, 10%);
-  grid-column: 1/-1;
+  width: 100%;
+  height: 10vh;
   background-color: white;
   justify-content: space-around;
   box-shadow: 2px 2px 2px 2px grey;
 }
 .search-user-main-div {
   position: absolute;
-  width: 10%;
+  width: 100%;
   top: 3%;
   display: flex;
   flex-direction: column;
@@ -57,32 +61,35 @@ html {
   border-radius: 10px;
 }
 .nav-div-div {
+  position: relative;
   display: flex;
   grid-column: 1/-1;
   grid-row: 4/7;
   justify-content: space-around;
 }
-.friend-request-div{
+.friend-request-div {
   position: absolute;
-width: 100px;  
-color: grey;
-    box-shadow: -1px 7px 11px 3px grey;
-    height: 60px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    z-index: 100;
-    overflow: auto;
-    border-radius: 5px;
+  width: 100px;
+  color: grey;
+  box-shadow: -1px 7px 11px 3px grey;
+  height: 60px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow: auto;
+  border-radius: 5px;
 }
-.friend-request{  
+.friend-request {
   display: flex;
   justify-content: space-between;
   margin-left: 7px;
   margin-right: 7px;
 }
 .sidebar-div {
-  margin-top: 5px;
+  position: fixed;
+  top: 13vh;
+  left: 1vw;
   grid-column: 1/2;
   grid-row: 2/-1;
 }
@@ -94,6 +101,7 @@ color: grey;
   grid-row: 3/7;
 }
 .login-form {
+  margin-top: 5vh;
   display: flex;
   flex-direction: column;
   width: 80%;
@@ -130,9 +138,8 @@ color: grey;
 
 .my-feed-div {
   border-radius: 10px;
-  margin-top: 30px;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin-top: 12vh;
+  width: 80vh;
   grid-column: 4/8;
   background-color: white;
   grid-row: 2/-1;
