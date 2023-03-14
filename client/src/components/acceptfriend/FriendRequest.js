@@ -1,5 +1,5 @@
 import React, {useContext} from "react"
-import { AuthContext } from "../../authProvider"
+import { AuthContext } from "../../context/authProvider"
 
 export default function FriendRequest (props){
 const {declineFriendRequest, acceptFriendRequest} = useContext(AuthContext)

@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router,} from 'react-router-dom'
 import App from './App';
-import { AuthContextProvider } from './authProvider';
-import { MyFeedContextProvider } from './myFeedProvider';
+import { AuthContextProvider } from './context/authProvider';
+import { MyFeedContextProvider } from './context/myFeedProvider';
+import { FriendsFeedContextProvider } from './context/friendsFeedProvider';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,7 +15,9 @@ root.render(
   <React.StrictMode>
     <AuthContextProvider>
     <MyFeedContextProvider>
+      <FriendsFeedContextProvider>
     <App />
+    </FriendsFeedContextProvider>
 </MyFeedContextProvider>
     </AuthContextProvider>
   </React.StrictMode>

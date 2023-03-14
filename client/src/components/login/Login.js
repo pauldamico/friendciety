@@ -1,6 +1,6 @@
 import LoginForm from "./LoginForm";
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../../authProvider";
+import { AuthContext } from "../../context/authProvider";
 
 export default function Login() {
   const {signUpUser, loginUser} = useContext(AuthContext)

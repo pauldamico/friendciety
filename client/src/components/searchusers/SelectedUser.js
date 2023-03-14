@@ -1,5 +1,5 @@
 import React,{useState, useContext} from "react";
-import { AuthContext } from "../../authProvider";
+import { AuthContext } from "../../context/authProvider";
 export default function SelectedUser(props) {
   const { user, toggleSearch } = props;
   const { getAllUsers, currentUser, friendRequest } = useContext(AuthContext);

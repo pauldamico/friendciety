@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react'
 import {Link} from 'react-router-dom'
-import { AuthContext } from '../authProvider'
+import { AuthContext } from '../context/authProvider'
 
 export default function SideBar () {
 

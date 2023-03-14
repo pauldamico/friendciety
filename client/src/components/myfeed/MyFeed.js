@@ -1,6 +1,6 @@
 import React, { useState, useContext} from "react";
 import MyFeedPost from "./MyFeedPost";
-import {MyFeedContext } from "../../myFeedProvider";
+import {MyFeedContext } from "../../context/myFeedProvider";
 
 export default function MyFeed() {
 
@@ -10,7 +10,7 @@ export default function MyFeed() {
   // function addImageHandler (event){
   // setFile(URL.createObjectURL(event.target.files[0]))
   // }
-
+console.log(myFeed)
 
 
   const myFeedElement = myFeed.map((feed) => (

@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react"
 import FriendRequest from "./FriendRequest"
-import { AuthContext } from "../../authProvider"
+import { AuthContext } from "../../context/authProvider"
 export default function FriendRequests (){
     const {currentUser} = useContext(AuthContext)
     const [toggle, setToggle] = useState(false)

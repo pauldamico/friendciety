@@ -2,16 +2,16 @@ const express = require('express')
 const UserFeed = require('../models/userFeed.js')
 const userFeedRouter = express.Router()
 
-//gets all posts from all usersadded to friends
-userFeedRouter.get('/', (req, res, next)=>{
-UserFeed.find((err, currentUserFeed)=>{
-if(err){
-    res.status(500)
-    return next(err)
-}
-return res.send(currentUserFeed)
-})
-})
+// //gets all posts from all usersadded to friends
+// userFeedRouter.get('/', (req, res, next)=>{
+// UserFeed.find((err, currentUserFeed)=>{
+// if(err){
+//     res.status(500)
+//     return next(err)
+// }
+// return res.send(currentUserFeed)
+// })
+// })
 // list all posts by user
 userFeedRouter.get('/currentUserPosts', (req, res, next)=>{    
     const filterById = req.auth.foundUser._id
