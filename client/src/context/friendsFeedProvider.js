@@ -4,7 +4,7 @@ import { AuthContext } from "./authProvider";
 
 const FriendsFeedContext = createContext()
 function FriendsFeedContextProvider (props){
-const {userId, token, logout, currentUser} = useContext(AuthContext) 
+const {userId, token, logout, currentUser, signUpUser, loginUser} = useContext(AuthContext) 
 
 //Header Info for Axios users authentication
 const config = {headers:{Authorization: `Bearer ${token}`}}
@@ -26,7 +26,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
 
 useEffect(()=>{
   getFriendsFeed()
-}, [])
+}, [signUpUser, loginUser])
 
     return(
         <FriendsFeedContext.Provider value={{friendsFeed}}>

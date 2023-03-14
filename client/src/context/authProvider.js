@@ -1,10 +1,11 @@
 import React, { useState, createContext, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const AuthContext = createContext();
 function AuthContextProvider(props) { 
- 
+ const navigate = useNavigate()
     const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, user:{}}
     const [currentUser, setCurrentUser] = useState(initValue)
     // const [currentError, setCurrentError] = useState("")
@@ -33,6 +34,7 @@ function AuthContextProvider(props) {
       .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
       setCurrentUser(prev=>(res.data)) 
       getAllUsers()
+      navigate("/")
     })
       .catch((err) => console.log(err));  
       localStorage.setItem("userInfo", JSON.stringify(userInfo))
@@ -44,7 +46,7 @@ function AuthContextProvider(props) {
       .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
       setCurrentUser(prev=>(res.data))
       getAllUsers()
-   
+      navigate("/")
     })
       .catch((err) => console.log(err));
   }
