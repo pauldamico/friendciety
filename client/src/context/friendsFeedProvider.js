@@ -17,7 +17,6 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
       setFriendsFeed([])
     }
 
-
   function getFriendsFeed (){    
     // setFriendsFeed([])
     token && axios.get(`/auth/friendsFeed/${currentUser.user._id}`, config)    
