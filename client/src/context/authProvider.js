@@ -61,7 +61,9 @@ function AuthContextProvider(props) {
   //refreshes user info
   function refreshPage (){   
     axios.get('/auth/currentuser', config)    
-    .then(res=>{setCurrentUser(prev=>({...prev, user:{...res.data.user}    
+    .then(res=>{
+      console.log(res.data)
+      setCurrentUser(prev=>({...prev, user:{...res.data.user}    
     }))  
    localStorage.setItem("userInfo", JSON.stringify(res.data))
     }
@@ -106,8 +108,8 @@ function declineFriendRequest (declinedUser){
   }
 
   useEffect(()=>{
-      //  token && getAllUsers()
-       token && refreshPage()
+       token && getAllUsers()
+      //  token && refreshPage()
   }, [])
 
   return (

@@ -16,21 +16,21 @@ userRouter.post("/signup", (req, res, next) => {
     }
     req.body.username = req.body.username.toLowerCase();
     const newSavedUser = new User(req.body);
-    console.log(newSavedUser);
+  
     newSavedUser.save((err, foundUser) => {
       if (err) {
         res.status(500);
         return next(err);
       }
-      const token = jwt.sign({ foundUser }, process.env.SECRET);
-      return res.send({ user: foundUser, token });
+      const token = jwt.sign(foundUser.withoutPassword(), process.env.SECRET);
+      return res.send({ user: foundUser.withoutPassword(), token });
     });
   });
 });
 
 //controls user login
 userRouter.post("/login", (req, res, next) => {
-  console.log(req.body);
+
   User.findOne({ username: req.body.username }, (err, foundUser) => {
     if (err) {
       res.status(500);
@@ -43,26 +43,31 @@ userRouter.post("/login", (req, res, next) => {
     }
     if (foundUser) {
       //checks the password for match (this needs to be removed)
-      if (req.body.password !== foundUser?.password) {
-        res.status(500);
-        return next(new Error("Password is incorrect"));
-      }
-      const token = jwt.sign({ foundUser }, process.env.SECRET);
-      return res.send({ user: foundUser, token });
+      foundUser.checkPassword(req.body.password, (err, isMatch)=>{ 
+        if(err){ 
+          res.status(403) 
+          return next(err)} 
+          if(!isMatch){ 
+            res.status(403) 
+            return next(new Error("Username or Password are incorrect")) 
+          } })
+      const token = jwt.sign(foundUser.withoutPassword() , process.env.SECRET);
+      return res.send({ user: foundUser.withoutPassword(), token });
     }
   });
 });
 
 //sends current token and user info
 userRouter.get(`/currentuser`, (req, res, next) => {
-  User.findOne({ _id: req.auth.foundUser._id }, (err, foundUser) => {
+  User.findOne({ _id: req.auth._id }, (err, foundUser) => {
     if (err) {
       res.status(500);
       return next(new Error("No users have been found"));
     }
     res.status(200);
-    const token = jwt.sign({ foundUser }, process.env.SECRET);
-    res.send({ user: foundUser, token: token });
+    const token = jwt.sign(foundUser.withoutPassword(), process.env.SECRET);
+   
+    res.send({ user: foundUser.withoutPassword(), token: token });
   });
 });
 
@@ -81,7 +86,7 @@ userRouter.get(`/auth/allusers`, (req, res, next) => {
 //adds user to pendingfriend and   friendsrequestarray
 userRouter.put(`/addfriend`, (req, res, next) => {
   User.findOneAndUpdate(
-    { _id: req.auth.foundUser._id },
+    { _id: req.auth._id },
     { $addToSet: { pendingRequest: req.body.user } },
     { new: true },
     (err, foundUser) => {
@@ -91,14 +96,14 @@ userRouter.put(`/addfriend`, (req, res, next) => {
       }
       User.findOneAndUpdate(
         { username: req.body.user },
-        { $addToSet: { friendRequest: req.auth.foundUser.username } },
+        { $addToSet: { friendRequest: req.auth.username } },
         { new: true },
         (err, foundFriend) => {
           if (err) {
             res.status(500);
             return next(err);
           }
-          console.log(foundFriend.username);
+       
           res.send(foundFriend.username);
         }
       );
@@ -119,7 +124,7 @@ userRouter.put(`/acceptfriend`, (req, res, next) => {
       return next(new Error("User not found"));
     }
     User.findOneAndUpdate(
-      { _id: req.auth.foundUser._id },
+      { _id: req.auth._id },
       {
         $addToSet: { friends: { user: req.body.user, id: selectedUser.id } },
         $pull: { friendRequest: selectedUser.username },
@@ -133,11 +138,11 @@ userRouter.put(`/acceptfriend`, (req, res, next) => {
         User.findOneAndUpdate(
           { username: req.body.user },
           {
-            $pull: { pendingRequest: req.auth.foundUser.username },
+            $pull: { pendingRequest: req.auth.username },
             $addToSet: {
               friends: {
-                user: req.auth.foundUser.username,
-                id: req.auth.foundUser._id,
+                user: req.auth.username,
+                id: req.auth._id,
               },
             },
           },
@@ -149,7 +154,7 @@ userRouter.put(`/acceptfriend`, (req, res, next) => {
             }
             res.send({
               user: selectedUser.username,
-              id: req.auth.foundUser._id,
+              id: req.auth._id,
             });
           }
         );
@@ -161,7 +166,7 @@ userRouter.put(`/acceptfriend`, (req, res, next) => {
 //declines friend request--  removes it from friendRequest array and pending
 userRouter.delete(`/declinefriend`, (req, res, next) => {
   User.findOneAndUpdate(
-    { _id: req.auth.foundUser._id },
+    { _id: req.auth._id },
     { $pull: { friendRequest: req.body.user } },
     { new: true },
     (err, currentUser) => {
@@ -171,7 +176,7 @@ userRouter.delete(`/declinefriend`, (req, res, next) => {
       }
       User.findOneAndUpdate(
         { username: req.body.user },
-        { $pull: { pendingRequest: req.auth.foundUser.username } },
+        { $pull: { pendingRequest: req.auth.username } },
         { new: true },
         (err, acceptedUser) => {
           if (err) {
@@ -188,7 +193,7 @@ userRouter.delete(`/declinefriend`, (req, res, next) => {
 //removes friend from friends array
 userRouter.delete(`/removefriend`, (req, res, next) => {
   User.findOneAndUpdate(
-    { _id: req.auth.foundUser._id },
+    { _id: req.auth._id },
     { $pull: { friends: { user: req.body.user } } },
     { new: true },
     (err, currentUser) => {
@@ -198,15 +203,15 @@ userRouter.delete(`/removefriend`, (req, res, next) => {
       }
       User.findOneAndUpdate(
         { username: req.body.user },
-        { $pull: { friends: { user: req.auth.foundUser.username } } },
+        { $pull: { friends: { user: req.auth.username } } },
         { new: true },
         (err, acceptedUser) => {
-          console.log(req.body.user);
+       
           if (err) {
             res.status(500);
             return next(err);
           }
-          res.send(currentUser);
+          res.send(currentUser.withoutPassword());
         }
       );
     }

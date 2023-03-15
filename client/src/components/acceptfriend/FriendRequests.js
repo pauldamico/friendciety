@@ -14,7 +14,7 @@ setToggle(!toggle)
     return (<div> 
         <div  onClick={toggler}>   
        
-{currentUser?.user.friendRequest.length > 0 ?<section>Friend Requests <span>{currentUser?.user.friendRequest.length}</span></section>: null}
+{currentUser?.user.friendRequest?.length > 0 ?<section>Friend Requests <span>{currentUser?.user.friendRequest.length}</span></section>: null}
 {toggle ?<div className="friend-request-div">
  {friendRequests}
 </div> : null}

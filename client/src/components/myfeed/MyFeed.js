@@ -11,9 +11,9 @@ export default function MyFeed() {
   // setFile(URL.createObjectURL(event.target.files[0]))
   // }
 
+console.log(myFeed)
 
-
-  const myFeedElement = myFeed.map((feed) => (
+  const myFeedElement = myFeed?.map((feed) => (
     <Post key={feed._id} {...feed} deletePost={deletePost} updatePost={updatePost}/>
   ));
 
