@@ -6,7 +6,8 @@ const oldDate = new Date('July 20, 69 20:17:40 GMT+00:00');
 
 const userFeedSchema = new Schema({
   post: { type: String, required: true },
-  postOrder:{type:String, required:true, default:oldDate.getTime()},
+  postOrder:{type:String, required:true, default:oldDate.getTime()}, 
+  username: { type: String, required: true },
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true }
 });
 

@@ -26,7 +26,7 @@ userFeedRouter.get('/currentUserPosts', (req, res, next)=>{
     })
 //adds post to user feed
 userFeedRouter.post('/addPost', (req, res, next)=>{
-    console.log(req.auth.foundUser._id)
+    req.body.username = req.auth.foundUser.username
     req.body.userId = req.auth.foundUser._id
     req.body.postOrder = Date.now()
     const userSavedPost = new UserFeed(req.body)

@@ -19,7 +19,7 @@ export default function LoginForm(props) {
               Don't have an account? Click Here
             </h4>
           )}
-          <div></div>
+        
           {toggleSignUp && (
             <h4 type="onClick" onClick={toggle}>
               Go back to Login

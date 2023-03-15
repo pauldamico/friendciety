@@ -1,5 +1,5 @@
 import React, { useState, useContext} from "react";
-import MyFeedPost from "./MyFeedPost";
+import Post from "./Post";
 import {MyFeedContext } from "../../context/myFeedProvider";
 
 export default function MyFeed() {
@@ -14,7 +14,7 @@ export default function MyFeed() {
 
 
   const myFeedElement = myFeed.map((feed) => (
-    <MyFeedPost key={feed._id} {...feed} deletePost={deletePost} updatePost={updatePost}/>
+    <Post key={feed._id} {...feed} deletePost={deletePost} updatePost={updatePost}/>
   ));
 
 

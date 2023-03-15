@@ -1,10 +1,10 @@
 import React,{useContext} from "react"
-import MyFeedPost from "../myfeed/MyFeedPost"
+import Post from "../myfeed/Post"
 import { FriendsFeedContext } from "../../context/friendsFeedProvider"
 export default function FriendsFeed (){
 const{friendsFeed} = useContext(FriendsFeedContext)
-
-const testList = friendsFeed?.map(item=><MyFeedPost key={item._id} {...item}/>)
+console.log(friendsFeed)
+const testList = friendsFeed?.map(item=><Post key={item._id} {...item}/>)
     return(
       
             <div className="my-feed-div">
