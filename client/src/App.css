@@ -9,7 +9,7 @@ html {
   height: 100%;
   display: flex;
   flex-direction: column;
-  width: 100vw;
+  /* width: 100vw; */
   align-items: center;
 }
 
@@ -141,10 +141,22 @@ html {
   margin-top: 12vh;
   width: 80vh;
   grid-column: 4/8;
-  background-color: white;
+  /* background-color: white; */
   grid-row: 2/-1;
 }
+.update-status-div {
+  border-radius: 10px;
+  background-color: white;
+
+  width: 100%;
+ 
+}
 .update-status-input {
+  border:none;
+  background-color: rgba(84, 81, 81, 0.092);
+  border-radius: 10px;
+margin: 5px;
+padding: 5px;
   width: 80%;
 }
 
@@ -154,14 +166,26 @@ html {
   margin-top: 20px;
   margin-bottom: 30px;
 }
+/* .reply-div{
+
+} */
+.reply-div> div{
+  margin-left: 20px;
+  padding: 1px;
+  border-radius: 10px;
+  background-color: rgba(84, 81, 81, 0.092);
+margin-top: 10px;
+}
 
 .myfeed-posted-div {
   display: flex;
+  flex-direction: column;
   grid-template-columns: repeat(10, 10%);
-
+background-color: white;
   padding: 10px;
   border-radius: 10px;
-  box-shadow: 2px 0px 11px 0px #efefeffa;
+  /* box-shadow: 2px 0px 11px 0px #efefeffa; */
+  box-shadow: -1px 0px 3px 1px #c3bebefa;
   min-height: 150px;
   margin-bottom: 10px;
   
@@ -201,14 +225,21 @@ overflow: auto;
  
 }
 
-.reply-model-input{
-  border: none;
-  background-color: rgba(84, 81, 81, 0.092);
+.reply-model-form{  
   grid-row: 10/12;
   grid-column: 2/11;
   border-radius: 10px;
   height: 20px;
   margin-right: 1vw;
+}
+
+.reply-model-form > input{
+border: none;
+width:100%;
+background-color: rgba(84, 81, 81, 0.092);
+border-radius: 10px;
+height: 20px;
+
 }
 
 .myfeed-post-edit-del-div {

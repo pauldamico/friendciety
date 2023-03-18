@@ -32,6 +32,22 @@ res.send(newPost)
     })
 })
 
+//adds reply to user feed
+userFeedRouter.put('/reply/:postId', (req, res, next)=>{
+    const postId = req.params.postId  
+ req.body.replies[0].username=req.auth.username
+ console.log(req.body)
+UserFeed.findOneAndUpdate({_id:postId}, {$push:req.body}, {new:true}, (err, updatedItem)=>{
+
+if(err){
+    res.status(500)
+    return next(err)
+}
+console.log(updatedItem)
+return res.send(updatedItem.replies)
+})
+})
+
 //deletes post from user feed
 userFeedRouter.delete('/:postId',(req, res, next)=>{
     console.log("test")

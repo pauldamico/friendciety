@@ -4,17 +4,17 @@ import {MyFeedContext } from "../../context/myFeedProvider";
 
 export default function MyFeed() {
 
-  const {myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
+  const {replyToPost, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
 
   // const [file, setFile] = useState("")
   // function addImageHandler (event){
   // setFile(URL.createObjectURL(event.target.files[0]))
   // }
 
-console.log(myFeed)
+
 
   const myFeedElement = myFeed?.map((feed) => (
-    <Post key={feed._id} {...feed} deletePost={deletePost} updatePost={updatePost}/>
+    <Post key={feed._id} {...feed}  deletePost={deletePost} updatePost={updatePost}/>
   ));
 
 
@@ -22,7 +22,7 @@ console.log(myFeed)
   
     <div className="my-feed-div">
       {/* <img src={file}/> */}
-      <div  >
+      <div className="update-status-div" >
         <form className="update-status-form" onSubmit={addToMyFeed}>
         <input className="update-status-input"
           name="post"

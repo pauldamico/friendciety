@@ -14,11 +14,13 @@ root.render(
   <Router>
   <React.StrictMode>
     <AuthContextProvider>
+    <FriendsFeedContextProvider>
     <MyFeedContextProvider>
-      <FriendsFeedContextProvider>
+     
     <App />
-    </FriendsFeedContextProvider>
+    
 </MyFeedContextProvider>
+</FriendsFeedContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
   </Router>
