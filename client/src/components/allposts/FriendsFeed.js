@@ -1,5 +1,5 @@
 import React,{useContext} from "react"
-import Post from "../myfeed/Post"
+import Post from "./Post"
 import { FriendsFeedContext } from "../../context/friendsFeedProvider"
 import { MyFeedContext } from "../../context/myFeedProvider"
 export default function FriendsFeed (){

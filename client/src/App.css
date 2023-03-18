@@ -158,16 +158,18 @@ html {
 .myfeed-posted-div {
   display: flex;
   grid-template-columns: repeat(10, 10%);
+
   padding: 10px;
   border-radius: 10px;
   box-shadow: 2px 0px 11px 0px #efefeffa;
-  min-height: 100px;
+  min-height: 150px;
   margin-bottom: 10px;
+  
 }
 .myfeed-postproperty-div {
   display: grid;
   grid-template-columns: repeat(10, 10%);
-  grid-template-rows: repeat(10, 10%);
+  grid-template-rows: repeat(10, 20px);
   width: 100%;
 }
 
@@ -177,19 +179,49 @@ html {
   font-size: 30px;
   font-weight: bold;
 }
-.myfeed-postproperty-div > h5 {
-  grid-row: 3/5;
-  grid-column: 1/10;
+.myfeed-postproperty-div > h1 {
+  margin-top:10px;
+  grid-row: 2/7;
+  grid-column: 1/11;
+  font-size: medium;
+overflow: auto;
 }
 
-.myfeed-postproperty-div > h1 {
-  grid-row: 6/9;
-  grid-column: 1/10;
+
+.post-options-div{
+  padding: 5px;
+  border-top:solid rgba(0, 0, 0, 0.196) 1px;
+  border-bottom:solid  rgba(0, 0, 0, 0.196) 1px;
+  color:rgba(82, 82, 82, 0.514);
+  display: flex;
+  grid-row: 8/9;
+  grid-column: 1/11;
+  justify-content: space-around;
+  align-items: center;
+ 
+}
+
+.reply-model-input{
+  border: none;
+  background-color: rgba(84, 81, 81, 0.092);
+  grid-row: 10/12;
+  grid-column: 2/11;
+  border-radius: 10px;
+  height: 20px;
+  margin-right: 1vw;
 }
 
 .myfeed-post-edit-del-div {
-  grid-row: 4/8;
-  grid-column: 10/11;
+
+  display: flex;
+  padding: 5px;
+  border-radius: 10px;
+box-shadow: 0px 0px 7px 2px rgb(145, 145, 145);
+  flex-direction: column;
+    align-items: flex-start;
+  grid-row: 3/6;
+  grid-column: 7/10;
+  background-color: white;
 }
 
 .myfeed-input {

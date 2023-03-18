@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import FriendsFeed from "./components/friendsfeed/FriendsFeed";
+import FriendsFeed from "./components/allposts/FriendsFeed";
 import Nav from "./components/Nav";
 import Login from "./components/login/Login";
 import Home from "./components/Home";
-import MyFeed from "./components/myfeed/MyFeed";
+import MyFeed from "./components/allposts/MyFeed";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import SideBar from "./components/SideBar";
