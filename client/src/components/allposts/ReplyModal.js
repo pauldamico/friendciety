@@ -18,6 +18,7 @@ const{replyToPost} = useContext(MyFeedContext)
   return (
     <form onSubmit={onSubmit} className="reply-model-form">
       <input
+      required
       id={`${props._id}reply-input`}
       value={reply}
         onChange={replyOnChange}
