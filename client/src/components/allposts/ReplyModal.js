@@ -1,30 +1,23 @@
-import { set } from "mongoose";
-import React, { useState, useContext } from "react";
-import { MyFeedContext } from "../../context/myFeedProvider";
+
 export default function ReplyModel(props) {
-const{replyToPost} = useContext(MyFeedContext)
 
-  const [reply, setReply] = useState("");
 
-  function replyOnChange(e) {
-    setReply(e.target.value);
-  }
-  function onSubmit(e) {
-    e.preventDefault();
- replyToPost(props._id, reply)   
- setReply("")
-  }
+
+  const placeHolder = props.placeHolder || "Write a Comment..."
 
   return (
-    <form onSubmit={onSubmit} className="reply-model-form">
+    
+    <form onSubmit={props.onSubmit} className="reply-model-form">
       <input
       required
       id={`${props._id}reply-input`}
-      value={reply}
-        onChange={replyOnChange}
+      value={props.reply}
+        onChange={props.onChange}
         type="text"
-        placeholder="Write a Reply..."
+        placeholder={placeHolder}
       />
+     
     </form>
+    
   );
 }

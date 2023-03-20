@@ -43,7 +43,6 @@ if(err){
     res.status(500)
     return next(err)
 }
-console.log(updatedItem)
 return res.send(updatedItem.replies)
 })
 })

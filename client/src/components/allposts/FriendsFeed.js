@@ -24,7 +24,10 @@ const friendsPosts = friendsFeed?.map(item=><Post key={item._id}deletePost={dele
         {/* <button >Add to Feed</button> */}
         </form>
       </div>
-   <div>{friendsPosts.reverse()}</div>
+   <div>{friendsPosts.reverse()}
+   
+   </div>
+  
     </div>
            
       
