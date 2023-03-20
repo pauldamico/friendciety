@@ -1,10 +1,12 @@
 import React, {useState, useEffect, createContext, useContext} from "react";
+import {useNavigate}  from 'react-router-dom'
 import axios from "axios";
 import { AuthContext } from "./authProvider";
 import { FriendsFeedContext } from "./friendsFeedProvider";
 
 const MyFeedContext = createContext()
 function MyFeedContextProvider (props){
+  const navigate = useNavigate()
 const {userId, token, logout, currentUser} = useContext(AuthContext) 
 const {updateFriendFeedReplys} = useContext(FriendsFeedContext)
 
@@ -34,6 +36,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
         .then((res) => setMyFeed(prev=>([...prev, res.data])))
         .catch(err=>console.log(err));
         setAddToFeed({ post: "" })       
+        navigate("myfeed")
     };
     
     //change handler for adding new post

@@ -1,5 +1,6 @@
 import React, {useState} from "react"
 
+
 export default function UpdatePostModel (props) {
 
     const [updatePost, setUpdatedPost] = useState({editedPost:props.post})
@@ -13,6 +14,7 @@ export default function UpdatePostModel (props) {
         props.updatePost(props._id, updatePost.editedPost)
         props.toggleEditHandler()
         props.toggleMenuHandler()
+
     }
 
     return (

@@ -9,6 +9,7 @@ export default function MyFeedPost(props) {
   const{replyToPost} = useContext(MyFeedContext)
   const [toggleEdit, setToggleEdit] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
+  const [replyToggle, setReplyToggle] = useState(false)
   const [reply, setReply] = useState("");
   
 
@@ -49,14 +50,14 @@ export default function MyFeedPost(props) {
             <>
               {" "}
               <section onClick={toggleMenuHandler}>...</section>
-              <span>{props.username}</span>
+              <span className="profile-icon"><img src = {require("../../images/red.jpg")} height="20px" width="20px"/> <section>{props.username}</section></span>
               <h1>{props.post}</h1>
               <div className="post-options-div">
                 <h5>Like</h5>
                 <h5 onClick={focusReplyInput}> Reply</h5>
                 <h5>Dislike</h5>
               </div>
-              <ReplyModal reply={reply} onChange={parentReplyOnChange} onSubmit={submitParentReply} _id={props._id} />
+        
             </>
           ) : null}
 
@@ -96,7 +97,8 @@ export default function MyFeedPost(props) {
           ) : null}
 
         </div>
-        <div>{replies.reverse()}</div>
+        <div>{props.replies.length > 1 ? <div onClick = {()=>{setReplyToggle(!replyToggle)}} style={{cursor:"pointer"}}>{replyToggle ? <div><section onClick = {()=>{setReplyToggle(!replyToggle)}} >Hide Replies</section>{replies}</div> : `Replies ${props.replies.length}`}</div> :  replies}</div>
+        <ReplyModal reply={reply} onChange={parentReplyOnChange} onSubmit={submitParentReply} _id={props._id} />
       </div>
     </div>
   );
