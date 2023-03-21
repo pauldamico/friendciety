@@ -7,9 +7,9 @@ const userFeedSchema = new Schema({
   postOrder: { type: String, required: true, default: Date.now },
   username: { type: String, required: true },
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  replies: [
+  comments: [
     {
-      reply: { type: String, required: true },
+      comment: { type: String, required: true },
       userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
       username: { type: String, required: true },
       postOrder: { type: String, required: true, default: Date.now },

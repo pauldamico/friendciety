@@ -32,18 +32,19 @@ res.send(newPost)
     })
 })
 
-//adds reply to user feed
-userFeedRouter.put('/reply/:postId', (req, res, next)=>{
+//adds comment to user feed
+userFeedRouter.put('/comment/:postId', (req, res, next)=>{
+   
     const postId = req.params.postId  
- req.body.replies[0].username=req.auth.username
- console.log(req.body)
-UserFeed.findOneAndUpdate({_id:postId}, {$push:req.body}, {new:true}, (err, updatedItem)=>{
+ req.body.comments[0].username=req.auth.username
 
+UserFeed.findOneAndUpdate({_id:postId}, {$push:req.body}, {new:true}, (err, updatedItem)=>{
+console.log(updatedItem)
 if(err){
     res.status(500)
     return next(err)
 }
-return res.send(updatedItem.replies)
+return res.send(updatedItem.comments)
 })
 })
 

@@ -4,7 +4,7 @@ import {MyFeedContext } from "../../context/myFeedProvider";
 
 export default function MyFeed() {
 
-  const {replyToPost, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
+  const {postComment, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
 
   // const [file, setFile] = useState("")
   // function addImageHandler (event){

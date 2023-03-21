@@ -1,12 +1,11 @@
 import React, {useState, useEffect, createContext, useContext} from "react";
-import {useNavigate}  from 'react-router-dom'
 import axios from "axios";
 import { AuthContext } from "./authProvider";
 import { FriendsFeedContext } from "./friendsFeedProvider";
 
 const MyFeedContext = createContext()
 function MyFeedContextProvider (props){
-  const navigate = useNavigate()
+
 const {userId, token, logout, currentUser} = useContext(AuthContext) 
 const {friendsFeed, updateFriendFeedReplys} = useContext(FriendsFeedContext)
 
@@ -63,18 +62,23 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
   .catch(err=>console.log(err))  
   }
 
-  //add reply to post
-  const replyToPost=(parentId, reply)=>{
-
-axios.put(`/auth/myfeed/reply/${parentId}`, {replies:[{reply}]}, config)
-  .then(res=>{setMyFeed(prev=>prev.map(item=>
+  //add comment to post
+  const postComment=(parentId, comment)=>{
+axios.put(`/auth/myfeed/comment/${parentId}`, {comments:[{comment}]}, config)
+  .then(res=>{
+   console.log(myFeed)
+    setMyFeed(prev=>prev.map(item=>
     item._id === parentId ? {...item, 
-    replies:res.data
+    comments:res.data
   } : item))
   updateFriendFeedReplys(parentId, res.data)
 })
 
-console.log(myFeed)
+//add reply to comment or reply
+const postReply =()=>{
+
+}
+
 
   }
 
@@ -83,7 +87,7 @@ useEffect(()=>{
 }, [logout])
 
     return(
-        <MyFeedContext.Provider value={{allFeed, replyToPost, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <MyFeedContext.Provider value={{allFeed, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </MyFeedContext.Provider>
     )

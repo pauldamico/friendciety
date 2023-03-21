@@ -10,7 +10,7 @@ export default function ReplyModel(props) {
     <form onSubmit={props.onSubmit} className="reply-model-form">
       <input
       required
-      id={`${props._id}reply-input`}
+      id={`${props._id }comment-input` || null} 
       value={props.reply}
         onChange={props.onChange}
         type="text"

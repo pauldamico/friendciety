@@ -25,11 +25,10 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     .catch(err=>console.log(err));      
   }
 
-function updateFriendFeedReplys (parentId, data){
-  console.log(data)
+function updateFriendFeedReplys (parentId, data){ 
   setFriendsFeed(prev=>prev.map(item=>
     item._id === parentId ? {...item, 
-    replies:data
+    comments:data
   } : item))
 }
 

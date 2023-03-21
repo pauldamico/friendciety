@@ -4,30 +4,31 @@ import ReplyModal from "./ReplyModal";
 import Reply from "./Reply";
 import { MyFeedContext } from "../../context/myFeedProvider";
 
-export default function MyFeedPost(props) {
+export default function Post(props) {
 
-  const{replyToPost} = useContext(MyFeedContext)
+  const{postComment} = useContext(MyFeedContext)
   const [toggleEdit, setToggleEdit] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
-  const [replyToggle, setReplyToggle] = useState(false)
-  const [reply, setReply] = useState("");
+  const [commentToggle, setCommentToggle] = useState(false)
+  const [parentComment, setParentComment] = useState("");
   
 
-  //Moves cursor to reply input
-  function focusReplyInput() {
-    document.getElementById(`${props._id}reply-input`).focus();
+  //Moves cursor to comment input
+  function focusCommentInput() {
+    document.getElementById(`${props._id}comment-input`).focus();
   }
 
   
-//onChange for the input of the top level reply
-  function parentReplyOnChange(e) {
-    setReply(e.target.value);
+//onChange for the input of the top level comment
+  function parentCommentOnChange(e) {
+    setParentComment(e.target.value);
   }
-//submit for the input of the top level reply
-  function submitParentReply(e) {
+//submit for the input of the top level comment
+  function submitParentComment(e) {    
     e.preventDefault();
- replyToPost(props._id, reply)   
- setReply("")
+    postComment(props._id, parentComment)   
+ setParentComment("")
+
   }
 
   const toggleEditHandler = () => {
@@ -37,8 +38,8 @@ export default function MyFeedPost(props) {
     setToggleMenu(!toggleMenu);
   };
 
-  //Lists replies of posts
-  const replies = props.replies?.map((item) => (
+  //Lists comments of posts
+  const comments = props.comments?.map((item) => (
     <Reply key={item._id} {...item}/>
   ));
 
@@ -54,7 +55,7 @@ export default function MyFeedPost(props) {
               <h1>{props.post}</h1>
               <div className="post-options-div">
                 <h5>Like</h5>
-                <h5 style = {{cursor:"pointer"}} onClick={focusReplyInput}> Comment</h5>
+                <h5 style = {{cursor:"pointer"}} onClick={focusCommentInput}> Comment</h5>
                 <h5>Dislike</h5>
               </div>
         
@@ -97,8 +98,8 @@ export default function MyFeedPost(props) {
           ) : null}
 
         </div>
-        <div>{props.replies.length > 1 ? <div  >{replyToggle ? <div><section style={{cursor:"pointer"}} onClick = {()=>{setReplyToggle(!replyToggle)}} >Hide Replies</section>{replies}</div> : <section style={{cursor:"pointer"}} onClick = {()=>{setReplyToggle(!replyToggle)}}>Replies{props.replies.length}</section>}</div> :  replies}</div>
-        <ReplyModal reply={reply} onChange={parentReplyOnChange} onSubmit={submitParentReply} _id={props._id} />
+        <div>{props.comments?.length > 1 ? <div  >{commentToggle ? <div><section style={{cursor:"pointer"}} onClick = {()=>{setCommentToggle(!commentToggle)}} >Hide Comments</section>{comments}</div> : <section style={{cursor:"pointer"}} onClick = {()=>{setCommentToggle(!commentToggle)}}>Comments {props.comments.length}</section>}</div> :  comments}</div>
+        <ReplyModal reply={parentComment} onChange={parentCommentOnChange} onSubmit={submitParentComment} _id={props._id} />
       </div>
     </div>
   );
