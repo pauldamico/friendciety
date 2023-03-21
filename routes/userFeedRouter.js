@@ -1,5 +1,6 @@
 const express = require('express')
 const UserFeed = require('../models/userFeed.js')
+const Reply = require('../models/comment.js')
 const userFeedRouter = express.Router()
 
 
@@ -33,41 +34,37 @@ res.send(newPost)
 })
 
 //adds comment to user feed
-userFeedRouter.put('/comment/:postId', (req, res, next)=>{
+// userFeedRouter.put('/comment/:postId', (req, res, next)=>{
    
-    const postId = req.params.postId  
- req.body.comments[0].username=req.auth.username
+//     const postId = req.params.postId  
+//  req.body.comments[0].username=req.auth.username
 
-UserFeed.findOneAndUpdate({_id:postId}, {$push:req.body}, {new:true}, (err, updatedItem)=>{
-console.log(updatedItem)
-if(err){
-    res.status(500)
-    return next(err)
-}
-return res.send(updatedItem.comments)
-})
-})
+// UserFeed.findOneAndUpdate({_id:postId}, {$push:req.body}, {new:true}, (err, updatedItem)=>{
+// console.log(updatedItem)
+// if(err){
+//     res.status(500)
+//     return next(err)
+// }
+// return res.send(updatedItem.comments)
+// })
+// })
 
-//deletes post from user feed
-userFeedRouter.delete('/:postId',(req, res, next)=>{
-    console.log("test")
-    const postId = req.params.postId
-    UserFeed.findOne({_id:postId},(err, selectedPost)=>{
-if(selectedPost.userId.toString("") !== req.auth._id){                    //permission for deleting post
-    res.status(403)
-    return next(new Error("You don't have permission to delete this post"))
-}  
-UserFeed.findOneAndDelete({_id:postId}, (err, deletedPost)=>{
 
-if(err){
-    res.status(500)
-    return(next(err))
-}
-return res.send(`ID ${deletedPost} has been removed`)
+  //add childreply to reply
+  userFeedRouter.post('/:commentId',  (req, res, next) => {
+    const {reply} = req.body
+   const {username, _id} = req.auth.foundUser
+    const { postId, commentId, replyId } = req.params;
+    const addedReply = new Reply({reply, username, userId:_id, commentId})
+    addedReply.save((err, newReply)=>{
+console.log(newReply)
+return res.send(newReply)
+     })
 
-})
-})
-})
+} )
+
+
+
 
 //edits post from user feed
 userFeedRouter.put('/:postId', (req, res, next)=>{

@@ -7,7 +7,7 @@ const MyFeedContext = createContext()
 function MyFeedContextProvider (props){
 
 const {userId, token, logout, currentUser} = useContext(AuthContext) 
-const {friendsFeed, updateFriendFeedReplys} = useContext(FriendsFeedContext)
+const {friendsFeed, updateFriendFeedComments} = useContext(FriendsFeedContext)
 
 //Header Info for Axios users authentication
 const config = {headers:{Authorization: `Bearer ${token}`}}
@@ -15,6 +15,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
 //State for myFeed array and state for addToFeed which is any new post change handler
     const [myFeed, setMyFeed] = useState([]);
     const [addToFeed, setAddToFeed] = useState({ post: "" }); 
+    const [comments, setComments] = useState([])
     const allFeed = [...friendsFeed, ...myFeed].sort((a,b)=>a.postOrder - b.postOrder) || null
    
   function getMyFeed (){
@@ -62,32 +63,35 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
   .catch(err=>console.log(err))  
   }
 
-  //add comment to post
-  const postComment=(parentId, comment)=>{
-axios.put(`/auth/myfeed/comment/${parentId}`, {comments:[{comment}]}, config)
-  .then(res=>{
-   console.log(myFeed)
-    setMyFeed(prev=>prev.map(item=>
-    item._id === parentId ? {...item, 
-    comments:res.data
-  } : item))
-  updateFriendFeedReplys(parentId, res.data)
-})
-
-//add reply to comment or reply
-const postReply =()=>{
-
+// get all comments for user and user's friends
+const getComments = ()=>{
+  axios.get('/auth/comment', config)
+  .then(res=>{setComments(res.data)})
+  .catch(err=>console.log(err))
 }
-
-
+console.log(comments)
+  //add comment to post   need to setup authentcation for only friends posts
+  const postComment=(postId, comment)=>{
+axios.post(`/auth/comment/${postId}`, {comment:comment}, config)
+  .then(res=>{
+ console.log(res.data)
+ setComments(prev=>[...prev, res.data])
+  // updateFriendFeedComments(postId, res.data)
+})
   }
 
+  //add reply to comment or reply
+const postReply =(parentId, reply)=>{
+console.log(parentId, reply)
+}
+
 useEffect(()=>{
+  getComments()
   getMyFeed()
 }, [logout])
 
     return(
-        <MyFeedContext.Provider value={{allFeed, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <MyFeedContext.Provider value={{comments, postReply, allFeed, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </MyFeedContext.Provider>
     )

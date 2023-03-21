@@ -1,7 +1,9 @@
 import ReplyModal from "./ReplyModal"
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
+import { MyFeedContext } from "../../context/myFeedProvider";
 export default function Reply (props){
-    
+ 
+    const {postReply} = useContext(MyFeedContext)
     const [toggle, setToggle] = useState(false)
     const [reply, setReply] = useState("");
 
@@ -10,7 +12,7 @@ export default function Reply (props){
     }
  function replyOnSubmit (e){
     e.preventDefault()
-
+    postReply(props._id, reply)
     setReply("")
  }
   
@@ -29,7 +31,7 @@ export default function Reply (props){
       <div className="reply-div">
       <section style={{cursor:"pointer"}} onClick={()=>{setToggle(!toggle)}}>Reply</section> 
       {toggle ?<div className="reply-input-div" style={{background:"none", marginRight:"0"}}>
-      <ReplyModal onChange={replyOnChange} reply={reply} placeHolder="Write a Reply..."/>
+      <ReplyModal onSubmit={replyOnSubmit} onChange={replyOnChange} reply={reply} placeHolder="Write a Reply..."/>
       </div> : null}
       </div>
     </div>)

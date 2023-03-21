@@ -25,12 +25,11 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     .catch(err=>console.log(err));      
   }
 
-function updateFriendFeedReplys (parentId, data){ 
-  setFriendsFeed(prev=>prev.map(item=>
-    item._id === parentId ? {...item, 
-    comments:data
-  } : item))
-}
+// function updateFriendFeedComments (parentId, data){ 
+//   setFriendsFeed(prev=>prev.map(item=>
+//     item._id === parentId ? {...item,    
+//   } : item))
+// }
 
 
 useEffect(()=>{
@@ -38,7 +37,7 @@ useEffect(()=>{
 }, [signUpUser, loginUser])
 
     return(
-        <FriendsFeedContext.Provider value={{updateFriendFeedReplys, clearFriendsFeed, friendsFeed}}>
+        <FriendsFeedContext.Provider value={{clearFriendsFeed, friendsFeed}}>
 {props.children}
         </FriendsFeedContext.Provider>
     )

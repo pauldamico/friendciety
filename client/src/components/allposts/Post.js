@@ -6,7 +6,7 @@ import { MyFeedContext } from "../../context/myFeedProvider";
 
 export default function Post(props) {
 
-  const{postComment} = useContext(MyFeedContext)
+  const{postComment, comments} = useContext(MyFeedContext)
   const [toggleEdit, setToggleEdit] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [commentToggle, setCommentToggle] = useState(false)
@@ -19,6 +19,9 @@ export default function Post(props) {
   }
 
   
+const postComments = comments.filter(item=>item.postId === props._id) || null
+const commentList = postComments.map(item=><Reply key={item._id}{...item}/>) || null
+
 //onChange for the input of the top level comment
   function parentCommentOnChange(e) {
     setParentComment(e.target.value);
@@ -39,9 +42,9 @@ export default function Post(props) {
   };
 
   //Lists comments of posts
-  const comments = props.comments?.map((item) => (
-    <Reply key={item._id} {...item}/>
-  ));
+  // const comments = props.comments?.map((item) => (
+  //   <Reply key={item._id} {...item}/>
+  // ));
 
   return (
     <div className="post-div">
@@ -98,7 +101,11 @@ export default function Post(props) {
           ) : null}
 
         </div>
-        <div>{props.comments?.length > 1 ? <div  >{commentToggle ? <div><section style={{cursor:"pointer"}} onClick = {()=>{setCommentToggle(!commentToggle)}} >Hide Comments</section>{comments}</div> : <section style={{cursor:"pointer"}} onClick = {()=>{setCommentToggle(!commentToggle)}}>Comments {props.comments.length}</section>}</div> :  comments}</div>
+      
+        <div>{postComments?.length > 1 ? <div  >{commentToggle ? <div><section style={{cursor:"pointer"}} onClick = {()=>{setCommentToggle(!commentToggle)}} >Hide Comments</section>
+        {commentList}
+        </div> : <section style={{cursor:"pointer"}} onClick = {()=>{setCommentToggle(!commentToggle)}}>Comments {postComments.length}</section>}</div> :  commentList}</div>
+        
         <ReplyModal reply={parentComment} onChange={parentCommentOnChange} onSubmit={submitParentComment} _id={props._id} />
       </div>
     </div>
