@@ -8,7 +8,7 @@ const MyFeedContext = createContext()
 function MyFeedContextProvider (props){
   const navigate = useNavigate()
 const {userId, token, logout, currentUser} = useContext(AuthContext) 
-const {updateFriendFeedReplys} = useContext(FriendsFeedContext)
+const {friendsFeed, updateFriendFeedReplys} = useContext(FriendsFeedContext)
 
 //Header Info for Axios users authentication
 const config = {headers:{Authorization: `Bearer ${token}`}}
@@ -16,7 +16,8 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
 //State for myFeed array and state for addToFeed which is any new post change handler
     const [myFeed, setMyFeed] = useState([]);
     const [addToFeed, setAddToFeed] = useState({ post: "" }); 
-
+    const allFeed = [...friendsFeed, ...myFeed].sort((a,b)=>a.postOrder - b.postOrder) || null
+   
   function getMyFeed (){
     // setMyFeed([])
     token && axios.get(`/auth/myFeed/currentUserPosts`, config)    
@@ -36,7 +37,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
         .then((res) => setMyFeed(prev=>([...prev, res.data])))
         .catch(err=>console.log(err));
         setAddToFeed({ post: "" })       
-        navigate("myfeed")
+   
     };
     
     //change handler for adding new post
@@ -82,7 +83,7 @@ useEffect(()=>{
 }, [logout])
 
     return(
-        <MyFeedContext.Provider value={{replyToPost, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <MyFeedContext.Provider value={{allFeed, replyToPost, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </MyFeedContext.Provider>
     )

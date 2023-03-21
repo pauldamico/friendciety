@@ -54,7 +54,7 @@ export default function MyFeedPost(props) {
               <h1>{props.post}</h1>
               <div className="post-options-div">
                 <h5>Like</h5>
-                <h5 onClick={focusReplyInput}> Reply</h5>
+                <h5 style = {{cursor:"pointer"}} onClick={focusReplyInput}> Comment</h5>
                 <h5>Dislike</h5>
               </div>
         
@@ -97,7 +97,7 @@ export default function MyFeedPost(props) {
           ) : null}
 
         </div>
-        <div>{props.replies.length > 1 ? <div onClick = {()=>{setReplyToggle(!replyToggle)}} style={{cursor:"pointer"}}>{replyToggle ? <div><section onClick = {()=>{setReplyToggle(!replyToggle)}} >Hide Replies</section>{replies}</div> : `Replies ${props.replies.length}`}</div> :  replies}</div>
+        <div>{props.replies.length > 1 ? <div  >{replyToggle ? <div><section style={{cursor:"pointer"}} onClick = {()=>{setReplyToggle(!replyToggle)}} >Hide Replies</section>{replies}</div> : <section style={{cursor:"pointer"}} onClick = {()=>{setReplyToggle(!replyToggle)}}>Replies{props.replies.length}</section>}</div> :  replies}</div>
         <ReplyModal reply={reply} onChange={parentReplyOnChange} onSubmit={submitParentReply} _id={props._id} />
       </div>
     </div>
