@@ -5,13 +5,7 @@ const commentSchema = new Schema({
   comment: { type: String, required: true },
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   username: { type: String, required: true },
-  postOrder: { type: String, required: true, default: Date.now },
-  replies: [
-    {
-      commentId: {type: Schema.Types.ObjectId, ref: "Comment", required: true, },
-      reply: { type: String, required: true },
-    },
-  ], 
+  replyOrder: { type: String, required: true, default: Date.now }
 });
 
 module.exports = mongoose.model("Comment", commentSchema);

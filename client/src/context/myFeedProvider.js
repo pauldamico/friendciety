@@ -16,6 +16,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     const [myFeed, setMyFeed] = useState([]);
     const [addToFeed, setAddToFeed] = useState({ post: "" }); 
     const [comments, setComments] = useState([])
+    const [replies, setReplies] = useState([])
     const allFeed = [...friendsFeed, ...myFeed].sort((a,b)=>a.postOrder - b.postOrder) || null
    
   function getMyFeed (){
@@ -69,29 +70,39 @@ const getComments = ()=>{
   .then(res=>{setComments(res.data)})
   .catch(err=>console.log(err))
 }
-console.log(comments)
+// get all replies 
+const getReplies = ()=>{
+  axios.get('/auth/reply', config)
+  .then(res=>{setReplies(res.data)})
+  .catch(err=>console.log(err))
+}
+
   //add comment to post   need to setup authentcation for only friends posts
   const postComment=(postId, comment)=>{
 axios.post(`/auth/comment/${postId}`, {comment:comment}, config)
-  .then(res=>{
- console.log(res.data)
+  .then(res=>{ 
  setComments(prev=>[...prev, res.data])
   // updateFriendFeedComments(postId, res.data)
 })
   }
 
   //add reply to comment or reply
-const postReply =(parentId, reply)=>{
-console.log(parentId, reply)
+const postReply =(commentId, reply)=>{
+  axios.post(`/auth/reply/${commentId}`, {reply}, config)
+  .then(res=>{ 
+ setReplies(prev=>[...prev, res.data])
+  // updateFriendFeedComments(postId, res.data)
+})
 }
 
 useEffect(()=>{
-  getComments()
-  getMyFeed()
+ token && getComments()
+ token && getMyFeed()
+ token && getReplies() 
 }, [logout])
 
     return(
-        <MyFeedContext.Provider value={{comments, postReply, allFeed, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <MyFeedContext.Provider value={{replies, comments, postReply, allFeed, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </MyFeedContext.Provider>
     )

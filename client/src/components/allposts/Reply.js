@@ -1,38 +1,8 @@
-import ReplyModal from "./ReplyModal"
-import React, {useState, useContext} from "react";
-import { MyFeedContext } from "../../context/myFeedProvider";
-export default function Reply (props){
- 
-    const {postReply} = useContext(MyFeedContext)
-    const [toggle, setToggle] = useState(false)
-    const [reply, setReply] = useState("");
 
-    function replyOnChange (e){
-        setReply(e.target.value)        
-    }
- function replyOnSubmit (e){
-    e.preventDefault()
-    postReply(props._id, reply)
-    setReply("")
- }
-  
-    //onSubmit
-    return (
-        <div>
-         <div className="comment-div" >
-            <img src = {require("../../images/red.jpg")} height="20px" width="20px"/>
-      <div className="comment-div2">
-        
-        <h4 > <section>{props.username}</section></h4>
-        <span>{props.comment}</span>
-      </div>
-      
-      </div>
-      <div className="reply-div">
-      <section style={{cursor:"pointer"}} onClick={()=>{setToggle(!toggle)}}>Reply</section> 
-      {toggle ?<div className="reply-input-div" style={{background:"none", marginRight:"0"}}>
-      <ReplyModal onSubmit={replyOnSubmit} onChange={replyOnChange} reply={reply} placeHolder="Write a Reply..."/>
-      </div> : null}
-      </div>
+export default function Reply (props){
+
+    return (<div >
+{props.username}
+{props.reply}
     </div>)
 }

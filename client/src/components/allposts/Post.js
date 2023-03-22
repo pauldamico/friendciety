@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import UpdatePostModal from "./UpdatePostModal";
 import ReplyModal from "./ReplyModal";
-import Reply from "./Reply";
+import Comment from "./Comment";
 import { MyFeedContext } from "../../context/myFeedProvider";
 
 export default function Post(props) {
@@ -18,9 +18,9 @@ export default function Post(props) {
     document.getElementById(`${props._id}comment-input`).focus();
   }
 
-  
+  //this allows the comments to show per prop post id
 const postComments = comments.filter(item=>item.postId === props._id) || null
-const commentList = postComments.map(item=><Reply key={item._id}{...item}/>) || null
+const commentList = postComments.map(item=><Comment key={item._id}{...item}/>) || null
 
 //onChange for the input of the top level comment
   function parentCommentOnChange(e) {
@@ -102,7 +102,7 @@ const commentList = postComments.map(item=><Reply key={item._id}{...item}/>) || 
 
         </div>
       
-        <div>{postComments?.length > 1 ? <div  >{commentToggle ? <div><section style={{cursor:"pointer"}} onClick = {()=>{setCommentToggle(!commentToggle)}} >Hide Comments</section>
+        <div >{postComments?.length > 1 ? <div  >{commentToggle ? <div><section style={{cursor:"pointer"}} onClick = {()=>{setCommentToggle(!commentToggle)}} >Hide Comments</section>
         {commentList}
         </div> : <section style={{cursor:"pointer"}} onClick = {()=>{setCommentToggle(!commentToggle)}}>Comments {postComments.length}</section>}</div> :  commentList}</div>
         
