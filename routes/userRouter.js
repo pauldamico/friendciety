@@ -5,7 +5,7 @@ const userRouter = express.Router();
 
 //signs up user
 userRouter.post("/signup", (req, res, next) => {
-  User.find({ username: req.body.username }, (err, foundUser) => {
+  User.find({ username: req.body.username }, (err, foundUser) => {  
     if (err) {
       res.status(500);
       return next(err);
@@ -29,8 +29,7 @@ userRouter.post("/signup", (req, res, next) => {
 });
 
 //controls user login
-userRouter.post("/login", (req, res, next) => {
-
+userRouter.post("/login", (req, res, next) => { 
   User.findOne({ username: req.body.username }, (err, foundUser) => {
     if (err) {
       res.status(500);
@@ -118,7 +117,7 @@ userRouter.put(`/acceptfriend`, (req, res, next) => {
       res.status(500);
       return next(err);
     }
-    console.log(selectedUser);
+   
     if (!selectedUser) {
       res.status(500);
       return next(new Error("User not found"));

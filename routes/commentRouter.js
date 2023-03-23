@@ -8,7 +8,6 @@ const User = require('../models/user.js')
 commentRouter.get('/', (req,res,next)=>{
   User.findOne({_id:req.auth._id}, (err, foundUser)=>{
 const allIds = [...foundUser.friends.map(friend=>friend.id), req.auth._id]
-console.log(allIds)
 Comment.find({userId:{$in:allIds}}, (err, foundComments)=>{
 res.send(foundComments)
 })

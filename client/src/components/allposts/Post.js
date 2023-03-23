@@ -80,22 +80,22 @@ const commentList = postComments.map(item=><Comment key={item._id}{...item}/>) |
           {toggleMenu && !toggleEdit ? (
             <div className="myfeed-post-edit-del-div">
               {!toggleEdit ? (
-                <button
+                <h3 style={{cursor:"pointer"}}
                   onClick={() => {
                     props.deletePost(props._id);
                   }}
                 >
                   Delete
-                </button>
+                </h3>
               ) : null}
               {!toggleEdit ? (
-                <button
+                <h3 style={{cursor:"pointer"}}
                   onClick={() => {
                     toggleEditHandler();
                   }}
                 >
                   edit
-                </button>
+                </h3>
               ) : null}
             </div>
           ) : null}

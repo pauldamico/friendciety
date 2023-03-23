@@ -8,7 +8,6 @@ app.use(express.json())
 app.use(morgan('dev'))
 
 
-
 mongoose.connect("mongodb://localhost:27017/friendciety")
 .then(()=>console.log("Connected to MongoDB"))
 .catch(()=>console.log("Unable to connect to database"))

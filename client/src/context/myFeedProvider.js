@@ -14,7 +14,9 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
 
 //State for myFeed array and state for addToFeed which is any new post change handler
     const [myFeed, setMyFeed] = useState([]);
+    const [toggleAddImage,setToggleAddImage] = useState(false)
     const [addToFeed, setAddToFeed] = useState({ post: "" }); 
+    const [imageInfo, setImageInfo] = useState({ post: "",image:"" }); 
     const [comments, setComments] = useState([])
     const [replies, setReplies] = useState([])
     const allFeed = [...friendsFeed, ...myFeed].sort((a,b)=>a.postOrder - b.postOrder) || null
@@ -37,16 +39,43 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
       axios.post(`/auth/myFeed/addPost`, addToFeed, config)    
         .then((res) => setMyFeed(prev=>([...prev, res.data])))
         .catch(err=>console.log(err));
-        setAddToFeed({ post: "" })       
-   
+        setAddToFeed({ post: "" })          
     };
+
+const addImageToFeed = () => {
+  const formData = new FormData();
+  formData.append("post", imageInfo.post);
+  formData.append("image", imageInfo.image);
+  console.log(formData.getAll("image"));
+
+axios.post("/auth/myFeed/addPost", formData, {
+  headers: {
+    "Content-Type": "multipart/form-data",
+    Authorization: `Bearer ${token}`
+  }
+})
+.then(response => {
+  console.log(response.data);
+})
+.catch(error => {
+  console.log(error);
+})
+setImageInfo(prev=>({...prev, post:"", image:""}))
+}
     
     //change handler for adding new post
-    const addPostChangeHandler = (event) => {
-      const { name, value } = event.target;
+    const addPostChangeHandler = (event) => {    
+      const { name, value } = event.target;    
       setAddToFeed((prev) => ({ ...prev, [name]: value }));
     };
-  
+    //
+    const addImageChangeHandler = (event) => {
+      const {name, value, type,  files} = event.target
+      setImageInfo(prev=>({...prev, [name]:type=="file"? files[0]: value}))
+    
+      } 
+ 
+
     //deletes a post by id
   const deletePost = (id) => {    
     axios.delete(`/auth/myfeed/${id}`, config)
@@ -95,6 +124,11 @@ const postReply =(commentId, reply)=>{
 })
 }
 
+//toggle image model
+function toggleImage (){
+  setToggleAddImage(!toggleAddImage)
+}
+
 useEffect(()=>{
  token && getComments()
  token && getMyFeed()
@@ -102,7 +136,7 @@ useEffect(()=>{
 }, [logout])
 
     return(
-        <MyFeedContext.Provider value={{replies, comments, postReply, allFeed, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <MyFeedContext.Provider value={{toggleImage, toggleAddImage, setToggleAddImage, addImageToFeed, imageInfo, addImageChangeHandler, replies, comments, postReply, allFeed, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </MyFeedContext.Provider>
     )

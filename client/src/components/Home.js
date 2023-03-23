@@ -1,15 +1,18 @@
 
-import React,{useContext} from "react"
+import React,{useState,useContext} from "react"
 import Post from "./allposts/Post"
+import ImageModal from "./allposts/ImageModal"
 
 import { MyFeedContext } from "../context/myFeedProvider"
 
 
+
 export default function Home (){
     
-    const {myFeed, allFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
+    const {toggleImage, toggleAddImage, allFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
     const friendsPosts = allFeed?.map(item=><Post key={item._id}deletePost={deletePost} updatePost={updatePost} {...item}/>)
   
+
 
 
 
@@ -29,9 +32,15 @@ export default function Home (){
                   type="text"
                   onChange={addPostChangeHandler}
                 />
-                {/* <input  type="file" onChange={addImageHandler}/> */}
-                {/* <button >Add to Feed</button> */}
-                </form>
+                   </form>
+              <div className="image-video-div"> 
+                <section onClick={toggleImage} style={{display:'flex'}}><img  height='15px' width='15px' src={require('../images/picture.png')}/>Image</section>
+               {toggleAddImage? <ImageModal toggleImage={toggleImage} toggleAddImage={toggleAddImage}/> : null}
+
+                <section style={{display:'flex'}}><img  height='15px' width='15px' src={require('../images/picture.png')}/>Video</section>
+              </div>
+          
+             
               </div>
            <div>{friendsPosts.reverse()}
            

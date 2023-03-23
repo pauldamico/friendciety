@@ -33,10 +33,15 @@ margin-left: 3px;
   grid-template-columns: repeat(10, 10%);
   grid-template-rows: repeat(10, 10%);
   width: 100%;
-  height: 10vh;
+  min-height: 50px;
   background-color: white;
   justify-content: space-around;
   box-shadow: 2px 2px 2px 2px grey;
+}
+.logout-div{
+  cursor: pointer;
+display: flex;
+align-items: center;
 }
 .search-user-main-div {
   position: absolute;
@@ -80,8 +85,10 @@ margin-left: 3px;
   grid-row: 4/7;
   justify-content: space-around;
 }
+
 .friend-request-div {
   position: absolute;
+ margin-left: -3vw;
   width: 100px;
   color: grey;
   box-shadow: -1px 7px 11px 3px grey;
@@ -106,6 +113,40 @@ margin-left: 3px;
   grid-column: 1/2;
   grid-row: 2/-1;
 }
+
+.image-modal-div{
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 1%;
+  margin-top: 100px;
+  box-shadow:0px 0px 6px 5px grey;
+  border-radius:10px;
+width: 100%;
+background-color: white;
+
+width: 30vw;
+height:30vh;
+z-index: 1000;
+}
+.image-modal-div>div{
+display: flex;
+align-items: center;
+width: 100%;
+flex-direction: column;
+}
+.image-modal-div>div>input{
+
+  width: 80%;
+
+  }
+.image-modal-div>p{
+  cursor:pointer;
+text-align: center;
+  width: 100%;
+  }
 
 /* login */
 .login-div {
@@ -151,7 +192,7 @@ margin-left: 3px;
 
 .my-feed-div {
   border-radius: 10px;
-  margin-top: 12vh;
+  margin-top: 50px;
   width: 80vh;
   grid-column: 4/8;
   /* background-color: white; */
@@ -160,7 +201,12 @@ margin-left: 3px;
 .update-status-div {
   border-radius: 10px;
   background-color: white;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
   width: 100%;
  
 }
@@ -170,15 +216,39 @@ margin-left: 3px;
   border-radius: 10px;
 margin: 5px;
 padding: 5px;
+  width: 100%;
+}
+.image-video-div{
+  display: flex;
+  width: 60%;
+  justify-content: space-evenly;  
+}
+.image-video-div>section{
+cursor: pointer;
+}
+.update-status-form {
   width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+
+}
+.update-status-form>div {
+  width: 100%;
+  display: flex;
+  flex-direction: row;  
+  align-items: center;
+  justify-content: center;
+}
+.update-status-form>div>section {
+  cursor: pointer;
+  color: rgb(158, 155, 155);
+margin-left: 20px;
+padding: 5px;
 }
 
-.update-status-form {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 30px;
-}
 .comment-div{
   width: 100%;
 display: flex;
@@ -211,6 +281,54 @@ margin-top: 10px;
   margin-left: 10px;
 }
 
+.comment-div{
+  width: 100%;
+display: flex;
+align-items: center;
+
+}
+.comment-divv> div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  padding: 1px;
+  border-radius: 10px;
+  background-color: rgba(84, 81, 81, 0.092);
+margin-top: 10px;
+}
+.reply-divv{
+  margin-left: 5vw;
+  display: flex;
+  align-items: center;
+}
+.reply-divv2{
+  display: flex;
+  font-size: smaller;
+  width: 100%;
+  flex-direction: column;
+  margin-left:20px;
+  padding: 1px;
+  border-radius: 10px;
+  background-color: rgba(84, 81, 81, 0.092);
+margin-top: 10px;
+}
+.reply-divv2>h4 {
+  margin-left: 10px;
+}
+.reply-divv2>span {
+  margin-left: 10px;
+}
+
+
+
+
+
+
+
+
+
+
 .reply-div> section{
  font-size: 60%;
  font-weight: bold;
@@ -224,7 +342,7 @@ margin-top: 1px;
   font-weight: bold;
    margin-left: 45px;
    padding: 1px;
- 
+ margin-bottom: 1vh;
  margin-top: 1px;
  }
 

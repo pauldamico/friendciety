@@ -13,14 +13,15 @@ const userSchema = new Schema({
 
 });
 
-userSchema.pre("save", function (next){                                   //encrypts password on signup
+userSchema.pre("save", function (next){     
+                            //encrypts password on signup
 if(!this.isModified("password")) 
 {return next()}
 bcrypt.hash(this.password, 10, (err, hash)=>{
   if(err){
     next(err)
   }
-  this.password = hash
+  this.password = hash   
   next()
 })
 })

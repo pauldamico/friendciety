@@ -39,7 +39,7 @@ function searchUsersHandler (event){
             {token ?<div onClick={()=>{setSearchToggle(false)}} className='nav-div-div'>
             <Link to={token ? '/' : '/login'}> Home</Link>   
            { token ? <FriendRequests/> : null}
-            {!token ? <Link to='/login'> Login</Link> : <button onClick = {logoff}> Logout</button>}
+            {!token ? <Link to='/login'> Login</Link> : <div className='logout-div'><h3 onClick = {logoff}> <img height='15px' width='15px' src={require('../images/logout.png')}/>Logout</h3></div>}
             </div> : null}
             </div> : null}
         </div> 

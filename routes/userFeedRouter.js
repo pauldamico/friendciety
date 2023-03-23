@@ -1,25 +1,25 @@
 const express = require('express')
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
 const UserFeed = require('../models/userFeed.js')
 const Reply = require('../models/comment.js')
 const userFeedRouter = express.Router()
 
 
 // list all posts by user
-userFeedRouter.get('/currentUserPosts', (req, res, next)=>{   
-
+userFeedRouter.get('/currentUserPosts', (req, res, next)=>{  
     const filterById = req.auth._id 
-    UserFeed.find({userId:{$in:[filterById]}}, (err, currentUserFeed)=>{     
-        
+    UserFeed.find({userId:{$in:[filterById]}}, (err, currentUserFeed)=>{             
     if(err){
         res.status(500)
         return next(err)
     }
-
     return res.send(currentUserFeed)
     })
     })
 //adds post to user feed
-userFeedRouter.post('/addPost', (req, res, next)=>{
+userFeedRouter.post('/addPost', upload.single('image'), (req, res, next)=>{
+    console.log(req.file)
     req.body.username = req.auth.username
     req.body.userId = req.auth._id
     req.body.postOrder = Date.now()
@@ -33,22 +33,6 @@ res.send(newPost)
     })
 })
 
-//adds comment to user feed
-// userFeedRouter.put('/comment/:postId', (req, res, next)=>{
-   
-//     const postId = req.params.postId  
-//  req.body.comments[0].username=req.auth.username
-
-// UserFeed.findOneAndUpdate({_id:postId}, {$push:req.body}, {new:true}, (err, updatedItem)=>{
-// console.log(updatedItem)
-// if(err){
-//     res.status(500)
-//     return next(err)
-// }
-// return res.send(updatedItem.comments)
-// })
-// })
-
 
   //add childreply to reply
   userFeedRouter.post('/:commentId',  (req, res, next) => {
@@ -57,14 +41,10 @@ res.send(newPost)
     const { postId, commentId, replyId } = req.params;
     const addedReply = new Reply({reply, username, userId:_id, commentId})
     addedReply.save((err, newReply)=>{
-console.log(newReply)
 return res.send(newReply)
      })
 
 } )
-
-
-
 
 //edits post from user feed
 userFeedRouter.put('/:postId', (req, res, next)=>{

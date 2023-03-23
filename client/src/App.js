@@ -10,7 +10,7 @@ import SideBar from "./components/SideBar";
 import { AuthContext } from "./context/authProvider";
 function App() {
   const { token } = useContext(AuthContext);
-  const navigate = useNavigate();
+
 
   return (
     <div className="app">

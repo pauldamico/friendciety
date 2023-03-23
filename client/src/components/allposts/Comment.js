@@ -17,20 +17,20 @@ export default function Comment (props){
     postReply(props._id, reply)
     setReply("")
  }
+
+ //replies
 const currentCommentReplies = replies.filter(reply=>reply.commentId === props._id)
 const listedReplies = currentCommentReplies.map(reply=><Reply key={reply._id} {...reply}/>)
 
     //onSubmit
     return (
-        <div>
+        <div>      
          <div className="comment-div" >
             <img src = {require("../../images/red.jpg")} height="20px" width="20px"/>
-      <div className="comment-div2">
-        
+      <div className="comment-div2">        
         <h4 > <section>{props.username}</section></h4>
         <span>{props.comment}</span>
-      </div>
-      
+      </div>      
       </div>
       <div className="reply-div">
       <section style={{cursor:"pointer"}} onClick={()=>{setCommentToggle(!commentToggle)}}>Reply</section> 
@@ -39,7 +39,7 @@ const listedReplies = currentCommentReplies.map(reply=><Reply key={reply._id} {.
       </div> : null}
 
 
-      <div >{listedReplies?.length > 1 ? <div  >{replyToggle ? <div><section style={{cursor:"pointer"}} onClick = {()=>{setReplyToggle(!replyToggle)}} >Hide Replies</section>
+      <div >{listedReplies?.length > 4 ? <div  >{replyToggle ? <div><section style={{cursor:"pointer"}} onClick = {()=>{setReplyToggle(!replyToggle)}} >Hide Replies</section>
         {listedReplies}
         </div> : <section style={{cursor:"pointer"}} onClick = {()=>{setReplyToggle(!replyToggle)}}>Replies {listedReplies.length}</section>}</div> :  listedReplies}</div>
      

@@ -14,7 +14,7 @@ setToggle(!toggle)
     return (<div> 
         <div  onClick={toggler}>   
        
-{currentUser?.user.friendRequest?.length > 0 ?<section>Friend Requests <span>{currentUser?.user.friendRequest.length}</span></section>: null}
+{currentUser?.user.friendRequest?.length > 0 ?<section style={{display:"flex", alignItems:"center", cursor:"pointer" }}><img height="20px" width="20px" src={require('../../images/addFriend.png')}/> <section style={{color:"grey", fontSize:"100%"}}>{currentUser?.user.friendRequest.length}</section></section>: null}
 {toggle ?<div className="friend-request-div">
  {friendRequests}
 </div> : null}

@@ -1,10 +1,10 @@
 import React, { useState, useContext} from "react";
 import Post from "./Post";
 import {MyFeedContext } from "../../context/myFeedProvider";
-
+import ImageModal from "./ImageModal";
 export default function MyFeed() {
 
-  const {postComment, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
+  const {toggleAddImage, toggleImage, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
 
   // const [file, setFile] = useState("")
   // function addImageHandler (event){
@@ -31,9 +31,13 @@ export default function MyFeed() {
           type="text"
           onChange={addPostChangeHandler}
         />
-        {/* <input  type="file" onChange={addImageHandler}/> */}
-        {/* <button >Add to Feed</button> */}
-        </form>
+                   </form>
+              <div className="image-video-div"> 
+                <section onClick={toggleImage} style={{display:'flex'}}><img  height='15px' width='15px' src={require('../../images/picture.png')}/>Image</section>
+               {toggleAddImage? <ImageModal toggleImage={toggleImage} toggleAddImage={toggleAddImage}/> : null}
+
+                <section style={{display:'flex'}}><img  height='15px' width='15px' src={require('../../images/picture.png')}/>Video</section>
+              </div>
       </div>
    <div>{myFeedElement.reverse()}</div>
     </div>
