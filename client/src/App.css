@@ -357,25 +357,31 @@ background-color: white;
   box-shadow: -1px 0px 3px 1px #c3bebefa;
   min-height: 150px;
   margin-bottom: 10px;
+  justify-content: space-between;
   
 }
 .myfeed-postproperty-div {
-  display: grid;
-  grid-template-columns: repeat(10, 10%);
-  grid-template-rows: repeat(10, 20px);
+  display: flex;
+  flex-direction: column;
   width: 100%;
 }
 
 .myfeed-postproperty-div > section {
-  grid-row: 1/3;
-  grid-column: 10/11;
+
   font-size: 30px;
   font-weight: bold;
 }
 .myfeed-postproperty-div > h1 {
   margin-top:10px;
-  grid-row: 2/7;
-  grid-column: 1/11;
+;
+  font-size: medium;
+overflow: auto;
+}
+.myfeed-postproperty-div > img {
+  width: auto;
+  height: 100%;
+  margin-top:10px;
+ 
   font-size: medium;
 overflow: auto;
 }
@@ -387,7 +393,7 @@ overflow: auto;
   border-bottom:solid  rgba(0, 0, 0, 0.196) 1px;
   color:rgba(82, 82, 82, 0.514);
   display: flex;
-  grid-row: 8/9;
+  grid-row: 18/20;
   grid-column: 1/11;
   justify-content: space-around;
   align-items: center;
@@ -413,15 +419,16 @@ margin-top: 5px;
 }
 
 .myfeed-post-edit-del-div {
-
+position: absolute;
+margin-left: 30px;
+width: fit-content;
   display: flex;
   padding: 5px;
   border-radius: 10px;
 box-shadow: 0px 0px 7px 2px rgb(145, 145, 145);
   flex-direction: column;
     align-items: flex-start;
-  grid-row: 3/6;
-  grid-column: 7/10;
+
   background-color: white;
 }
 

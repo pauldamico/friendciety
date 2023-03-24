@@ -5,7 +5,6 @@ const UserFeed = require('../models/userFeed.js')
 const Reply = require('../models/comment.js')
 const userFeedRouter = express.Router()
 
-
 // list all posts by user
 userFeedRouter.get('/currentUserPosts', (req, res, next)=>{  
     const filterById = req.auth._id 
@@ -19,7 +18,7 @@ userFeedRouter.get('/currentUserPosts', (req, res, next)=>{
     })
 //adds post to user feed
 userFeedRouter.post('/addPost', upload.single('image'), (req, res, next)=>{
-    console.log(req.file)
+    req.body.image = req.file ? req.file.filename : null;
     req.body.username = req.auth.username
     req.body.userId = req.auth._id
     req.body.postOrder = Date.now()

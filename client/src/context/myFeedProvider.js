@@ -54,8 +54,9 @@ axios.post("/auth/myFeed/addPost", formData, {
     Authorization: `Bearer ${token}`
   }
 })
-.then(response => {
-  console.log(response.data);
+.then(res => {
+  console.log(res.data);
+  setMyFeed(prev=>([...prev, res.data]))
 })
 .catch(error => {
   console.log(error);

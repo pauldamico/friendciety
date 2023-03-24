@@ -53,31 +53,9 @@ const commentList = postComments.map(item=><Comment key={item._id}{...item}/>) |
           {!toggleEdit ? (
             <>
               {" "}
-              <section onClick={toggleMenuHandler}>...</section>
+              <section style ={{cursor:"pointer"}} onClick={toggleMenuHandler}>...</section>
               <span className="profile-icon"><img src = {require("../../images/red.jpg")} height="20px" width="20px"/> <section>{props.username}</section></span>
-              <h1>{props.post}</h1>
-              <div className="post-options-div">
-                <h5>Like</h5>
-                <h5 style = {{cursor:"pointer"}} onClick={focusCommentInput}> Comment</h5>
-                <h5>Dislike</h5>
-              </div>
-        
-            </>
-          ) : null}
-
-          {toggleEdit ? (
-            <div className="myfeed-input">
-              <UpdatePostModal
-                post={props.post}
-                _id={props._id}
-                updatePost={props.updatePost}
-                toggleEditHandler={toggleEditHandler}
-                toggleMenuHandler={toggleMenuHandler}
-              />
-            </div>
-          ) : null}
-
-          {toggleMenu && !toggleEdit ? (
+              {toggleMenu && !toggleEdit ? (
             <div className="myfeed-post-edit-del-div">
               {!toggleEdit ? (
                 <h3 style={{cursor:"pointer"}}
@@ -99,6 +77,30 @@ const commentList = postComments.map(item=><Comment key={item._id}{...item}/>) |
               ) : null}
             </div>
           ) : null}
+              <h1>{props.post}</h1>
+              {props.image ? <img src={`/uploads/${props.image}`}/>: null}
+              <div className="post-options-div">
+                <h5>Like</h5>
+                <h5 style = {{cursor:"pointer"}} onClick={focusCommentInput}> Comment</h5>
+                <h5>Dislike</h5>
+              </div>
+        
+            </>
+          ) : null}
+
+          {toggleEdit ? (
+            <div className="myfeed-input">
+              <UpdatePostModal
+                post={props.post}
+                _id={props._id}
+                updatePost={props.updatePost}
+                toggleEditHandler={toggleEditHandler}
+                toggleMenuHandler={toggleMenuHandler}
+              />
+            </div>
+          ) : null}
+
+       
 
         </div>
       
