@@ -37,6 +37,7 @@ margin-left: 3px;
   background-color: white;
   justify-content: space-around;
   box-shadow: 2px 2px 2px 2px grey;
+  z-index: 1000;
 }
 .logout-div{
   cursor: pointer;
@@ -379,6 +380,7 @@ overflow: auto;
 }
 .myfeed-postproperty-div > img {
   width: auto;
+  max-height: 50vh;
   height: 100%;
   margin-top:10px;
  

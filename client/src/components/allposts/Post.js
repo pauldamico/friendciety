@@ -4,6 +4,7 @@ import ReplyModal from "./ReplyModal";
 import Comment from "./Comment";
 import { MyFeedContext } from "../../context/myFeedProvider";
 
+
 export default function Post(props) {
 
   const{postComment, comments} = useContext(MyFeedContext)
@@ -41,10 +42,7 @@ const commentList = postComments.map(item=><Comment key={item._id}{...item}/>) |
     setToggleMenu(!toggleMenu);
   };
 
-  //Lists comments of posts
-  // const comments = props.comments?.map((item) => (
-  //   <Reply key={item._id} {...item}/>
-  // ));
+
 
   return (
     <div className="post-div">
@@ -78,7 +76,7 @@ const commentList = postComments.map(item=><Comment key={item._id}{...item}/>) |
             </div>
           ) : null}
               <h1>{props.post}</h1>
-              {props.image ? <img src={`/uploads/${props.image}`}/>: null}
+              {props.image ? <img src={`/uploads/${props.username}/${props.image}`}/>: null}
               <div className="post-options-div">
                 <h5>Like</h5>
                 <h5 style = {{cursor:"pointer"}} onClick={focusCommentInput}> Comment</h5>

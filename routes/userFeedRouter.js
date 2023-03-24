@@ -1,9 +1,41 @@
 const express = require('express')
 const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+const mkdirp = require('mkdirp')
 const UserFeed = require('../models/userFeed.js')
 const Reply = require('../models/comment.js')
 const userFeedRouter = express.Router()
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const dir = `./uploads/${req.auth.username}`
+      mkdirp(dir).then(() => cb(null, dir)).catch(cb)
+    },
+    filename: (req, file, cb) => {
+        console.log(file)
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
+      cb(null, file.originalname + '-' + uniqueSuffix)
+    }
+  })
+  
+  const upload = multer({ storage })
+
+//adds post to user feed
+userFeedRouter.post('/addPost', upload.single('image'), (req, res, next)=>{
+    req.body.image = req.file ? req.file.filename : null;
+    req.body.username = req.auth.username
+    req.body.userId = req.auth._id
+    req.body.postOrder = Date.now()
+    const userSavedPost = new UserFeed(req.body)
+    userSavedPost.save((err, newPost)=>{
+        console.log(newPost)
+if(err){
+    res.status(500)
+    return next(err)    
+}
+res.send(newPost)
+    })
+})
+
 
 // list all posts by user
 userFeedRouter.get('/currentUserPosts', (req, res, next)=>{  
@@ -16,21 +48,6 @@ userFeedRouter.get('/currentUserPosts', (req, res, next)=>{
     return res.send(currentUserFeed)
     })
     })
-//adds post to user feed
-userFeedRouter.post('/addPost', upload.single('image'), (req, res, next)=>{
-    req.body.image = req.file ? req.file.filename : null;
-    req.body.username = req.auth.username
-    req.body.userId = req.auth._id
-    req.body.postOrder = Date.now()
-    const userSavedPost = new UserFeed(req.body)
-    userSavedPost.save((err, newPost)=>{
-if(err){
-    res.status(500)
-    return next(err)    
-}
-res.send(newPost)
-    })
-})
 
 
   //add childreply to reply

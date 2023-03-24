@@ -2,7 +2,7 @@ import React, {useState, useContext} from "react";
 import { MyFeedContext } from "../../context/myFeedProvider";
 export default function ImageModal(props) {
     const {imageInfo, addToMyFeed, addImageChangeHandler, addImageToFeed} = useContext(MyFeedContext)
-console.log("test")
+
     function addToFeed(event){
       event.preventDefault()
         addImageToFeed()
