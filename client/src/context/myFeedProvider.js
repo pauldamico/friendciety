@@ -1,7 +1,7 @@
 import React, {useState, useEffect, createContext, useContext} from "react";
 import axios from "axios";
 import { AuthContext } from "./authProvider";
-import { FriendsFeedContext } from "./friendsFeedProvider";
+import { FriendsFeedContext } from "../components/trash/friendsFeedProvider";
 
 const MyFeedContext = createContext()
 function MyFeedContextProvider (props){

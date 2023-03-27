@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
-import Post from "./Post";
+import Post from "../allposts/Post";
 import {MyFeedContext } from "../../context/myFeedProvider";
-import ImageModal from "./ImageModal";
+import ImageModal from "../allposts/ImageModal";
 import { AuthContext } from "../../context/authProvider";
 export default function MyFeed() {
 
@@ -9,7 +9,7 @@ export default function MyFeed() {
   const{currentUser} = useContext(AuthContext)
 
 //This will only show posts with userId of current logged in user
-  const myFeedElement = myFeed?.map(post=>post.userId === currentUser.user._id ? <Post key={post._id}deletePost={deletePost} updatePost={updatePost} {...post}/> : null)
+  const posts = myFeed?.map(post=>post.userId === currentUser.user._id ? <Post key={post._id}deletePost={deletePost} updatePost={updatePost} {...post}/> : null)
  
 
   return (
@@ -33,7 +33,7 @@ export default function MyFeed() {
                 <section style={{display:'flex'}}><img  height='15px' width='15px' src={require('../../images/picture.png')}/>Video</section>
               </div>
       </div>
-   <div>{myFeedElement.reverse()}</div>
+   <div>{posts.reverse()}</div>
     </div>
   
   );

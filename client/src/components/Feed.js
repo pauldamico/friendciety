@@ -3,11 +3,11 @@ import Post from "./allposts/Post"
 import ImageModal from "./allposts/ImageModal"
 import { MyFeedContext } from "../context/myFeedProvider"
 
-export default function Home (props){
+export default function Feed (props){
     
     const {toggleImage, toggleAddImage, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
     //this will show friends and current user posts
-    const posts = myFeed?.map(item=><Post key={item._id}deletePost={deletePost} updatePost={updatePost} {...item}/>)
+    const posts = props.feed?.map(item=><Post key={item._id} deletePost={deletePost} updatePost={updatePost} {...item}/>)
   
     return (              
               <div className="my-feed-div">

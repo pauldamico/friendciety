@@ -1,6 +1,6 @@
 import React,{useContext} from "react"
-import Post from "./Post"
-import ImageModal from "./ImageModal"
+import Post from "../allposts/Post"
+import ImageModal from "../allposts/ImageModal"
 import { MyFeedContext } from "../../context/myFeedProvider"
 import { AuthContext } from "../../context/authProvider"
 export default function FriendsFeed (){
@@ -9,7 +9,7 @@ const{currentUser} = useContext(AuthContext)
 const {myFeed, toggleImage, toggleAddImage, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
 
 //This will only show posts for any posts that do not match current user Id
-const friendsPosts = myFeed?.map(post=>post.userId !== currentUser.user._id ? <Post key={post._id}deletePost={deletePost} updatePost={updatePost} {...post}/> : null)
+const posts = myFeed?.map(post=>post.userId !== currentUser.user._id ? <Post key={post._id}deletePost={deletePost} updatePost={updatePost} {...post}/> : null)
     return(
       
       <div className="my-feed-div">
@@ -31,7 +31,7 @@ const friendsPosts = myFeed?.map(post=>post.userId !== currentUser.user._id ? <P
                 <section style={{display:'flex'}}><img  height='15px' width='15px' src={require('../../images/picture.png')}/>Video</section>
               </div>
       </div>
-   <div>{friendsPosts.reverse()}
+   <div>{posts.reverse()}
    
    </div>
   

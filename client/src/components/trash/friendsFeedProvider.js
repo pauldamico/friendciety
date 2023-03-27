@@ -1,6 +1,6 @@
 import React, {useState, useEffect, createContext, useContext} from "react";
 import axios from "axios";
-import { AuthContext } from "./authProvider";
+import { AuthContext } from "../../context/authProvider";
 
 const FriendsFeedContext = createContext()
 function FriendsFeedContextProvider (props){

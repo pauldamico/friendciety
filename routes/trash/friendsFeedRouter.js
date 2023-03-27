@@ -1,7 +1,7 @@
 const express = require('express')
-const UserFeed = require('../models/userFeed.js')
+const UserFeed = require('../../models/userFeed.js')
 const friendsFeedRouter = express.Router()
-const User = require('../models/user.js')
+const User = require('../../models/user.js')
 
 
 //gets all posts from all users added to friends

@@ -23,7 +23,7 @@ res.send("Welcome")
    app.use('/auth/myfeed', require('./routes/userFeedRouter.js'))   
    app.use('/auth/comment', require('./routes/commentRouter.js')) 
    app.use('/auth/reply', require('./routes/replyRouter.js'))  
-   app.use('/auth/friendsfeed', require('./routes/friendsFeedRouter.js'))
+   // app.use('/auth/friendsfeed', require('./routes/friendsFeedRouter.js'))
    app.use('/auth/', require('./routes/userRouter.js'))
    app.use((err, req, res, next)=>{
 res.send({errMsg:err.message})
