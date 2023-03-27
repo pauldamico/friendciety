@@ -1,13 +1,15 @@
 import React,{useContext} from "react"
 import Post from "./Post"
 import ImageModal from "./ImageModal"
-import { FriendsFeedContext } from "../../context/friendsFeedProvider"
 import { MyFeedContext } from "../../context/myFeedProvider"
+import { AuthContext } from "../../context/authProvider"
 export default function FriendsFeed (){
-const{friendsFeed} = useContext(FriendsFeedContext)
+const{currentUser} = useContext(AuthContext)
 
-const {toggleImage, toggleAddImage, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
-const friendsPosts = friendsFeed?.map(item=><Post key={item._id}deletePost={deletePost} updatePost={updatePost} {...item}/>)
+const {myFeed, toggleImage, toggleAddImage, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
+
+//This will only show posts for any posts that do not match current user Id
+const friendsPosts = myFeed?.map(post=>post.userId !== currentUser.user._id ? <Post key={post._id}deletePost={deletePost} updatePost={updatePost} {...post}/> : null)
     return(
       
       <div className="my-feed-div">

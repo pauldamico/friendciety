@@ -6,8 +6,8 @@ import { FriendsFeedContext } from "./friendsFeedProvider";
 const MyFeedContext = createContext()
 function MyFeedContextProvider (props){
 
-const {userId, token, logout, currentUser} = useContext(AuthContext) 
-const {friendsFeed, updateFriendFeedComments} = useContext(FriendsFeedContext)
+const {userId, token, logout} = useContext(AuthContext) 
+
 
 //Header Info for Axios users authentication
 const config = {headers:{Authorization: `Bearer ${token}`}}
@@ -19,7 +19,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     const [imageInfo, setImageInfo] = useState({ post: "",image:"" }); 
     const [comments, setComments] = useState([])
     const [replies, setReplies] = useState([])
-    const allFeed = [...friendsFeed, ...myFeed].sort((a,b)=>a.postOrder - b.postOrder) || null
+    // const allFeed = [...friendsFeed, ...myFeed].sort((a,b)=>a.postOrder - b.postOrder) || null
    
   function getMyFeed (){
     // setMyFeed([])
@@ -42,27 +42,26 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
         setAddToFeed({ post: "" })          
     };
 
-const addImageToFeed = () => {
-  const formData = new FormData();
-  formData.append("post", imageInfo.post);
-  formData.append("image", imageInfo.image);
-  console.log(formData.getAll("image"));
+    //adds like to post
+    const addLikeToPost =(currentUserId, username)=>{   
+      axios.post(`/auth/myfeed/like`, {id:currentUserId}, config)
+      .then(res=>{console.log(res.data)
+        myFeed.find(post=>post._id === currentUserId) &&
+        setMyFeed(prev=>prev.map(post=>post._id === currentUserId && !post.likes.find(like=>like===username) ? {...post, likes:[...post.likes, username]} : post))     
+      
+      })
 
-axios.post("/auth/myFeed/addPost", formData, {
-  headers: {
-    "Content-Type": "multipart/form-data",
-    Authorization: `Bearer ${token}`
-  }
-})
-.then(res => {
-  console.log(res.data);
-  setMyFeed(prev=>([...prev, res.data]))
-})
-.catch(error => {
-  console.log(error);
-})
-setImageInfo(prev=>({...prev, post:"", image:""}))
-}
+    }
+    //adds dislike to post
+  const addDislikeToPost =(currentUserId, username)=>{
+    axios.post(`/auth/myfeed/dislike`,{id:currentUserId}, config)
+    .then(res=>{console.log(res.data)
+      myFeed.find(post=>post._id === currentUserId) &&
+      setMyFeed(prev=>prev.map(post=>post._id === currentUserId && !post.dislikes.find(dislike=>dislike===username) ? {...post, dislikes:[...post.dislikes, username]} : post))
+     
+    
+    })
+    }
     
     //change handler for adding new post
     const addPostChangeHandler = (event) => {    
@@ -125,6 +124,29 @@ const postReply =(commentId, reply)=>{
 })
 }
 
+    //uploads image to backend/database
+    const addImageToFeed = () => {
+      const formData = new FormData();
+      formData.append("post", imageInfo.post);
+      formData.append("image", imageInfo.image);
+      console.log(formData.getAll("image"));
+    
+    axios.post("/auth/myFeed/addPost", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(res => {
+      console.log(res.data);
+      setMyFeed(prev=>([...prev, res.data]))
+    })
+    .catch(error => {
+      console.log(error);
+    })
+    setImageInfo(prev=>({...prev, post:"", image:""}))
+    }
+
 //toggle image model
 function toggleImage (){
   setToggleAddImage(!toggleAddImage)
@@ -137,7 +159,7 @@ useEffect(()=>{
 }, [logout])
 
     return(
-        <MyFeedContext.Provider value={{toggleImage, toggleAddImage, setToggleAddImage, addImageToFeed, imageInfo, addImageChangeHandler, replies, comments, postReply, allFeed, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <MyFeedContext.Provider value={{addLikeToPost, addDislikeToPost, toggleImage, toggleAddImage, setToggleAddImage, addImageToFeed, imageInfo, addImageChangeHandler, replies, comments, postReply, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </MyFeedContext.Provider>
     )

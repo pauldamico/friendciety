@@ -9,6 +9,18 @@ a{
 text-decoration: none;
 color: black;
 }
+
+/* custom */
+.flexbox{
+  display: flex;
+  flex-direction: column;
+}
+
+.row{
+  flex-direction: row;
+}
+
+/* noncustom */
 .app {
   height: 100%;
   display: flex;
@@ -390,6 +402,7 @@ overflow: auto;
 
 
 .post-options-div{
+  margin-top: 1vh;
   padding: 5px;
   border-top:solid rgba(0, 0, 0, 0.196) 1px;
   border-bottom:solid  rgba(0, 0, 0, 0.196) 1px;
@@ -398,9 +411,10 @@ overflow: auto;
   grid-row: 18/20;
   grid-column: 1/11;
   justify-content: space-around;
-  align-items: center;
- 
+  align-items: center; 
 }
+
+
 
 .reply-model-form{  
   grid-row: 10/12;
@@ -422,7 +436,8 @@ margin-top: 5px;
 
 .myfeed-post-edit-del-div {
 position: absolute;
-margin-left: 30px;
+margin-left: -3vw;
+margin-top: 1vh;
 width: fit-content;
   display: flex;
   padding: 5px;

@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import {HandThumbsUp, HandThumbsDown} from 'react-bootstrap-icons'
 import UpdatePostModal from "./UpdatePostModal";
 import ReplyModal from "./ReplyModal";
 import Comment from "./Comment";
@@ -7,7 +8,7 @@ import { MyFeedContext } from "../../context/myFeedProvider";
 
 export default function Post(props) {
 
-  const{postComment, comments} = useContext(MyFeedContext)
+  const{addLikeToPost, addDislikeToPost,postComment, comments} = useContext(MyFeedContext)
   const [toggleEdit, setToggleEdit] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [commentToggle, setCommentToggle] = useState(false)
@@ -42,7 +43,12 @@ const commentList = postComments.map(item=><Comment key={item._id}{...item}/>) |
     setToggleMenu(!toggleMenu);
   };
 
-
+  function likePost(){
+    addLikeToPost(props._id, props.username)
+  }
+ function dislikePost(){
+  addDislikeToPost(props._id, props.username)
+  }
 
   return (
     <div className="post-div">
@@ -50,10 +56,8 @@ const commentList = postComments.map(item=><Comment key={item._id}{...item}/>) |
         <div className="myfeed-postproperty-div">
           {!toggleEdit ? (
             <>
-              {" "}
-              <section style ={{cursor:"pointer"}} onClick={toggleMenuHandler}>...</section>
-              <span className="profile-icon"><img src = {require("../../images/red.jpg")} height="20px" width="20px"/> <section>{props.username}</section></span>
-              {toggleMenu && !toggleEdit ? (
+             <div style={{flexDirection:"row", justifyContent:"space-between"}} className="flexbox">
+              <div><span className="profile-icon"><img src = {require("../../images/red.jpg")} height="20px" width="20px"/> <section>{props.username}</section></span></div><section style ={{cursor:"pointer", fontWeight:"bold", marginRight:"1vw"}} onClick={toggleMenuHandler}>...   {toggleMenu && !toggleEdit ? (
             <div className="myfeed-post-edit-del-div">
               {!toggleEdit ? (
                 <h3 style={{cursor:"pointer"}}
@@ -74,13 +78,17 @@ const commentList = postComments.map(item=><Comment key={item._id}{...item}/>) |
                 </h3>
               ) : null}
             </div>
-          ) : null}
+          ) : null}</section></div>
+            
+           
               <h1>{props.post}</h1>
               {props.image ? <img src={`/uploads/${props.username}/${props.image}`}/>: null}
+              <div style={{marginTop:"1vh"}} className={"flexbox row"}><section><HandThumbsUp style={{cursor:"pointer"}} onClick={likePost}/>{props.likes.length}</section><section><HandThumbsDown style={{cursor:"pointer"}} onClick={dislikePost}/>{props.dislikes.length}</section></div>
               <div className="post-options-div">
-                <h5>Like</h5>
+                
+                <h5 onClick={likePost} style={{cursor:"pointer"}}>Like</h5>
                 <h5 style = {{cursor:"pointer"}} onClick={focusCommentInput}> Comment</h5>
-                <h5>Dislike</h5>
+                <h5 onClick={dislikePost} style={{cursor:"pointer"}}>Dislike</h5>
               </div>
         
             </>

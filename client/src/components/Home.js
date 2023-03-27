@@ -1,5 +1,5 @@
 
-import React,{useState,useContext} from "react"
+import React,{useContext} from "react"
 import Post from "./allposts/Post"
 import ImageModal from "./allposts/ImageModal"
 
@@ -9,18 +9,11 @@ import { MyFeedContext } from "../context/myFeedProvider"
 
 export default function Home (){
     
-    const {toggleImage, toggleAddImage, allFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
-    const friendsPosts = allFeed?.map(item=><Post key={item._id}deletePost={deletePost} updatePost={updatePost} {...item}/>)
+    const {toggleImage, toggleAddImage, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
+    //this will show friends and current user posts
+    const allPosts = myFeed?.map(item=><Post key={item._id}deletePost={deletePost} updatePost={updatePost} {...item}/>)
   
-
-
-
-
-
-    return (
-
-     
-              
+    return (              
               <div className="my-feed-div">
               {/* <img src={file}/> */}
               <div className="update-status-div" >
@@ -42,7 +35,7 @@ export default function Home (){
           
              
               </div>
-           <div>{friendsPosts.reverse()}
+           <div>{allPosts.reverse()}
            
            </div>
           

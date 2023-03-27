@@ -1,6 +1,7 @@
 const express = require('express')
 const multer  = require('multer')
 const mkdirp = require('mkdirp')
+const User = require('../models/user.js')
 const UserFeed = require('../models/userFeed.js')
 const Reply = require('../models/comment.js')
 const userFeedRouter = express.Router()
@@ -39,16 +40,66 @@ res.send(newPost)
 
 // list all posts by user
 userFeedRouter.get('/currentUserPosts', (req, res, next)=>{  
-    const filterById = req.auth._id 
+    const filterById = req.auth._id    
     UserFeed.find({userId:{$in:[filterById]}}, (err, currentUserFeed)=>{             
     if(err){
         res.status(500)
         return next(err)
     }
-    return res.send(currentUserFeed)
+    User.findOne({_id:filterById}, (err, currentUser)=>{
+  const friendsArray =currentUser?.friends || []
+        const filteredArray = friendsArray.map(item=>item.id)  
+        UserFeed.find({userId:{$in:filteredArray}}, (err, friendsFeed)=>{
+            if(err){
+                res.status(500)
+                return next(err)
+            }    
+            const allArray = [...friendsFeed, ...currentUserFeed]
+            return res.send(allArray)          
+            })
+    })    
     })
     })
 
+
+
+
+
+
+//add likes
+userFeedRouter.post(`/like`, (req, res, next) => {
+
+        UserFeed.findOneAndUpdate(          
+          { _id:  req.body.id },
+          { $addToSet: { likes: req.auth.username }, $pull:{dislikes:req.auth.username}, new:true},
+          { new: true },
+          (err, foundPost) => {           
+            if (err) {
+              res.status(500);
+              return next(err);
+            }                     
+            res.send(foundPost.likes);
+          }
+        );
+      });
+
+      //add dislike
+userFeedRouter.post(`/dislike`, (req, res, next) => {
+    console.log(req.body)
+        UserFeed.findOneAndUpdate(
+          { _id: req.body.id},
+          { $addToSet: { dislikes: req.auth.username }, $pull:{likes:req.auth.username}, new:true},
+          { new: true },
+          (err, foundPost) => {
+            console.log(foundPost)
+            if (err) {
+              res.status(500);
+              return next(err);
+            }             
+            res.send(foundPost.dislikes);
+          }
+        );
+      });
 
   //add childreply to reply
   userFeedRouter.post('/:commentId',  (req, res, next) => {

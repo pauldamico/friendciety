@@ -11,9 +11,10 @@ export default function UpdatePostModel (props) {
     }
 
     const savePost = () =>{
-        props.updatePost(props._id, updatePost.editedPost)
+        props.updatePost(props._id, updatePost.editedPost)    
+        // props.toggleMenuHandler()
         props.toggleEditHandler()
-        props.toggleMenuHandler()
+   
 
     }
 

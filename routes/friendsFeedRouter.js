@@ -11,6 +11,7 @@ friendsFeedRouter.get('/:currentUserId', (req, res, next)=>{
  User.findOne({_id:id}, (err, currentUser)=>{
     
 const friendsArray =currentUser?.friends || []
+// console.log(friendsArray)
     const filteredArray = friendsArray.map(item=>item.id)  
     UserFeed.find({userId:{$in:filteredArray}}, (err, currentUserFeed)=>{
     if(err){

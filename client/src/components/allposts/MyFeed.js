@@ -1,22 +1,16 @@
-import React, { useState, useContext} from "react";
+import React, {useContext} from "react";
 import Post from "./Post";
 import {MyFeedContext } from "../../context/myFeedProvider";
 import ImageModal from "./ImageModal";
+import { AuthContext } from "../../context/authProvider";
 export default function MyFeed() {
 
   const {toggleAddImage, toggleImage, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
+  const{currentUser} = useContext(AuthContext)
 
-  // const [file, setFile] = useState("")
-  // function addImageHandler (event){
-  // setFile(URL.createObjectURL(event.target.files[0]))
-  // }
-
-
-
-  const myFeedElement = myFeed?.map((feed) => (
-    <Post key={feed._id} {...feed}  deletePost={deletePost} updatePost={updatePost}/>
-  ));
-
+//This will only show posts with userId of current logged in user
+  const myFeedElement = myFeed?.map(post=>post.userId === currentUser.user._id ? <Post key={post._id}deletePost={deletePost} updatePost={updatePost} {...post}/> : null)
+ 
 
   return (
   

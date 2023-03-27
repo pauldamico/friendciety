@@ -4,7 +4,7 @@ import {BrowserRouter as Router,} from 'react-router-dom'
 import App from './App';
 import { AuthContextProvider } from './context/authProvider';
 import { MyFeedContextProvider } from './context/myFeedProvider';
-import { FriendsFeedContextProvider } from './context/friendsFeedProvider';
+// import { FriendsFeedContextProvider } from './context/friendsFeedProvider';
 
 
 
@@ -14,13 +14,13 @@ root.render(
   <Router>
   <React.StrictMode>
     <AuthContextProvider>
-    <FriendsFeedContextProvider>
+    {/* <FriendsFeedContextProvider> */}
     <MyFeedContextProvider>
      
     <App />
     
 </MyFeedContextProvider>
-</FriendsFeedContextProvider>
+{/* </FriendsFeedContextProvider> */}
     </AuthContextProvider>
   </React.StrictMode>
   </Router>

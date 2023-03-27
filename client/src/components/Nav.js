@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom'
 import React, {useState, useContext} from 'react'
 import { AuthContext } from '../context/authProvider'
 import { MyFeedContext } from '../context/myFeedProvider'
-import { FriendsFeedContext } from '../context/friendsFeedProvider'
+// import { FriendsFeedContext } from '../context/friendsFeedProvider'
 import FriendRequests from './acceptfriend/FriendRequests'
 import SearchUserModal from './searchusers/SearchUserModal'
 
@@ -10,7 +10,7 @@ export default function Nav (){
 
     const {search, currentUser, getListOfAllUsers, token, logout, allUsers} = useContext(AuthContext)
     const {clearMyFeed} = useContext(MyFeedContext)
-    const{clearFriendsFeed} = useContext(FriendsFeedContext)
+    // const{clearFriendsFeed} = useContext(FriendsFeedContext)
     const [searchToggle, setSearchToggle] = useState(false)
    
 
@@ -21,7 +21,7 @@ export default function Nav (){
     function logoff(){
         logout()
         clearMyFeed()
-        clearFriendsFeed()
+        // clearFriendsFeed()
     }
 
 // on change of the search input and also sets the searchToggle to true
