@@ -42,25 +42,27 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
         setAddToFeed({ post: "" })          
     };
 
-    //adds like to post
-    const addLikeToPost =(currentUserId, username)=>{   
-      axios.post(`/auth/myfeed/like`, {id:currentUserId}, config)
-      .then(res=>{console.log(res.data)
-        myFeed.find(post=>post._id === currentUserId) &&
-        setMyFeed(prev=>prev.map(post=>post._id === currentUserId && !post.likes.find(like=>like===username) ? {...post, likes:[...post.likes, username]} : post))     
-      
+    //adds like to post  can prob make this reusable with likes
+    const addLikeToPost =(currentPostId)=>{   
+      console.log(myFeed)
+      axios.post(`/auth/myfeed/like`, {id:currentPostId}, config)
+      .then(res=>{console.log(res.data.likes)
+        myFeed.find(post=>post._id === currentPostId) &&
+        setMyFeed(prev=>prev.map(post=>post._id === currentPostId  ? {...post, likes:[...res.data.likes], dislikes:[...res.data.dislikes]}  : post))    
+      console.log(myFeed.find(post=>post._id === currentPostId))
       })
 
     }
-    //adds dislike to post
-  const addDislikeToPost =(currentUserId, username)=>{
-    axios.post(`/auth/myfeed/dislike`,{id:currentUserId}, config)
-    .then(res=>{console.log(res.data)
-      myFeed.find(post=>post._id === currentUserId) &&
-      setMyFeed(prev=>prev.map(post=>post._id === currentUserId && !post.dislikes.find(dislike=>dislike===username) ? {...post, dislikes:[...post.dislikes, username]} : post))
-     
-    
+    //adds dislike to post  can prob make this reusable with likes
+  const addDislikeToPost =(currentPostId)=>{
+    console.log(myFeed)
+    axios.post(`/auth/myfeed/dislike`, {id:currentPostId}, config)
+    .then(res=>{console.log(res.data.dislikes)
+      myFeed.find(post=>post._id === currentPostId) &&
+      setMyFeed(prev=>prev.map(post=>post._id === currentPostId  ? {...post, dislikes:[...res.data.dislikes], likes:[...res.data.likes]}  : post))    
+    console.log(myFeed.find(post=>post._id === currentPostId))
     })
+
     }
     
     //change handler for adding new post
