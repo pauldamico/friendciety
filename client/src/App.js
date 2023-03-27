@@ -1,12 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, {useContext } from "react";
 import Feed from './components/Feed'
 import Nav from "./components/Nav";
 import Login from "./components/login/Login";
-import Home from "./components/Home";
 import SideBar from "./components/SideBar";
-
 import "./App.css";
-
 import { Routes, Route} from "react-router-dom";
 import { AuthContext } from "./context/authProvider";
 import { MyFeedContext } from "./context/myFeedProvider";
@@ -29,7 +26,7 @@ const friendsPosts = myFeed?.filter(post=>post.userId !== currentUser.user._id) 
         <Route path="/" element={token ? <Feed feed={allPosts} /> : <Login />} />
         <Route path="/myfeed" element={token ? <Feed feed={currentUserPosts} /> : <Login />} />
         <Route path="/friendfeed" element={token ? <Feed feed={friendsPosts} /> : <Login />} />
-        <Route path="/login" element={!token ? <Login /> : <Home />} />
+        <Route path="/login" element={!token ? <Login /> : <Feed />} />
       </Routes>
     </div>
   );

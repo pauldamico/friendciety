@@ -1,7 +1,7 @@
 import React,{useContext} from "react"
-import Post from "./allposts/Post"
-import ImageModal from "./allposts/ImageModal"
-import { MyFeedContext } from "../context/myFeedProvider"
+import Post from "../allposts/Post"
+import ImageModal from "../allposts/ImageModal"
+import { MyFeedContext } from "../../context/myFeedProvider"
 
 export default function Home (props){
     
