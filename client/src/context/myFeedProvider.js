@@ -1,7 +1,7 @@
 import React, {useState, useEffect, createContext, useContext} from "react";
 import axios from "axios";
 import { AuthContext } from "./authProvider";
-import { FriendsFeedContext } from "../components/trash/friendsFeedProvider";
+
 
 const MyFeedContext = createContext()
 function MyFeedContextProvider (props){
@@ -43,24 +43,22 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     };
 
     //adds like to post  can prob make this reusable with likes
-    const addLikeToPost =(currentPostId)=>{   
-      console.log(myFeed)
+    const addLikeToPost =(currentPostId)=>{      
       axios.post(`/auth/myfeed/like`, {id:currentPostId}, config)
       .then(res=>{console.log(res.data.likes)
         myFeed.find(post=>post._id === currentPostId) &&
         setMyFeed(prev=>prev.map(post=>post._id === currentPostId  ? {...post, likes:[...res.data.likes], dislikes:[...res.data.dislikes]}  : post))    
-      console.log(myFeed.find(post=>post._id === currentPostId))
+      // console.log(myFeed.find(post=>post._id === currentPostId))
       })
 
     }
     //adds dislike to post  can prob make this reusable with likes
-  const addDislikeToPost =(currentPostId)=>{
-    console.log(myFeed)
+  const addDislikeToPost =(currentPostId)=>{  
     axios.post(`/auth/myfeed/dislike`, {id:currentPostId}, config)
     .then(res=>{console.log(res.data.dislikes)
       myFeed.find(post=>post._id === currentPostId) &&
       setMyFeed(prev=>prev.map(post=>post._id === currentPostId  ? {...post, dislikes:[...res.data.dislikes], likes:[...res.data.likes]}  : post))    
-    console.log(myFeed.find(post=>post._id === currentPostId))
+    // console.log(myFeed.find(post=>post._id === currentPostId))
     })
 
     }
@@ -73,7 +71,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     //
     const addImageChangeHandler = (event) => {
       const {name, value, type,  files} = event.target
-      setImageInfo(prev=>({...prev, [name]:type=="file"? files[0]: value}))
+      setImageInfo(prev=>({...prev, [name]:type==="file"? files[0]: value}))
     
       } 
  
@@ -158,6 +156,7 @@ useEffect(()=>{
  token && getComments()
  token && getMyFeed()
  token && getReplies() 
+ // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [logout])
 
     return(

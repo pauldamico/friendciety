@@ -1,31 +1,43 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
+import {People, House} from 'react-bootstrap-icons'
+import {Avatar} from '@mui/material'
+import WindowSize from "./WindowSize";
+
 
 export default function SideBar() {
   const { currentUser, token } = useContext(AuthContext);
-  return (
+
+
+
+
+
+  return (<WindowSize arrow=">">
     <div className="sidebar-div">
       {token ? (
-        <div>
-          {token ? (
-            <section className="profile-icon">
-              {" "}
-              <img
-                src={require("../images/red.jpg")}
-                height="20px"
-                width="20px"
-              />{" "}
-              <section>{currentUser?.user?.username}</section>
-            </section>
-          ) : null}
+        <div>   
 
           <div className="sidebar-div2">
-            <Link to="/myfeed">My Posts</Link>
-            <Link to="/friendfeed">Friends Posts</Link>
+       
+          
+             
+            {token ? (
+            <Link to={`/profile/${currentUser?.user.username}`} className="profile-icon">
+              {" "}
+              <Avatar
+                sx={{ width: 24, height: 24 }}
+                src={require("../images/red.jpg")}
+              />{" "}
+              <section >Profile</section>
+            </Link>            
+          ) : null}
+           <Link to={token ? '/' : '/login'}><House/> Home</Link> 
+            <Link to="/friendfeed"><People/> Friends Posts</Link>
           </div>
         </div>
       ) : null}
     </div>
+    </WindowSize>
   );
 }

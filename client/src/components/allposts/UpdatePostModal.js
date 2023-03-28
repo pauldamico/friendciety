@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-
+import { TextField, Button } from "@mui/material"
 
 export default function UpdatePostModel (props) {
 
@@ -20,8 +20,11 @@ export default function UpdatePostModel (props) {
 
     return (
         <div>
-          <textarea className = "edited-myfeed-input" name="editedPost" type ="text" value={updatePost.editedPost} onChange={editPostHandler} />
-          <button onClick={savePost}>Save</button>
+          <TextField id="outlined-multiline-flexible"
+label="Edit Post"
+multiline
+maxRows={4} className = "edited-myfeed-input" name="editedPost" type ="text" value={updatePost.editedPost} onChange={editPostHandler} />
+          <Button variant="contained" onClick={savePost}>Save</Button>
         </div>
     )
 }

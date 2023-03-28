@@ -69,7 +69,9 @@ userFeedRouter.get('/currentUserPosts', (req, res, next)=>{
 //add likes
 userFeedRouter.post(`/like`, (req, res, next) => {
 UserFeed.findOne( { _id:  req.body.id }, (err, post)=>{
-post.likes.find(user=>user===req.auth.username) || post.dislikes.find(user=>user!==req.auth.username)
+  console.log(post.likes.find(user=>user===req.auth.username) )
+  console.log(post.dislikes.find(user=>user!==req.auth.username))
+post.likes.find(user=>user===req.auth.username) && !post.dislikes.includes(req.auth.username)
 ? 
 UserFeed.findOneAndUpdate(          
   { _id:  req.body.id },
@@ -80,6 +82,7 @@ UserFeed.findOneAndUpdate(
       res.status(500);
       return next(err);
     } 
+    console.log("test")
      res.send({likes:foundPost.likes, dislikes:foundPost.dislikes});
   }
 )
@@ -99,13 +102,14 @@ UserFeed.findOneAndUpdate(
 //add dislike
       userFeedRouter.post(`/dislike`, (req, res, next) => {
         UserFeed.findOne( { _id:  req.body.id }, (err, post)=>{
-        post.dislikes.find(user=>user===req.auth.username) || post.likes.find(user=>user!==req.auth.username)
-        ? 
+          post.dislikes.find(user=>user===req.auth.username) && !post.likes.includes(req.auth.username)
+          ? 
         UserFeed.findOneAndUpdate(          
           { _id:  req.body.id },
           { $pull: { dislikes: req.auth.username }, new:true},
           { new: true },
-          (err, foundPost) => {           
+          (err, foundPost) => {   
+            console.log(foundPost)   
             if (err) {
               res.status(500);
               return next(err);
@@ -121,7 +125,8 @@ UserFeed.findOneAndUpdate(
             if (err) {
               res.status(500);
               return next(err);
-            }                 
+            }        
+           
             res.send({dislikes:foundPost.dislikes, likes:foundPost.likes});
           })})});
 

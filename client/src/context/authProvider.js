@@ -83,7 +83,7 @@ function friendRequest (selectedUser){
   axios.put(`/auth/addfriend`, {user:selectedUser}, config)
   .then(res=>{console.log(res.data)
     setCurrentUser(prev=>({...prev, user:{...prev.user, pendingRequest:[...prev.user.pendingRequest, res.data]}})) 
-
+    setSearch("") 
   })
   .catch(err=>console.log(err))
 }

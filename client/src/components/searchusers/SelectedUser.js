@@ -1,6 +1,8 @@
 import React,{useState, useContext} from "react";
 import { AuthContext } from "../../context/authProvider";
+import { useNavigate } from "react-router-dom";
 export default function SelectedUser(props) {
+  const navigate = useNavigate()
   const { user, toggleSearch } = props;
   const { getAllUsers, currentUser, friendRequest } = useContext(AuthContext);
 // const [friendsListConditions, setFriendsListConditions] = useState(addFriend ())
@@ -14,6 +16,11 @@ export default function SelectedUser(props) {
   //  console.log(friendsListConditions)
   }
 
+  function navToFriendsPage (){
+    toggleSearch()
+    navigate(`profile/${user}`)
+
+  }
 
 
 function addFriend () {
@@ -28,9 +35,9 @@ else{return <section style={{ cursor: "pointer" }} onClick={addNewFriend}>Add</s
 
   return (
     <div className="selected-user-list-div">
-      <p
+      <p style={{cursor:"pointer"}}
         onClick={() => {
-          toggleSearch();
+          navToFriendsPage()
         }}
       >
         {user}

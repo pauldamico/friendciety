@@ -4,15 +4,17 @@ import UpdatePostModal from "./UpdatePostModal";
 import ReplyModal from "./ReplyModal";
 import Comment from "./Comment";
 import { MyFeedContext } from "../../context/myFeedProvider";
+import { AuthContext } from "../../context/authProvider";
+import {Avatar} from '@mui/material'
 
 export default function Post(props) {
-  const { addLikeToPost, addDislikeToPost, postComment, comments } =
-    useContext(MyFeedContext);
+
+  const { addLikeToPost, addDislikeToPost, postComment, comments } =    useContext(MyFeedContext);
+  const {currentUser} = useContext(AuthContext)
   const [toggleEdit, setToggleEdit] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [commentToggle, setCommentToggle] = useState(false);
   const [parentComment, setParentComment] = useState("");
-
   //Moves cursor to comment input
   function focusCommentInput() {
     document.getElementById(`${props._id}comment-input`).focus();
@@ -64,7 +66,7 @@ export default function Post(props) {
               >
                 <div>
                   <span className="profile-icon">
-                    <img
+                    <Avatar sx={{ width: 24, height: 24 }}
                       src={require("../../images/red.jpg")}
                       height="20px"
                       width="20px"
@@ -72,6 +74,8 @@ export default function Post(props) {
                     <section>{props.username}</section>
                   </span>
                 </div>
+                {currentUser?.user._id === props.userId
+                 ?
                 <section
                   style={{
                     cursor: "pointer",
@@ -105,7 +109,9 @@ export default function Post(props) {
                       ) : null}
                     </div>
                   ) : null}
-                </section>
+                </section> 
+                : 
+                <section></section>}
               </div>
 
               <h1>{props.post}</h1>

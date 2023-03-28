@@ -1,3 +1,6 @@
+/* need media queries for my-feed-div width to 50vw */
+
+
 * {
   margin: 0;
 }
@@ -19,7 +22,9 @@ color: black;
 .row{
   flex-direction: row;
 }
-
+.center{
+  align-items: center;
+}
 /* noncustom */
 .app {
   height: 100%;
@@ -29,8 +34,6 @@ color: black;
   align-items: center;
 }
 .profile-icon{
-  left:-3px;
-  
   position:relative;
   display: flex;
 }
@@ -41,34 +44,44 @@ margin-left: 3px;
 .nav-div {
   position: fixed;
   left: 0;
-  display: grid;
-  grid-template-columns: repeat(10, 10%);
-  grid-template-rows: repeat(10, 10%);
+  display: flex;
   width: 100%;
   min-height: 50px;
   background-color: white;
-  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
   box-shadow: 2px 2px 2px 2px grey;
-  z-index: 1000;
+  z-index: 10;
+}
+.nav-div-div {
+  width: 100%;
+  position: relative;
+  display: flex;
+  grid-column: 1/-1;
+  grid-row: 4/7;
+  justify-content: space-between;
+  align-items: center;
 }
 .logout-div{
   cursor: pointer;
 display: flex;
 align-items: center;
+margin-right:1vw;
+
 }
 .search-user-main-div {
-  position: absolute;
-  width: 100%;
+  width: fit-content;
   top: 3%;
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
-  grid-column: 1/2;
-  grid-row: 4/11;
+  margin-left: 10px; 
   border-radius: 10px;
   z-index: 100;
 }
 .search-user-div {
+  position: absolute;
+  top:20px;
+  width: 168px;
   color: grey;
   box-shadow: -1px 7px 11px 3px grey;
   height: 60px;
@@ -91,13 +104,7 @@ align-items: center;
   grid-row: 4/7;
   border-radius: 10px;
 }
-.nav-div-div {
-  position: relative;
-  display: flex;
-  grid-column: 1/-1;
-  grid-row: 4/7;
-  justify-content: space-around;
-}
+
 
 .friend-request-div {
   position: absolute;
@@ -119,12 +126,24 @@ align-items: center;
   margin-left: 7px;
   margin-right: 7px;
 }
+.profile-div{
+
+  margin-top:55px;
+}
 .sidebar-div {
   position: fixed;
-  top: 13vh;
+  top: 52px;
   left: 1vw;
   grid-column: 1/2;
   grid-row: 2/-1;
+}
+.sidebar-div2 {
+  display: flex;
+  gap: 1vh;
+  margin-top: 10px;
+  margin-left: 20px;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .image-modal-div{
@@ -137,18 +156,13 @@ align-items: center;
   margin-top: 100px;
   box-shadow:0px 0px 6px 5px grey;
   border-radius:10px;
-width: 100%;
 background-color: white;
-
 width: 30vw;
 height:30vh;
 z-index: 1000;
 }
-.image-modal-div>div{
-display: flex;
-align-items: center;
-width: 100%;
-flex-direction: column;
+.image-modal-div>form{
+  width: 25vw;
 }
 .image-modal-div>div>input{
 
@@ -195,18 +209,12 @@ text-align: center;
   border: none;
 }
 
-.sidebar-div2 {
-  display: flex;
-  margin-top: 10px;
-  margin-left: 20px;
-  flex-direction: column;
-  align-items: flex-start;
-}
+
 
 .my-feed-div {
   border-radius: 10px;
   margin-top: 50px;
-  width: 80vh;
+  width: 40vw;
   grid-column: 4/8;
   /* background-color: white; */
   grid-row: 2/-1;
@@ -457,6 +465,27 @@ box-shadow: 0px 0px 7px 2px rgb(145, 145, 145);
   width: 100%;
   height: 100%;
 }
+@media (max-width: 500px) {
+  .my-feed-div{
+    width: 90vw;
+  }
+  .search-user-main-div {
+width: 20vw;
+  }
+  .search-user-div{
+    width: 40vw;
+  }
+  .login-form{
+    width:60vw;
+  }
+  .image-modal-div{
+    width:90vw;
+  }
+  .image-modal-div>form{
+    width:80vw;
+  }
+}
+
 /* .my-feed-post-id{
   
     width: 100%;
