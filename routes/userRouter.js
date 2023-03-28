@@ -1,5 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const speakeasy = require("speakeasy");
 const User = require("../models/user.js");
 const userRouter = express.Router();
 
@@ -22,8 +23,13 @@ userRouter.post("/signup", (req, res, next) => {
         res.status(500);
         return next(err);
       }
+      const secret = speakeasy.generateSecret({ length: 20 });
       const token = jwt.sign(foundUser.withoutPassword(), process.env.SECRET);
-      return res.send({ user: foundUser.withoutPassword(), token });
+      const otpauthUrl = speakeasy.otpauthURL({
+        secret: secret.base32,
+        label: foundUser.username,
+      });
+      return res.send({ user: foundUser.withoutPassword(), token, otpauthUrl});
     });
   });
 });
@@ -50,8 +56,13 @@ userRouter.post("/login", (req, res, next) => {
             res.status(403) 
             return next(new Error("Username or Password are incorrect")) 
           } })
+          const secret = speakeasy.generateSecret({ length: 20 });
       const token = jwt.sign(foundUser.withoutPassword() , process.env.SECRET);
-      return res.send({ user: foundUser.withoutPassword(), token });
+      const otpauthUrl = speakeasy.otpauthURL({
+        secret: secret.base32,
+        label: foundUser.username,
+      });
+      return res.send({ user: foundUser.withoutPassword(), token, otpauthUrl });
     }
   });
 });

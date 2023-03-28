@@ -467,7 +467,7 @@ box-shadow: 0px 0px 7px 2px rgb(145, 145, 145);
 }
 @media (max-width: 500px) {
   .my-feed-div{
-    width: 90vw;
+    width: 80vw;
   }
   .search-user-main-div {
 width: 20vw;

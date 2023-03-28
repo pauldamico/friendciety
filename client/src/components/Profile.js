@@ -24,7 +24,7 @@ const selectedUser = profile.find(user=>user === navigatedUser) || null
         {selectedUser ?<div className="profile-div flexbox center">
          <h1>Username: {selectedUser}</h1>
             <img alt="" width="100px" height="100px" />
-            <h3>Remove Friend</h3>
+           {currentUser.user.username !== navigatedUser ? <h3>Remove Friend</h3> : null}
             </div> :<div className="profile-div flexbox center">User must be a friend to view this page</div>}
             <div>
         <Feed feed={userPosts}/>
