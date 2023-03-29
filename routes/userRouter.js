@@ -23,8 +23,11 @@ userRouter.post("/signup", (req, res, next) => {
         res.status(500);
         return next(err);
       }
+      //creates secret for 2fa
       const secret = speakeasy.generateSecret({ length: 20 });
+      //creates user token
       const token = jwt.sign(foundUser.withoutPassword(), process.env.SECRET);
+      //creates secret for 2fa
       const otpauthUrl = speakeasy.otpauthURL({
         secret: secret.base32,
         label: foundUser.username,
@@ -56,8 +59,11 @@ userRouter.post("/login", (req, res, next) => {
             res.status(403) 
             return next(new Error("Username or Password are incorrect")) 
           } })
-          const secret = speakeasy.generateSecret({ length: 20 });
+      //creates secret for 2fa
+      const secret = speakeasy.generateSecret({ length: 20 });
+       //creates user token
       const token = jwt.sign(foundUser.withoutPassword() , process.env.SECRET);
+      //creates qrcode url
       const otpauthUrl = speakeasy.otpauthURL({
         secret: secret.base32,
         label: foundUser.username,
@@ -75,9 +81,14 @@ userRouter.get(`/currentuser`, (req, res, next) => {
       return next(new Error("No users have been found"));
     }
     res.status(200);
+    const secret = speakeasy.generateSecret({ length: 20 });
     const token = jwt.sign(foundUser.withoutPassword(), process.env.SECRET);
-   
-    res.send({ user: foundUser.withoutPassword(), token: token });
+      //creates qrcode url
+      const otpauthUrl = speakeasy.otpauthURL({
+        secret: secret.base32,
+        label: foundUser.username,
+      });
+    res.send({ user: foundUser.withoutPassword(), token: token, otpauthUrl });
   });
 });
 

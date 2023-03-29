@@ -29,7 +29,7 @@ export default function SideBar() {
                 sx={{ width: 24, height: 24 }}
                 src={require("../images/red.jpg")}
               />{" "}
-              <section >Profile</section>
+              <section >{currentUser?.user.username}</section>
             </Link>            
           ) : null}
            <Link to={token ? '/' : '/login'}><House/> Home</Link> 

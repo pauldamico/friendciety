@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom'
 import React, {useState, useContext} from 'react'
 import { AuthContext } from '../context/authProvider'
-import { MyFeedContext } from '../context/myFeedProvider'
+import { PostContext } from '../context/postProvider'
 import WindowSize from './WindowSize'
 import FriendRequests from './acceptfriend/FriendRequests'
 import SearchUserModal from './searchusers/SearchUserModal'
@@ -12,7 +12,7 @@ import BasicMenu from './MUI/BasicMenu'
 export default function Nav (){
    
     const {search, currentUser, getListOfAllUsers, token, logout, allUsers} = useContext(AuthContext)
-    const {clearMyFeed} = useContext(MyFeedContext)
+    const {clearMyFeed} = useContext(PostContext)
     const [searchToggle, setSearchToggle] = useState(false)
    
 

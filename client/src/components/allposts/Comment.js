@@ -1,10 +1,10 @@
 import ReplyModal from "./ReplyModal"
 import React, {useState, useContext} from "react";
 import Reply from "./Reply";
-import {MyFeedContext } from "../../context/myFeedProvider";
+import {PostContext } from "../../context/postProvider";
 export default function Comment (props){
  
-    const {postReply, replies} = useContext(MyFeedContext)
+    const {postReply, replies} = useContext(PostContext)
     const [commentToggle, setCommentToggle] = useState(false)
     const [replyToggle, setReplyToggle] = useState(false)
     const [reply, setReply] = useState("");

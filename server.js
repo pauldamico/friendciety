@@ -20,7 +20,7 @@ res.send("Welcome")
 
    app.use(require('./routes/userRouter.js'))
    app.use("/auth", expressjwt({ secret: process.env.SECRET, algorithms:["HS256"] }))
-   app.use('/auth/myfeed', require('./routes/userFeedRouter.js'))   
+   app.use('/auth/post', require('./routes/postRouter.js'))   
    app.use('/auth/comment', require('./routes/commentRouter.js')) 
    app.use('/auth/reply', require('./routes/replyRouter.js'))  
    // app.use('/auth/friendsfeed', require('./routes/friendsFeedRouter.js'))

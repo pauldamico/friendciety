@@ -1,11 +1,11 @@
 import React, {useContext} from "react";
 import Post from "../allposts/Post";
-import {MyFeedContext } from "../../context/myFeedProvider";
+import {PostContext } from "../../context/postProvider";
 import ImageModal from "../allposts/ImageModal";
 import { AuthContext } from "../../context/authProvider";
 export default function MyFeed() {
 
-  const {toggleAddImage, toggleImage, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
+  const {toggleAddImage, toggleImage, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(PostContext)
   const{currentUser} = useContext(AuthContext)
 
 //This will only show posts with userId of current logged in user

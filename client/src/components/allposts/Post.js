@@ -1,15 +1,16 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { HandThumbsUp, HandThumbsDown } from "react-bootstrap-icons";
 import UpdatePostModal from "./UpdatePostModal";
 import ReplyModal from "./ReplyModal";
 import Comment from "./Comment";
-import { MyFeedContext } from "../../context/myFeedProvider";
+import { PostContext } from "../../context/postProvider";
 import { AuthContext } from "../../context/authProvider";
 import {Avatar} from '@mui/material'
 
 export default function Post(props) {
-
-  const { addLikeToPost, addDislikeToPost, postComment, comments } =    useContext(MyFeedContext);
+const navigate = useNavigate()
+  const { addLikeToPost, addDislikeToPost, postComment, comments } =    useContext(PostContext);
   const {currentUser} = useContext(AuthContext)
   const [toggleEdit, setToggleEdit] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -65,9 +66,10 @@ export default function Post(props) {
                 className="flexbox"
               >
                 <div>
-                  <span className="profile-icon">
-                    <Avatar sx={{ width: 24, height: 24 }}
+                  <span  onClick={()=>{navigate(`/profile/${props.username}`)}} style={{cursor:"pointer"}} className="profile-icon">
+                    <Avatar  sx={{ width: 24, height: 24 }}
                       src={require("../../images/red.jpg")}
+                     
                       height="20px"
                       width="20px"
                     />{" "}
@@ -116,7 +118,7 @@ export default function Post(props) {
 
               <h1>{props.post}</h1>
               {props.image ? (
-                <img src={`/uploads/${props.username}/${props.image}`} />
+                <img src={`/uploads/${props.username}/postedimages/${props.image}`} />
               ) : null}
 
                                                                                   {/* likes and dislikes */}

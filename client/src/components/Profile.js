@@ -1,13 +1,13 @@
 import React, {useContext} from "react"
 import { AuthContext } from "../context/authProvider"
-import {MyFeedContext} from "../context/myFeedProvider"
+import {PostContext} from "../context/postProvider"
 import Feed from "./Feed"
 import {useParams} from "react-router-dom"
 
 
 export default function Profile (){
     const{currentUser} = useContext(AuthContext)
-    const {myFeed} = useContext(MyFeedContext)
+    const {myFeed} = useContext(PostContext)
     const navigatedUser = useParams().userprofile
    
     
@@ -27,7 +27,7 @@ const selectedUser = profile.find(user=>user === navigatedUser) || null
            {currentUser.user.username !== navigatedUser ? <h3>Remove Friend</h3> : null}
             </div> :<div className="profile-div flexbox center">User must be a friend to view this page</div>}
             <div>
-        <Feed feed={userPosts}/>
+        <Feed user={selectedUser} feed={userPosts}/>
         </div>
     </div>)
 }

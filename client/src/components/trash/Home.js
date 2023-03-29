@@ -1,11 +1,11 @@
 import React,{useContext} from "react"
 import Post from "../allposts/Post"
 import ImageModal from "../allposts/ImageModal"
-import { MyFeedContext } from "../../context/myFeedProvider"
+import { PostContext } from "../../context/postProvider"
 
 export default function Home (props){
     
-    const {toggleImage, toggleAddImage, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(MyFeedContext)
+    const {toggleImage, toggleAddImage, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(PostContext)
     //this will show friends and current user posts
     const posts = myFeed?.map(item=><Post key={item._id}deletePost={deletePost} updatePost={updatePost} {...item}/>)
   

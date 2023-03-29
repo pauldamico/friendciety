@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router,} from 'react-router-dom'
 import App from './App';
 import { AuthContextProvider } from './context/authProvider';
-import { MyFeedContextProvider } from './context/myFeedProvider';
+import { PostContextProvider } from './context/postProvider';
 // import { FriendsFeedContextProvider } from './context/friendsFeedProvider';
 
 
@@ -15,11 +15,11 @@ root.render(
   <React.StrictMode>
     <AuthContextProvider>
     {/* <FriendsFeedContextProvider> */}
-    <MyFeedContextProvider>
+    <PostContextProvider>
      
     <App />
     
-</MyFeedContextProvider>
+</PostContextProvider>
 {/* </FriendsFeedContextProvider> */}
     </AuthContextProvider>
   </React.StrictMode>
