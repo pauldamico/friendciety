@@ -8,13 +8,13 @@ export default function Comment (props){
     const [commentToggle, setCommentToggle] = useState(false)
     const [replyToggle, setReplyToggle] = useState(false)
     const [reply, setReply] = useState("");
-
+    
     function replyOnChange (e){
         setReply(e.target.value)        
     }
  function replyOnSubmit (e){
     e.preventDefault()
-    postReply(props._id, reply)
+    postReply(props._id, reply, props.postOwner)
     setReply("")
  }
 

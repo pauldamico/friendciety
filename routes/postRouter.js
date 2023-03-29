@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
     }
   })
   
-  const upload = multer({ storage })
+  const upload = multer({storage})
 
 //adds post to user feed
 postRouter.post('/addPost', upload.single('image'), (req, res, next)=>{
@@ -60,7 +60,32 @@ postRouter.get('/currentUserPosts', (req, res, next)=>{
     })    
     })
     })
+//edits post from user feed
+postRouter.put('/:postId', (req, res, next)=>{
+  const updateId = req.params.postId         
+Post.findOne({_id:updateId}, (err, updatedItem)=>{
+  if(updatedItem.userId.toString("") !== req.auth._id){                    // permission to edit other user post
+      res.status(403)
+      return next(new Error("You do not have permission to modify this post"))
+  }   
+Post.findOneAndUpdate({_id:updateId}, req.body, {new:true}, (err, updatedItem)=>{
 
+if(err){
+  res.status(500)
+  return next(err)
+}
+return res.send(updatedItem)
+})
+})
+})
+
+//delete post
+postRouter.delete(`/:post`, (req, res, next)=>{
+const postId = req.params.post
+Post.findOneAndDelete({userId:req.auth._id, _id:postId}, (err, foundPost)=>{
+res.send(foundPost)
+})
+})
 
 //add likes
 postRouter.post(`/like`, (req, res, next) => {
@@ -128,24 +153,7 @@ Post.findOneAndUpdate(
 
 
 
-//edits post from user feed
-postRouter.put('/:postId', (req, res, next)=>{
-    const updateId = req.params.postId         
-Post.findOne({_id:updateId}, (err, updatedItem)=>{
-    if(updatedItem.userId.toString("") !== req.auth._id){                    // permission to edit other user post
-        res.status(403)
-        return next(new Error("You do not have permission to modify this post"))
-    }   
-Post.findOneAndUpdate({_id:updateId}, req.body, {new:true}, (err, updatedItem)=>{
 
-if(err){
-    res.status(500)
-    return next(err)
-}
-return res.send(updatedItem)
-})
-})
-})
 
 module.exports = postRouter
 

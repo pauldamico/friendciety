@@ -16,6 +16,8 @@ const navigate = useNavigate()
   const [toggleMenu, setToggleMenu] = useState(false);
   const [commentToggle, setCommentToggle] = useState(false);
   const [parentComment, setParentComment] = useState("");
+
+ 
   //Moves cursor to comment input
   function focusCommentInput() {
     document.getElementById(`${props._id}comment-input`).focus();
@@ -34,7 +36,7 @@ const navigate = useNavigate()
   //submit for the input of the top level comment
   function submitParentComment(e) {
     e.preventDefault();
-    postComment(props._id, parentComment);
+    postComment(props._id, parentComment, props.username);
     setParentComment("");
   }
 

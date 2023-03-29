@@ -23,10 +23,10 @@ replyRouter.get('/', (req,res,next)=>{
   
     //add reply
     replyRouter.post('/:commentId',  (req, res, next) => {
-      const {reply} = req.body
+      const {reply, postOwner} = req.body
      const {username, _id} = req.auth
       const {commentId} = req.params;        
-      const addedReply = new Reply({commentId, reply, username, userId:_id, })    
+      const addedReply = new Reply({commentId,postOwner, reply, username, userId:_id, })    
       addedReply.save((err, newReply)=>{
         if(err){
             res.status(500)
@@ -35,6 +35,18 @@ replyRouter.get('/', (req,res,next)=>{
   return res.send(newReply)
        })
   } )
+
+  //delete reply
+  replyRouter.delete(`/:reply`, (req, res, next)=>{
+  const replyId = req.params.post
+  Reply.findOneAndDelete({userId:req.auth._id, _id:replyId}, (err, foundReply)=>{
+    if(err){
+      res.status(500)
+      return next(err)
+    }
+  res.send(foundReply)
+  })
+  })
   
 
 module.exports = replyRouter

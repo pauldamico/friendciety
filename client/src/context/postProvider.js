@@ -107,8 +107,8 @@ const getReplies = ()=>{
 }
 
   //add comment to post   need to setup authentcation for only friends posts
-  const postComment=(postId, comment)=>{
-axios.post(`/auth/comment/${postId}`, {comment:comment}, config)
+  const postComment=(postId, comment, postOwner)=>{
+axios.post(`/auth/comment/${postId}`, {comment:comment, postOwner:postOwner}, config)
   .then(res=>{ 
  setComments(prev=>[...prev, res.data])
   // updateFriendFeedComments(postId, res.data)
@@ -116,8 +116,8 @@ axios.post(`/auth/comment/${postId}`, {comment:comment}, config)
   }
 
   //add reply to comment or reply
-const postReply =(commentId, reply)=>{
-  axios.post(`/auth/reply/${commentId}`, {reply}, config)
+const postReply =(commentId, reply, postOwner)=>{
+  axios.post(`/auth/reply/${commentId}`, {reply, postOwner}, config)
   .then(res=>{ 
  setReplies(prev=>[...prev, res.data])
   // updateFriendFeedComments(postId, res.data)
