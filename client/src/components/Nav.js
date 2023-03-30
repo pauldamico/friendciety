@@ -43,8 +43,6 @@ function searchUsersHandler (event){
          
             {token ?<div  className='nav-div-div'>
             { token ? <SearchUserModal search ={search} currentUser={currentUser} toggleSearch={toggleSearch} searchToggle={searchToggle} searchUsersHandler={searchUsersHandler} allUsers={allUsers}/>: null    }
-   
-        
             {!token ? <Link to='/login'> Login</Link> : <div className='logout-div'><h3 onClick = {logoff}> <img alt="" height='15px' width='15px' src={require('../images/logout.png')}/>Logout</h3></div>}
             </div> : null}
             </div> : null}

@@ -4,8 +4,11 @@ const speakeasy = require("speakeasy");
 const User = require("../models/user.js");
 const userRouter = express.Router();
 
+
+
 //signs up user
 userRouter.post("/signup", (req, res, next) => {
+  console.log("asdf")
   User.find({ username: req.body.username }, (err, foundUser) => {  
     if (err) {
       res.status(500);
@@ -88,13 +91,16 @@ userRouter.get(`/currentuser`, (req, res, next) => {
         secret: secret.base32,
         label: foundUser.username,
       });
-    res.send({ user: foundUser.withoutPassword(), token: token, otpauthUrl });
+      const userInfo = { user: foundUser.withoutPassword(), token: token, otpauthUrl }
+  
+    res.send(userInfo);
   });
 });
 
 // shows all users in database for search users function
 userRouter.get(`/auth/allusers`, (req, res, next) => {
-  User.find((err, foundUser) => {
+
+  User.find((err, foundUser) => { 
     if (err) {
       res.status(500);
       return next(new Error("No users have been found"));
@@ -104,139 +110,153 @@ userRouter.get(`/auth/allusers`, (req, res, next) => {
   });
 });
 
-//adds user to pendingfriend and   friendsrequestarray
-userRouter.put(`/addfriend`, (req, res, next) => {
-  User.findOneAndUpdate(
-    { _id: req.auth._id },
-    { $addToSet: { pendingRequest: req.body.user } },
-    { new: true },
-    (err, foundUser) => {
-      if (err) {
-        res.status(500);
-        return next(err);
-      }
-      User.findOneAndUpdate(
-        { username: req.body.user },
-        { $addToSet: { friendRequest: req.auth.username } },
-        { new: true },
-        (err, foundFriend) => {
-          if (err) {
-            res.status(500);
-            return next(err);
-          }
-       
-          res.send(foundFriend.username);
-        }
-      );
-    }
-  );
-});
+// // Sends up to date friend data
+// userRouter.get(`/auth/friends`, (req, res, next) => {  
+//   User.findOne({_id:req.auth._id},(err, foundUser) => {
+//     if (err) {
+//       res.status(500);
+//       return next(new Error("No users have been found"));
+//     }
+//     res.status(200);   
+//     console.log(foundUser)
+//     res.send({friendRequest:foundUser.friendRequest, pendingRequest:foundUser.pendingRequest, friends:foundUser.friends});
+//   });
+// });
 
-//accepts friend request--  removes it from friendRequest array and adds it to friends array
-userRouter.put(`/acceptfriend`, (req, res, next) => {
-  User.findOne({ username: req.body.user }, (err, selectedUser) => {
-    if (err) {
-      res.status(500);
-      return next(err);
-    }
+// //adds user to pendingfriend and   friendsrequestarray
+// userRouter.put(`/addfriend`, (req, res, next) => {
+//   User.findOneAndUpdate(
+//     { _id: req.auth._id },
+//     { $addToSet: { pendingRequest: req.body.user } },
+//     { new: true },
+//     (err, foundUser) => {
+//       if (err) {
+//         res.status(500);
+//         return next(err);
+//       }
+//       User.findOneAndUpdate(
+//         { username: req.body.user },
+//         { $addToSet: { friendRequest: req.auth.username } },
+//         { new: true },
+//         (err, foundFriend) => {
+//           if (err) {
+//             res.status(500);
+//             return next(err);
+//           }
+//           console.log(req.app.get("io"))
+//           req.app.get("io").emit("currentUser", foundFriend.username);
+//           res.send(foundFriend.username);
+//         }
+//       );
+//     }
+//   );
+// });
+
+// //accepts friend request--  removes it from friendRequest array and adds it to friends array
+// userRouter.put(`/acceptfriend`, (req, res, next) => {
+//   User.findOne({ username: req.body.user }, (err, selectedUser) => {
+//     if (err) {
+//       res.status(500);
+//       return next(err);
+//     }
    
-    if (!selectedUser) {
-      res.status(500);
-      return next(new Error("User not found"));
-    }
-    User.findOneAndUpdate(
-      { _id: req.auth._id },
-      {
-        $addToSet: { friends: { user: req.body.user, id: selectedUser.id } },
-        $pull: { friendRequest: selectedUser.username },
-      },
-      { new: true },
-      (err, currentUser) => {
-        if (err) {
-          res.status(500);
-          return next(err);
-        }
-        User.findOneAndUpdate(
-          { username: req.body.user },
-          {
-            $pull: { pendingRequest: req.auth.username },
-            $addToSet: {
-              friends: {
-                user: req.auth.username,
-                id: req.auth._id,
-              },
-            },
-          },
-          { new: true },
-          (err, acceptedUser) => {
-            if (err) {
-              res.status(500);
-              return next(err);
-            }
-            res.send({
-              user: selectedUser.username,
-              id: req.auth._id,
-            });
-          }
-        );
-      }
-    );
-  });
-});
+//     if (!selectedUser) {
+//       res.status(500);
+//       return next(new Error("User not found"));
+//     }
+//     User.findOneAndUpdate(
+//       { _id: req.auth._id },
+//       {
+//         $addToSet: { friends: { user: req.body.user, id: selectedUser.id } },
+//         $pull: { friendRequest: selectedUser.username },
+//       },
+//       { new: true },
+//       (err, currentUser) => {
+//         if (err) {
+//           res.status(500);
+//           return next(err);
+//         }
+//         User.findOneAndUpdate(
+//           { username: req.body.user },
+//           {
+//             $pull: { pendingRequest: req.auth.username },
+//             $addToSet: {
+//               friends: {
+//                 user: req.auth.username,
+//                 id: req.auth._id,
+//               },
+//             },
+//           },
+//           { new: true },
+//           (err, acceptedUser) => {
+//             if (err) {
+//               res.status(500);
+//               return next(err);
+//             }
+//             res.send({
+//               user: selectedUser.username,
+//               id: req.auth._id,
+//             });
+//           }
+//         );
+//       }
+//     );
+//   });
+// });
 
-//declines friend request--  removes it from friendRequest array and pending
-userRouter.delete(`/declinefriend`, (req, res, next) => {
-  User.findOneAndUpdate(
-    { _id: req.auth._id },
-    { $pull: { friendRequest: req.body.user } },
-    { new: true },
-    (err, currentUser) => {
-      if (err) {
-        res.status(500);
-        return next(err);
-      }
-      User.findOneAndUpdate(
-        { username: req.body.user },
-        { $pull: { pendingRequest: req.auth.username } },
-        { new: true },
-        (err, acceptedUser) => {
-          if (err) {
-            res.status(500);
-            return next(err);
-          }
-          res.send(acceptedUser.username);
-        }
-      );
-    }
-  );
-});
+// //declines friend request--  removes it from friendRequest array and pending
+// userRouter.delete(`/declinefriend`, (req, res, next) => {
+//   User.findOneAndUpdate(
+//     { _id: req.auth._id },
+//     { $pull: { friendRequest: req.body.user } },
+//     { new: true },
+//     (err, currentUser) => {
+//       if (err) {
+//         res.status(500);
+//         return next(err);
+//       }
+//       User.findOneAndUpdate(
+//         { username: req.body.user },
+//         { $pull: { pendingRequest: req.auth.username } },
+//         { new: true },
+//         (err, acceptedUser) => {
+//           if (err) {
+//             res.status(500);
+//             return next(err);
+//           }
+//           res.send(acceptedUser.username);
+//         }
+//       );
+//     }
+//   );
+// });
 
-//removes friend from friends array
-userRouter.delete(`/removefriend`, (req, res, next) => {
-  User.findOneAndUpdate(
-    { _id: req.auth._id },
-    { $pull: { friends: { user: req.body.user } } },
-    { new: true },
-    (err, currentUser) => {
-      if (err) {
-        res.status(500);
-        return next(err);
-      }
-      User.findOneAndUpdate(
-        { username: req.body.user },
-        { $pull: { friends: { user: req.auth.username } } },
-        { new: true },
-        (err, acceptedUser) => {
+// //removes friend from friends array
+// userRouter.delete(`/removefriend`, (req, res, next) => {
+//   User.findOneAndUpdate(
+//     { _id: req.auth._id },
+//     { $pull: { friends: { user: req.body.user } } },
+//     { new: true },
+//     (err, currentUser) => {
+//       if (err) {
+//         res.status(500);
+//         return next(err);
+//       }
+//       User.findOneAndUpdate(
+//         { username: req.body.user },
+//         { $pull: { friends: { user: req.auth.username } } },
+//         { new: true },
+//         (err, acceptedUser) => {
        
-          if (err) {
-            res.status(500);
-            return next(err);
-          }
-          res.send(currentUser.withoutPassword());
-        }
-      );
-    }
-  );
-});
+//           if (err) {
+//             res.status(500);
+//             return next(err);
+//           }
+//           res.send(currentUser.withoutPassword());
+//         }
+//       );
+//     }
+//   );
+// });
 
 module.exports = userRouter;

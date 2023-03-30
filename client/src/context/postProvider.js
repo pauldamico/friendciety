@@ -16,7 +16,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     const [myFeed, setMyFeed] = useState([]);
     const [toggleAddImage,setToggleAddImage] = useState(false)
     const [addToFeed, setAddToFeed] = useState({ post: "" }); 
-    const [imageInfo, setImageInfo] = useState({ post: "",image:"" }); 
+    const [imageInfo, setImageInfo] = useState({ post: "",image:null }); 
     const [comments, setComments] = useState([])
     const [replies, setReplies] = useState([])
     // const allFeed = [...friendsFeed, ...myFeed].sort((a,b)=>a.postOrder - b.postOrder) || null
@@ -69,7 +69,7 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
       setAddToFeed((prev) => ({ ...prev, [name]: value }));
     };
     //
-    const addImageChangeHandler = (event) => {
+    const addImageChangeHandler = (event, post, file) => {
       const {name, value, type,  files} = event.target
       setImageInfo(prev=>({...prev, [name]:type==="file"? files[0]: value}))
     
@@ -150,6 +150,7 @@ const postReply =(commentId, reply, postOwner)=>{
 //toggle image model
 function toggleImage (){
   setToggleAddImage(!toggleAddImage)
+  setImageInfo( prev=>({...prev, post: "",image:null}))
 }
 
 useEffect(()=>{
@@ -160,7 +161,7 @@ useEffect(()=>{
 }, [logout])
 
     return(
-        <PostContext.Provider value={{addLikeToPost, addDislikeToPost, toggleImage, toggleAddImage, setToggleAddImage, addImageToFeed, imageInfo, addImageChangeHandler, replies, comments, postReply, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <PostContext.Provider value={{imageInfo, addLikeToPost, addDislikeToPost, toggleImage, toggleAddImage, setToggleAddImage, addImageToFeed, addImageChangeHandler, replies, comments, postReply, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </PostContext.Provider>
     )

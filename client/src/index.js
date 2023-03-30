@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router,} from 'react-router-dom'
 import App from './App';
 import { AuthContextProvider } from './context/authProvider';
+import { FriendContextProvider } from './context/friendProvider';
 import { PostContextProvider } from './context/postProvider';
 // import { FriendsFeedContextProvider } from './context/friendsFeedProvider';
-
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,13 +14,13 @@ root.render(
   <Router>
   <React.StrictMode>
     <AuthContextProvider>
-    {/* <FriendsFeedContextProvider> */}
+    <FriendContextProvider>
     <PostContextProvider>
      
     <App />
     
 </PostContextProvider>
-{/* </FriendsFeedContextProvider> */}
+</FriendContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
   </Router>

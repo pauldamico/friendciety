@@ -4,14 +4,7 @@ const bcrypt = require('bcrypt')
 const userSchema = new Schema({
   username: { type: String, unique:true, required: true}, 
   password: {type:String, required:true},
-  friends:[ {user:String, id:String, _id:false} ],
- 
-  friendRequest:[   
-  ],
-  pendingRequest:[    
-  ]
-
-});
+  profilePicture:{type:String}, });
 
 userSchema.pre("save", function (next){     
                             //encrypts password on signup

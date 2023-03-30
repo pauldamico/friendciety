@@ -5,6 +5,7 @@ const postSchema = new Schema({
   post: { type: String, required: true },
   //image info
   image: {},
+  video:{},
   postOrder: { type: String, required: true, default: Date.now },
   username: { type: String, required: true },
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },

@@ -6,29 +6,37 @@ const Post = require('../models/post.js')
 const Reply = require('../models/comment.js')
 const postRouter = express.Router()
 
-const storage = multer.diskStorage({
+const postImages = multer.diskStorage({
     destination: (req, file, cb) => {
       const dir = `./uploads/${req.auth.username}/postedimages`
       mkdirp(dir).then(() => cb(null, dir)).catch(cb)
     },
-    filename: (req, file, cb) => {
-        console.log(file)
+    filename: (req, file, cb) => {       
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
       cb(null, file.originalname + '-' + uniqueSuffix)
     }
-  })
-  
-  const upload = multer({storage})
+  })  
+  const profileImages = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const dir = `./uploads/${req.auth.username}/postedimages`
+      mkdirp(dir).then(() => cb(null, dir)).catch(cb)
+    },
+    filename: (req, file, cb) => {      
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
+      cb(null, file.originalname + '-' + uniqueSuffix)
+    }
+  })  
+  const profileImageUpload = multer({storage:profileImages})
+  const postImageUpload = multer({storage:postImages})
 
 //adds post to user feed
-postRouter.post('/addPost', upload.single('image'), (req, res, next)=>{
+postRouter.post('/addPost', postImageUpload.single('image'), (req, res, next)=>{
     req.body.image = req.file ? req.file.filename : null;
     req.body.username = req.auth.username
     req.body.userId = req.auth._id
     req.body.postOrder = Date.now()
     const userSavedPost = new Post(req.body)
-    userSavedPost.save((err, newPost)=>{
-        console.log(newPost)
+    userSavedPost.save((err, newPost)=>{       
 if(err){
     res.status(500)
     return next(err)    
@@ -89,9 +97,7 @@ res.send(foundPost)
 
 //add likes
 postRouter.post(`/like`, (req, res, next) => {
-Post.findOne( { _id:  req.body.id }, (err, post)=>{
-  console.log(post.likes.find(user=>user===req.auth.username) )
-  console.log(post.dislikes.find(user=>user!==req.auth.username))
+Post.findOne( { _id:  req.body.id }, (err, post)=>{ 
 post.likes.find(user=>user===req.auth.username) && !post.dislikes.includes(req.auth.username)
 ? 
 Post.findOneAndUpdate(          
@@ -103,7 +109,7 @@ Post.findOneAndUpdate(
       res.status(500);
       return next(err);
     } 
-    console.log("test")
+    
      res.send({likes:foundPost.likes, dislikes:foundPost.dislikes});
   }
 )
@@ -130,7 +136,7 @@ Post.findOneAndUpdate(
           { $pull: { dislikes: req.auth.username }, new:true},
           { new: true },
           (err, foundPost) => {   
-            console.log(foundPost)   
+             
             if (err) {
               res.status(500);
               return next(err);

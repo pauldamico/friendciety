@@ -1,16 +1,18 @@
 const express = require('express')
 const Comment = require('../models/comment.js')
 const commentRouter = express.Router()
-const User = require('../models/user.js')
+const Friends = require('../models/friends.js')
 
 
 //get comments
 commentRouter.get('/', (req,res,next)=>{
-  User.findOne({_id:req.auth._id}, (err, foundUser)=>{
-const allIds = [...foundUser.friends.map(friend=>friend.id), req.auth._id]
-Comment.find({userId:{$in:allIds}}, (err, foundComments)=>{
-res.send(foundComments)
-})
+  Friends.findOne({userId:req.auth._id}, (err, foundUser)=>{
+
+// const allIds = [...foundUser.friends.map(friend=>friend.id), req.auth._id]
+// Comment.find({userId:{$in:allIds}}, (err, foundComments)=>{
+ 
+// res.send(foundComments)
+// })
 
   })
 })

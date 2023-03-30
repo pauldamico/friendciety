@@ -3,16 +3,18 @@ import { AuthContext } from "../context/authProvider"
 import {PostContext} from "../context/postProvider"
 import Feed from "./Feed"
 import {useParams} from "react-router-dom"
+import { FriendContext } from "../context/friendProvider"
 
 
 export default function Profile (){
     const{currentUser} = useContext(AuthContext)
+    const{friends} = useContext(FriendContext)
     const {myFeed} = useContext(PostContext)
     const navigatedUser = useParams().userprofile
-   
+   console.log(friends)
     
 //maps combines all friends and username into one array
-const profile = [...currentUser?.user.friends.map(friend=>friend.user), currentUser?.user.username]
+const profile = [...friends.friends.map(friend=>friend.user), currentUser?.user.username]
 //shows posts according to the endpoint
 const userPosts = myFeed?.filter(post=>post.username === navigatedUser) || []
 //shows the username according to the endpoint
