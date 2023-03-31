@@ -11,15 +11,13 @@ function AuthContextProvider(props) {
     const [currentUser, setCurrentUser] = useState(initValue)
     // const [currentError, setCurrentError] = useState("")
     const [allUsers, setAllUsers] = useState([])
-    const [search, setSearch] = useState("")
-    console.log(currentUser)
+    const [search, setSearch] = useState("")  
 
     // const socket = io("http://localhost:4000");
 
     //deconstruct current User
     const {token}= currentUser
-    const {username, _id:userId}= currentUser.user
-   //axios header for useraccess
+    //header for axios 
     const config = {headers:{Authorization: `Bearer ${token}`}}
 
     //logout
@@ -34,8 +32,7 @@ function AuthContextProvider(props) {
     axios
       .post("/signup", userInfo)
       .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
-      setCurrentUser(prev=>(res.data)) 
-      getAllUsers()
+      setCurrentUser(prev=>(res.data))   
       navigate("/")
     })
       .catch((err) => console.log(err));  
@@ -46,8 +43,7 @@ function AuthContextProvider(props) {
     axios
       .post("/login", userInfo)  
       .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
-      setCurrentUser(prev=>(res.data))
-      // getAllUsers()
+      setCurrentUser(prev=>(res.data)) 
       navigate("/")
     })
       .catch((err) => console.log(err));
@@ -57,28 +53,22 @@ function AuthContextProvider(props) {
     axios.get('/auth/allusers', config)
     .then(res=>{      
       setAllUsers(res.data)
-    })    
- 
-  }
-
- 
+    })     
+  } 
 
   //gets list of searchable users
   function getListOfAllUsers (filter){
   setSearch(filter)
   }
 
+  //resets the text in search users
   function resetSearch (){
     setSearch("") 
   }
- 
 
-  useEffect(()=>{
-       token && getAllUsers()     
-  }, [])
 
   return (
-    <AuthContext.Provider value={{resetSearch, config, getAllUsers, search, currentUser, userId, logout, signUpUser, loginUser, token, username, getListOfAllUsers, allUsers}}>
+    <AuthContext.Provider value={{resetSearch, config, getAllUsers, search, currentUser, logout, signUpUser, loginUser, token, getListOfAllUsers, allUsers}}>
       {props.children}
     </AuthContext.Provider>
   );

@@ -1,14 +1,21 @@
-import React,{useContext} from "react"
+import React,{useState, useContext} from "react"
 import Post from "./allposts/Post"
 import ImageModal from "./allposts/ImageModal"
 import { PostContext } from "../context/postProvider"
 import { AuthContext } from "../context/authProvider"
+import { FriendContext } from "../context/friendProvider"
 
 export default function Feed (props){
-    const{currentUser} = useContext(AuthContext)
-    const {toggleImage, toggleAddImage, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(PostContext)
+
+const {refreshFriendData} = useContext(FriendContext)
+    const{token, currentUser} = useContext(AuthContext)
+    const {toggleImage, toggleAddImage, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(PostContext)
     //this will show friends and current user posts
     const posts = props.feed?.map(item=><Post key={item._id} deletePost={deletePost} updatePost={updatePost} {...item}/>)
+
+    // useState(()=>{
+    //   token && refreshFriendData ()
+    //  }, [])
 
     return (              
               <div className="my-feed-div">             

@@ -4,6 +4,7 @@ const mkdirp = require('mkdirp')
 const User = require('../models/user.js')
 const Post = require('../models/post.js')
 const Reply = require('../models/comment.js')
+const Friends = require('../models/friends.js')
 const postRouter = express.Router()
 
 const postImages = multer.diskStorage({
@@ -54,15 +55,17 @@ postRouter.get('/currentUserPosts', (req, res, next)=>{
         res.status(500)
         return next(err)
     }
-    User.findOne({_id:filterById}, (err, currentUser)=>{
+    Friends.findOne({userId:filterById}, (err, currentUser)=>{
+  
   const friendsArray =currentUser?.friends || []
-        const filteredArray = friendsArray.map(item=>item.id)  
-        Post.find({userId:{$in:filteredArray}}, (err, friendsFeed)=>{
+        const filteredArray = friendsArray.map(item=>item.user)     
+        Post.find({username:{$in:filteredArray}}, (err, friendsFeed)=>{    
             if(err){
                 res.status(500)
                 return next(err)
             }    
-            const allArray = [...friendsFeed, ...currentUserFeed]
+            const allArray = [...friendsFeed, ...currentUserFeed] 
+            console.log(allArray)         
             return res.send(allArray)          
             })
     })    

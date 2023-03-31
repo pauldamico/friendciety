@@ -10,9 +10,8 @@ import { AuthContext } from "./context/authProvider";
 import { PostContext } from "./context/postProvider";
 function App() {
 
-  const { currentUser, token } = useContext(AuthContext);
+  const { currentUser, token } = useContext(AuthContext); 
 const {myFeed} = useContext(PostContext)
-
 const allPosts = myFeed?.sort((a,b)=>a.postOrder - b.postOrder) || []
 // const currentUserPosts = myFeed?.filter(post=>post.userId === currentUser.user._id) || []
 const friendsPosts = myFeed?.filter(post=>post.userId !== currentUser.user._id) || []

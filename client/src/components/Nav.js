@@ -11,7 +11,7 @@ import BasicMenu from './MUI/BasicMenu'
 
 export default function Nav (){
    
-    const {search, currentUser, getListOfAllUsers, token, logout, allUsers} = useContext(AuthContext)
+    const {getAllUsers, search, currentUser, getListOfAllUsers, token, logout, allUsers} = useContext(AuthContext)
     const {clearMyFeed} = useContext(PostContext)
     const [searchToggle, setSearchToggle] = useState(false)
    
@@ -42,7 +42,7 @@ function searchUsersHandler (event){
        <WindowSize arrow="<"> <BasicMenu/></WindowSize>
          
             {token ?<div  className='nav-div-div'>
-            { token ? <SearchUserModal search ={search} currentUser={currentUser} toggleSearch={toggleSearch} searchToggle={searchToggle} searchUsersHandler={searchUsersHandler} allUsers={allUsers}/>: null    }
+            { token ? <SearchUserModal getAllUsers={getAllUsers} search ={search} currentUser={currentUser} toggleSearch={toggleSearch} searchToggle={searchToggle} searchUsersHandler={searchUsersHandler} allUsers={allUsers}/>: null    }
             {!token ? <Link to='/login'> Login</Link> : <div className='logout-div'><h3 onClick = {logoff}> <img alt="" height='15px' width='15px' src={require('../images/logout.png')}/>Logout</h3></div>}
             </div> : null}
             </div> : null}

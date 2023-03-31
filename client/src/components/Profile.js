@@ -11,7 +11,7 @@ export default function Profile (){
     const{friends} = useContext(FriendContext)
     const {myFeed} = useContext(PostContext)
     const navigatedUser = useParams().userprofile
-   console.log(friends)
+
     
 //maps combines all friends and username into one array
 const profile = [...friends.friends.map(friend=>friend.user), currentUser?.user.username]

@@ -6,11 +6,7 @@ import { AuthContext } from "./authProvider";
 const PostContext = createContext()
 function PostContextProvider (props){
 
-const {userId, token, logout} = useContext(AuthContext) 
-
-
-//Header Info for Axios users authentication
-const config = {headers:{Authorization: `Bearer ${token}`}}
+const { config, token, logout} = useContext(AuthContext) 
 
 //State for myFeed array and state for addToFeed which is any new post change handler
     const [myFeed, setMyFeed] = useState([]);
@@ -19,12 +15,12 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     const [imageInfo, setImageInfo] = useState({ post: "",image:null }); 
     const [comments, setComments] = useState([])
     const [replies, setReplies] = useState([])
-    // const allFeed = [...friendsFeed, ...myFeed].sort((a,b)=>a.postOrder - b.postOrder) || null
-   
+
+  
   function getMyFeed (){
     // setMyFeed([])
     token && axios.get(`/auth/post/currentUserPosts`, config)    
-    .then((res) => setMyFeed(prev=>(res.data)))
+    .then((res) => setMyFeed((res.data)))
     .catch(err=>console.log(err));      
   }
 
@@ -48,7 +44,6 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
       .then(res=>{console.log(res.data.likes)
         myFeed.find(post=>post._id === currentPostId) &&
         setMyFeed(prev=>prev.map(post=>post._id === currentPostId  ? {...post, likes:[...res.data.likes], dislikes:[...res.data.dislikes]}  : post))    
-      // console.log(myFeed.find(post=>post._id === currentPostId))
       })
 
     }
@@ -68,11 +63,10 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
       const { name, value } = event.target;    
       setAddToFeed((prev) => ({ ...prev, [name]: value }));
     };
-    //
+    //change handler for adding post and image
     const addImageChangeHandler = (event, post, file) => {
       const {name, value, type,  files} = event.target
-      setImageInfo(prev=>({...prev, [name]:type==="file"? files[0]: value}))
-    
+      setImageInfo(prev=>({...prev, [name]:type==="file"? files[0]: value}))    
       } 
  
 
@@ -81,7 +75,6 @@ const config = {headers:{Authorization: `Bearer ${token}`}}
     axios.delete(`/auth/post/${id}`, config)
     .then(res=>setMyFeed(prev=>prev.filter(post=>id !== post._id && {...post})))
     .catch(err=>console.log(err))
-
   }
   
   //updates the post (component is UpdatePostModel.js)
@@ -111,9 +104,7 @@ const getReplies = ()=>{
 axios.post(`/auth/comment/${postId}`, {comment:comment, postOwner:postOwner}, config)
   .then(res=>{ 
  setComments(prev=>[...prev, res.data])
-  // updateFriendFeedComments(postId, res.data)
-})
-  }
+})}
 
   //add reply to comment or reply
 const postReply =(commentId, reply, postOwner)=>{
@@ -121,22 +112,18 @@ const postReply =(commentId, reply, postOwner)=>{
   .then(res=>{ 
  setReplies(prev=>[...prev, res.data])
   // updateFriendFeedComments(postId, res.data)
-})
-}
+})}
 
     //uploads image to backend/database
     const addImageToFeed = () => {
       const formData = new FormData();
       formData.append("post", imageInfo.post);
-      formData.append("image", imageInfo.image);
-      console.log(formData.getAll("image"));
-    
+      formData.append("image", imageInfo.image);  
     axios.post("/auth/post/addPost", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`
-      }
-    })
+      }})
     .then(res => {
       console.log(res.data);
       setMyFeed(prev=>([...prev, res.data]))
@@ -161,11 +148,10 @@ useEffect(()=>{
 }, [logout])
 
     return(
-        <PostContext.Provider value={{imageInfo, addLikeToPost, addDislikeToPost, toggleImage, toggleAddImage, setToggleAddImage, addImageToFeed, addImageChangeHandler, replies, comments, postReply, postComment, clearMyFeed, getMyFeed, config, userId, myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <PostContext.Provider value={{imageInfo, addLikeToPost, addDislikeToPost, toggleImage, toggleAddImage, setToggleAddImage, addImageToFeed, addImageChangeHandler, replies, comments, postReply, postComment, clearMyFeed, getMyFeed,  myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </PostContext.Provider>
-    )
-}
+    )}
 
 
 export {PostContext, PostContextProvider}

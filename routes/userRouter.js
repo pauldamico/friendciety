@@ -2,13 +2,13 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const speakeasy = require("speakeasy");
 const User = require("../models/user.js");
+const Friends = require("../models/friends.js");
 const userRouter = express.Router();
 
 
 
 //signs up user
-userRouter.post("/signup", (req, res, next) => {
-  console.log("asdf")
+userRouter.post("/signup", (req, res, next) => {  
   User.find({ username: req.body.username }, (err, foundUser) => {  
     if (err) {
       res.status(500);
@@ -19,8 +19,7 @@ userRouter.post("/signup", (req, res, next) => {
       return res.send(next(new Error("Username already exists")));
     }
     req.body.username = req.body.username.toLowerCase();
-    const newSavedUser = new User(req.body);
-  
+    const newSavedUser = new User(req.body);  
     newSavedUser.save((err, foundUser) => {
       if (err) {
         res.status(500);
@@ -35,7 +34,19 @@ userRouter.post("/signup", (req, res, next) => {
         secret: secret.base32,
         label: foundUser.username,
       });
-      return res.send({ user: foundUser.withoutPassword(), token, otpauthUrl});
+      //creates friendsList for user
+      if(foundUser){       
+        const newFriendsList = new Friends({
+          friends:[], username:foundUser.withoutPassword().username, userId:foundUser.withoutPassword()._id, friendRequest:[],pendingRequest:[]})
+          newFriendsList.save((err, friendsList)=>{
+            if(err){
+              res.status(500)
+              return next(err)
+            }
+        if(friendsList){
+          return res.send({ user: foundUser.withoutPassword(), token, otpauthUrl});
+        }}
+      )}     
     });
   });
 });
