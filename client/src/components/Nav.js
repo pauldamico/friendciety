@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom'
 import React, {useState, useContext} from 'react'
 import { AuthContext } from '../context/authProvider'
+import {useSelector} from 'react-redux'
 import { PostContext } from '../context/postProvider'
 import WindowSize from './WindowSize'
 import FriendRequests from './acceptfriend/FriendRequests'
@@ -9,9 +10,12 @@ import BasicMenu from './MUI/BasicMenu'
 
 
 
+
 export default function Nav (){
    
-    const {getAllUsers, search, currentUser, getListOfAllUsers, token, logout, allUsers} = useContext(AuthContext)
+    const {currentUser} = useSelector(state=>state.currentUser)
+    const {token} = currentUser || null
+    const {getAllUsers, search, getListOfAllUsers, logout, allUsers} = useContext(AuthContext)
     const {clearMyFeed} = useContext(PostContext)
     const [searchToggle, setSearchToggle] = useState(false)
    
@@ -37,6 +41,7 @@ function searchUsersHandler (event){
 
     return (
         <div>
+
         {token ? <div className='nav-div' >
         { token ? <FriendRequests/> : null}
        <WindowSize arrow="<"> <BasicMenu/></WindowSize>

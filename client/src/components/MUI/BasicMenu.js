@@ -2,12 +2,13 @@ import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/authProvider";
-import { PersonFill, People, House } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
+import { People, House } from "react-bootstrap-icons";
+import {useSelector} from 'react-redux'
 import { Avatar } from "@mui/material";
 
 export default function BasicMenu() {
+  const {currentUser} = useSelector((state)=>state.currentUser)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -16,9 +17,7 @@ export default function BasicMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { search, currentUser, getListOfAllUsers, token, logout, allUsers } =
-    useContext(AuthContext);
-const navigate = useNavigate()
+
   return (
     <div>
       <Button
@@ -28,7 +27,7 @@ const navigate = useNavigate()
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        {token ? (
+        {currentUser.token ? (
           <section className="profile-icon">
             {" "}
             <Avatar
@@ -49,7 +48,7 @@ const navigate = useNavigate()
         }}
       >
         <MenuItem onClick={handleClose}>
-          {token ? (
+          {currentUser.token ? (
             <Link to={`/profile/${currentUser?.user.username}`} className="profile-icon">
               {" "}
               <Avatar
@@ -61,7 +60,7 @@ const navigate = useNavigate()
           ) : null}
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Link to={token ? "/" : "/login"}>
+          <Link to={currentUser.token ? "/" : "/login"}>
             <House /> Home
           </Link>
         </MenuItem>

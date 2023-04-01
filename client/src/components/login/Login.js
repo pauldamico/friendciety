@@ -1,24 +1,61 @@
-import LoginForm from "./LoginForm";
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../../context/authProvider";
+import NewLoginForm from "./LoginForm";
+import axios from "axios";
+import React, { useState } from "react";
+import {useDispatch} from 'react-redux'
+import { useNavigate } from "react-router-dom";
+import { authSlice } from "../../redux/index.js";
 
-export default function Login() {
-  const {signUpUser, loginUser} = useContext(AuthContext)
+  const { setCurrentUser } = authSlice.actions;
 
+
+  const Login =()=>{
+  
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [loginFormData, setLoginFormData] = useState({username:"", password:""})
   const [toggleSignUp, setToggleSignUp] = useState(false);
 
-  function submitSignUpInfo (event){
-    event.preventDefault()
-    signUpUser(loginFormData)
-    setLoginFormData(prev=>({...prev, username:"", password:""}))
+//   function submitSignUpInfo (event){
+//     event.preventDefault()
+//     signUpUser(loginFormData)
+//     setLoginFormData(prev=>({...prev, username:"", password:""}))
+//   }
+
+  function loginUser(event) {
+event.preventDefault()
+    axios
+      .post("/login", loginFormData)  
+      .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
+      console.log(res.data)
+      dispatch(setCurrentUser(res.data) )
+      navigate("/")
+    })
+      .catch((err) => console.log(err));
+
+      setLoginFormData(prev=>({...prev, username:"", password:""}))
   }
 
-  function submitLoginInfo (event){
+  //signUp
+  function signUpUser(event) {
     event.preventDefault()
-    loginUser(loginFormData)
-    setLoginFormData(prev=>({...prev, username:"", password:""}))
+    axios
+      .post("/signup", loginFormData)
+      .then(res=>{
+      localStorage.setItem("userInfo", JSON.stringify(res.data))
+      dispatch(setCurrentUser(res.data))
+      navigate("/")
+    })
+      .catch((err) => console.log(err));  
+      localStorage.setItem("userInfo", JSON.stringify(loginFormData))
   }
+
+
+
+  // function submitLoginInfo (event){
+  //   event.preventDefault()
+  //   loginUser(loginFormData)
+  //   setLoginFormData(prev=>({...prev, username:"", password:""}))
+  // }
 
   function onChange(event) {
     const {name, value} = event.target;
@@ -31,12 +68,17 @@ export default function Login() {
 
   return (
     <>
-      {/* login */}
-      {!toggleSignUp && <LoginForm onChange={onChange} onSubmit={submitLoginInfo} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/>}
 
 
-      {/* signup */}
-      {toggleSignUp && <LoginForm onChange={onChange} onSubmit ={submitSignUpInfo} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/>}
-    </>
+    {!toggleSignUp && <NewLoginForm onChange={onChange} onSubmit={loginUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/>}
+
+
+{/* signup */}
+{toggleSignUp && <NewLoginForm onChange={onChange} onSubmit ={signUpUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/>}
+
+    </> 
   );
 }
+
+
+export default Login

@@ -4,13 +4,12 @@ import { AuthContext } from "../context/authProvider";
 import {People, House} from 'react-bootstrap-icons'
 import {Avatar} from '@mui/material'
 import WindowSize from "./WindowSize";
+import { useSelector } from "react-redux";
 
 
 export default function SideBar() {
-  const { currentUser, token } = useContext(AuthContext);
-
-
-
+  const { currentUser} = useSelector(state=>state.currentUser);
+  const {token} = currentUser || null
 
 
   return (<WindowSize arrow=">">

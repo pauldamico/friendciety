@@ -1,5 +1,5 @@
 import React, {useContext} from "react"
-import { AuthContext } from "../context/authProvider"
+import {useSelector} from 'react-redux'
 import {PostContext} from "../context/postProvider"
 import Feed from "./Feed"
 import {useParams} from "react-router-dom"
@@ -7,7 +7,7 @@ import { FriendContext } from "../context/friendProvider"
 
 
 export default function Profile (){
-    const{currentUser} = useContext(AuthContext)
+    const{currentUser} = useSelector(state=>state.currentUser)
     const{friends} = useContext(FriendContext)
     const {myFeed} = useContext(PostContext)
     const navigatedUser = useParams().userprofile

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const speakeasy = require("speakeasy");
 const User = require("../models/user.js");
 const Friends = require("../models/friends.js");
+const Files = require("../models/files.js");
 const userRouter = express.Router();
 
 
@@ -20,7 +21,9 @@ userRouter.post("/signup", (req, res, next) => {
     }
     req.body.username = req.body.username.toLowerCase();
     const newSavedUser = new User(req.body);  
-    newSavedUser.save((err, foundUser) => {
+
+    
+    newSavedUser.save((err, newUser) => {
       if (err) {
         res.status(500);
         return next(err);
@@ -28,28 +31,41 @@ userRouter.post("/signup", (req, res, next) => {
       //creates secret for 2fa
       const secret = speakeasy.generateSecret({ length: 20 });
       //creates user token
-      const token = jwt.sign(foundUser.withoutPassword(), process.env.SECRET);
+      const token = jwt.sign(newUser.withoutPassword(), process.env.SECRET);
+      console.log(newUser.withoutPassword())
       //creates secret for 2fa
       const otpauthUrl = speakeasy.otpauthURL({
         secret: secret.base32,
-        label: foundUser.username,
+        label: newUser.withoutPassword().username,
       });
       //creates friendsList for user
-      if(foundUser){       
-        const newFriendsList = new Friends({
-          friends:[], username:foundUser.withoutPassword().username, userId:foundUser.withoutPassword()._id, friendRequest:[],pendingRequest:[]})
-          newFriendsList.save((err, friendsList)=>{
+      if(newUser){     
+        const newFilesModel = new Files({
+          username:newUser.withoutPassword().username, userId:newUser.withoutPassword()._id
+        })  
+          newFilesModel.save((err)=>{
             if(err){
               res.status(500)
               return next(err)
-            }
-        if(friendsList){
-          return res.send({ user: foundUser.withoutPassword(), token, otpauthUrl});
-        }}
-      )}     
-    });
-  });
-});
+            }   
+          }  )    
+         
+  
+        //////////////
+        const newFriendsModel = new Friends({
+          friends:[], username:newUser.username, userId:newUser._id})
+          newFriendsModel.save((err, friendsList)=>{
+            if(err){
+              res.status(500)
+              return next(err)
+            }           
+        if(friendsList){          
+          return res.send({ user: newUser.withoutPassword(), token, otpauthUrl});
+        }})}        
+      })})})
+      
+     
+
 
 //controls user login
 userRouter.post("/login", (req, res, next) => { 
@@ -117,10 +133,12 @@ userRouter.get(`/auth/allusers`, (req, res, next) => {
       return next(new Error("No users have been found"));
     }
     res.status(200);
-    res.send(foundUser.map((user) => user.username));
+    res.send(foundUser.map((user) => user.withoutPassword().username));
   });
 });
 
+
+module.exports = userRouter;
 // // Sends up to date friend data
 // userRouter.get(`/auth/friends`, (req, res, next) => {  
 //   User.findOne({_id:req.auth._id},(err, foundUser) => {
@@ -270,4 +288,4 @@ userRouter.get(`/auth/allusers`, (req, res, next) => {
 //   );
 // });
 
-module.exports = userRouter;
+

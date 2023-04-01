@@ -5,13 +5,13 @@ import UpdatePostModal from "./UpdatePostModal";
 import ReplyModal from "./ReplyModal";
 import Comment from "./Comment";
 import { PostContext } from "../../context/postProvider";
-import { AuthContext } from "../../context/authProvider";
+import { useSelector } from "react-redux";
 import {Avatar} from '@mui/material'
 
 export default function Post(props) {
 const navigate = useNavigate()
   const { addLikeToPost, addDislikeToPost, postComment, comments } =    useContext(PostContext);
-  const {currentUser} = useContext(AuthContext)
+ const {currentUser} = useSelector((state)=>state.currentUser)
   const [toggleEdit, setToggleEdit] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [commentToggle, setCommentToggle] = useState(false);

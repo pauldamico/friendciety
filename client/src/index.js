@@ -5,6 +5,8 @@ import App from './App';
 import { AuthContextProvider } from './context/authProvider';
 import { FriendContextProvider } from './context/friendProvider';
 import { PostContextProvider } from './context/postProvider';
+import { Provider } from 'react-redux';
+import {store} from "./redux/store.js"
 // import { FriendsFeedContextProvider } from './context/friendsFeedProvider';
 
 
@@ -16,9 +18,9 @@ root.render(
     <AuthContextProvider>
     <FriendContextProvider>
     <PostContextProvider>
-     
+     <Provider store = {store}>
     <App />
-    
+    </Provider>
 </PostContextProvider>
 </FriendContextProvider>
     </AuthContextProvider>
