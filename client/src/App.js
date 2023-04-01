@@ -15,7 +15,6 @@ function App() {
   const {posts} = useSelector(state=>state.posts) || ""
 const allPosts = posts.map(post=>post).sort((a,b)=>a.postOrder - b.postOrder) || []
 const friendsPosts = posts?.filter(post=>post.userId !== currentUser.user._id) || []
-console.log(currentUser)
   return (
     <div className="app">
       <Nav />

@@ -1,22 +1,37 @@
-import React, { useState, useContext } from "react";
+import React, { useState} from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { HandThumbsUp, HandThumbsDown } from "react-bootstrap-icons";
 import UpdatePostModal from "./UpdatePostModal";
 import ReplyModal from "./ReplyModal";
 import Comment from "./Comment";
-import { PostContext } from "../../context/postProvider";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { commentsSlice } from "../../redux/index";
+import {postsSlice} from "../../redux/index"
 import {Avatar} from '@mui/material'
 
-export default function Post(props) {
-const navigate = useNavigate()
-  const { addLikeToPost, addDislikeToPost, postComment, comments } =    useContext(PostContext);
- const {currentUser} = useSelector((state)=>state.currentUser)
-  const [toggleEdit, setToggleEdit] = useState(false);
-  const [toggleMenu, setToggleMenu] = useState(false);
-  const [commentToggle, setCommentToggle] = useState(false);
-  const [parentComment, setParentComment] = useState("");
+//redux actions
+const {addComment} = commentsSlice.actions
+const {setPosts} = postsSlice.actions
 
+export default function Post(props) {
+const navigate = useNavigate() 
+const dispatch = useDispatch()
+
+//redux state
+ const {currentUser} = useSelector((state)=>state.currentUser)
+ const {comments} = useSelector(state=>state.comments)
+ const {posts} = useSelector(state=>state.posts)
+
+
+ const {token} = currentUser || null
+ const [toggleEdit, setToggleEdit] = useState(false);
+ const [toggleMenu, setToggleMenu] = useState(false);
+ const [commentToggle, setCommentToggle] = useState(false);
+ const [parentComment, setParentComment] = useState("");
+
+
+ const config = {headers:{Authorization: `Bearer ${token}`}}
  
   //Moves cursor to comment input
   function focusCommentInput() {
@@ -24,35 +39,49 @@ const navigate = useNavigate()
   }
 
   //this allows the comments to show per prop post id
-  const postComments =
-    comments.filter((item) => item.postId === props._id) || null;
-  const commentList =
-    postComments.map((item) => <Comment key={item._id} {...item} />) || null;
+  const postComments = comments.filter((item) => item.postId === props._id) || null;
+  console.log(postComments)
+  const commentList = postComments.map((item) => <Comment key={item._id} {...item} />) || null;
 
   //onChange for the input of the top level comment
   function parentCommentOnChange(e) {
     setParentComment(e.target.value);
   }
-  //submit for the input of the top level comment
-  function submitParentComment(e) {
-    e.preventDefault();
-    postComment(props._id, parentComment, props.username);
-    setParentComment("");
-  }
 
+    //add comment to post   need to setup authentcation for only friends posts
+    const postComment=(event)=>{  
+      event.preventDefault()
+      axios.post(`/auth/comment/${props._id}`, {comment:parentComment, postOwner:props.username}, config)
+        .then(res=>{ 
+       dispatch(addComment(res.data))
+      })
+    setParentComment("")
+    }
+  
+    //opens edit modal
   const toggleEditHandler = () => {
     setToggleEdit(!toggleEdit);
   };
+  //opens ... modal
   const toggleMenuHandler = () => {
     setToggleMenu(!toggleMenu);
   };
 
-  function likePost() {
-    addLikeToPost(props._id, props.username);
-  }
-  function dislikePost() {
-    addDislikeToPost(props._id, props.username);
-  }
+    //adds like to post  can prob make this reusable with likes
+    const addLikeToPost =()=>{      
+      axios.post(`/auth/post/like`, {id:props._id}, config)
+      .then(res=>{console.log(res.data.likes)
+        console.log(posts)
+        posts.find(post=>post._id === props._id) &&
+        dispatch(setPosts(posts.map(post=>post._id === props._id  ? {...post, likes:[...res.data.likes], dislikes:[...res.data.dislikes]}  : post)))
+      })}
+    //adds dislike to post  can prob make this reusable with likes
+  const addDislikeToPost =()=>{  
+    axios.post(`/auth/post/dislike`, {id:props._id}, config)
+    .then(res=>{console.log(res.data.dislikes)
+      posts.find(post=>post._id === props._id) &&
+      dispatch(setPosts(posts.map(post=>post._id === props._id  ? {...post, dislikes:[...res.data.dislikes], likes:[...res.data.likes]}  : post)))      
+    })}
 
   return (
     <div className="post-div">
@@ -128,27 +157,27 @@ const navigate = useNavigate()
                 <section>
                   <HandThumbsUp
                     style={{ cursor: "pointer" }}
-                    onClick={likePost}
+                    onClick={addLikeToPost}
                   />
                   {props.likes.length}
                 </section>
                 <section>
                   <HandThumbsDown
                     style={{ cursor: "pointer" }}
-                    onClick={dislikePost}
+                    onClick={addDislikeToPost}
                   />
                   {props.dislikes.length}
                 </section>
               </div>
               <div className="post-options-div">
-                <h5 onClick={likePost} style={{ cursor: "pointer" }}>
+                <h5 onClick={addLikeToPost} style={{ cursor: "pointer" }}>
                   Like
                 </h5>
                 <h5 style={{ cursor: "pointer" }} onClick={focusCommentInput}>
                   {" "}
                   Comment
                 </h5>
-                <h5 onClick={dislikePost} style={{ cursor: "pointer" }}>
+                <h5 onClick={addDislikeToPost} style={{ cursor: "pointer" }}>
                   Dislike
                 </h5>
               </div>
@@ -202,7 +231,7 @@ const navigate = useNavigate()
         <ReplyModal
           reply={parentComment}
           onChange={parentCommentOnChange}
-          onSubmit={submitParentComment}
+          onSubmit={postComment}
           _id={props._id}
         />
       </div>

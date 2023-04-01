@@ -38,25 +38,25 @@ const { config, token, logout} = useContext(AuthContext)
         setAddToFeed({ post: "" })          
     };
 
-    //adds like to post  can prob make this reusable with likes
-    const addLikeToPost =(currentPostId)=>{      
-      axios.post(`/auth/post/like`, {id:currentPostId}, config)
-      .then(res=>{console.log(res.data.likes)
-        myFeed.find(post=>post._id === currentPostId) &&
-        setMyFeed(prev=>prev.map(post=>post._id === currentPostId  ? {...post, likes:[...res.data.likes], dislikes:[...res.data.dislikes]}  : post))    
-      })
+  //   //adds like to post  can prob make this reusable with likes
+  //   const addLikeToPost =(currentPostId)=>{      
+  //     axios.post(`/auth/post/like`, {id:currentPostId}, config)
+  //     .then(res=>{console.log(res.data.likes)
+  //       myFeed.find(post=>post._id === currentPostId) &&
+  //       setMyFeed(prev=>prev.map(post=>post._id === currentPostId  ? {...post, likes:[...res.data.likes], dislikes:[...res.data.dislikes]}  : post))    
+  //     })
 
-    }
-    //adds dislike to post  can prob make this reusable with likes
-  const addDislikeToPost =(currentPostId)=>{  
-    axios.post(`/auth/post/dislike`, {id:currentPostId}, config)
-    .then(res=>{console.log(res.data.dislikes)
-      myFeed.find(post=>post._id === currentPostId) &&
-      setMyFeed(prev=>prev.map(post=>post._id === currentPostId  ? {...post, dislikes:[...res.data.dislikes], likes:[...res.data.likes]}  : post))    
-    // console.log(myFeed.find(post=>post._id === currentPostId))
-    })
+  //   }
+  //   //adds dislike to post  can prob make this reusable with likes
+  // const addDislikeToPost =(currentPostId)=>{  
+  //   axios.post(`/auth/post/dislike`, {id:currentPostId}, config)
+  //   .then(res=>{console.log(res.data.dislikes)
+  //     myFeed.find(post=>post._id === currentPostId) &&
+  //     setMyFeed(prev=>prev.map(post=>post._id === currentPostId  ? {...post, dislikes:[...res.data.dislikes], likes:[...res.data.likes]}  : post))    
+  //   // console.log(myFeed.find(post=>post._id === currentPostId))
+  //   })
 
-    }
+  //   }
     
     //change handler for adding new post
     const addPostChangeHandler = (event) => {    
@@ -99,12 +99,12 @@ const getReplies = ()=>{
   .catch(err=>console.log(err))
 }
 
-  //add comment to post   need to setup authentcation for only friends posts
-  const postComment=(postId, comment, postOwner)=>{
-axios.post(`/auth/comment/${postId}`, {comment:comment, postOwner:postOwner}, config)
-  .then(res=>{ 
- setComments(prev=>[...prev, res.data])
-})}
+//   //add comment to post   need to setup authentcation for only friends posts
+//   const postComment=(postId, comment, postOwner)=>{
+// axios.post(`/auth/comment/${postId}`, {comment:comment, postOwner:postOwner}, config)
+//   .then(res=>{ 
+//  setComments(prev=>[...prev, res.data])
+// })}
 
 //   //add reply to comment or reply
 // const postReply =(commentId, reply, postOwner)=>{
@@ -148,7 +148,7 @@ useEffect(()=>{
 }, [logout])
 
     return(
-        <PostContext.Provider value={{imageInfo, addLikeToPost, addDislikeToPost, toggleImage, toggleAddImage, setToggleAddImage, replies, comments, postComment, clearMyFeed, getMyFeed,  myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <PostContext.Provider value={{imageInfo, toggleImage, toggleAddImage, setToggleAddImage, replies, comments, clearMyFeed, getMyFeed,  myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </PostContext.Provider>
     )}

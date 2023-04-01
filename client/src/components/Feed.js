@@ -1,19 +1,51 @@
-import React,{useState, useContext} from "react"
+import React,{useState, useEffect, useContext} from "react"
+import axios from "axios"
 import Post from "./allposts/Post"
 import ImageModal from "./allposts/ImageModal"
 import { PostContext } from "../context/postProvider"
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
+import { postsSlice, commentsSlice, repliesSlice } from "../redux"
+
+const {setPosts} = postsSlice.actions
+const {setComments} = commentsSlice.actions
+const {setReplies} = repliesSlice.actions
 
 export default function Feed (props){
+  const dispatch = useDispatch()
+
 
 const {currentUser} = useSelector((state)=>state.currentUser)
 
-
+const {token} = currentUser || null
+  const config = {headers:{Authorization: `Bearer ${token}`}}
     const {toggleImage, toggleAddImage, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(PostContext)
     //this will show friends and current user posts
     const posts = props.feed?.map(item=><Post key={item._id} deletePost={deletePost} updatePost={updatePost} {...item}/>)
 
+    const getPosts = () =>{
+      token && axios.get(`/auth/post/currentUserPosts`, config)    
+      .then((res) => dispatch(setPosts(res.data)))
+      .catch(err=>console.log(err));   
+    }
 
+    const getComments = ()=>{
+      axios.get('/auth/comment', config)
+      .then(res=>{dispatch(setComments(res.data))})
+      .catch(err=>console.log(err))
+    }
+    // get all replies 
+    const getReplies = ()=>{
+      axios.get('/auth/reply', config)
+      .then(res=>{dispatch(setReplies(res.data))})
+      .catch(err=>console.log(err))
+    }
+
+    
+    useEffect(()=>{
+      getPosts()
+      getComments()
+      getReplies()
+    }, [])
     return (              
               <div className="my-feed-div">             
                {props.user === currentUser.user.username ? <div className="update-status-div" >
@@ -36,4 +68,3 @@ const {currentUser} = useSelector((state)=>state.currentUser)
            </div>          
             </div>                
             )}
-    

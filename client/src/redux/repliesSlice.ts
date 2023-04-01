@@ -15,5 +15,8 @@ interface RepliesState {
       setReplies: (state, action: PayloadAction<RepliesState['replies']>) => {
         state.replies = action.payload;
       },
+      addReply:(state,action)=>{
+        state.replies.push(action.payload)
+      }
     },
   });

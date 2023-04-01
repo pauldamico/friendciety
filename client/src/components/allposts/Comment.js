@@ -14,9 +14,8 @@ export default function Comment (props){
     const [commentToggle, setCommentToggle] = useState(false)
     const [replyToggle, setReplyToggle] = useState(false)
     const [reply, setReply] = useState("");
-    const config = {headers:{Authorization: `Bearer ${token}`}}
     const { token } = currentUser || null;
-
+    const config = {headers:{Authorization: `Bearer ${token}`}}
     
     function replyOnChange (e){
         setReply(e.target.value)        

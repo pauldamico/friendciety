@@ -17,5 +17,8 @@ interface CommentsState {
       setComments: (state, action: PayloadAction<CommentsState['comments']>) => {
         state.comments = action.payload;
       },
+      addComment:(state, action)=>{
+        state.comments.push(action.payload)
+      }
     },
   });
