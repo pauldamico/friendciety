@@ -63,11 +63,11 @@ const { config, token, logout} = useContext(AuthContext)
       const { name, value } = event.target;    
       setAddToFeed((prev) => ({ ...prev, [name]: value }));
     };
-    //change handler for adding post and image
-    const addImageChangeHandler = (event, post, file) => {
-      const {name, value, type,  files} = event.target
-      setImageInfo(prev=>({...prev, [name]:type==="file"? files[0]: value}))    
-      } 
+    // //change handler for adding post and image
+    // const addImageChangeHandler = (event, post, file) => {
+    //   const {name, value, type,  files} = event.target
+    //   setImageInfo(prev=>({...prev, [name]:type==="file"? files[0]: value}))    
+    //   } 
  
 
     //deletes a post by id
@@ -106,33 +106,33 @@ axios.post(`/auth/comment/${postId}`, {comment:comment, postOwner:postOwner}, co
  setComments(prev=>[...prev, res.data])
 })}
 
-  //add reply to comment or reply
-const postReply =(commentId, reply, postOwner)=>{
-  axios.post(`/auth/reply/${commentId}`, {reply, postOwner}, config)
-  .then(res=>{ 
- setReplies(prev=>[...prev, res.data])
-  // updateFriendFeedComments(postId, res.data)
-})}
+//   //add reply to comment or reply
+// const postReply =(commentId, reply, postOwner)=>{
+//   axios.post(`/auth/reply/${commentId}`, {reply, postOwner}, config)
+//   .then(res=>{ 
+//  setReplies(prev=>[...prev, res.data])
+//   // updateFriendFeedComments(postId, res.data)
+// })}
 
-    //uploads image to backend/database
-    const addImageToFeed = () => {
-      const formData = new FormData();
-      formData.append("post", imageInfo.post);
-      formData.append("image", imageInfo.image);  
-    axios.post("/auth/post/addPost", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`
-      }})
-    .then(res => {
-      console.log(res.data);
-      setMyFeed(prev=>([...prev, res.data]))
-    })
-    .catch(error => {
-      console.log(error);
-    })
-    setImageInfo(prev=>({...prev, post:"", image:""}))
-    }
+    // //uploads image to backend/database
+    // const addImageToFeed = () => {
+    //   const formData = new FormData();
+    //   formData.append("post", imageInfo.post);
+    //   formData.append("image", imageInfo.image);  
+    // axios.post("/auth/post/addPost", formData, {
+    //   headers: {
+    //     "Content-Type": "multipart/form-data",
+    //     Authorization: `Bearer ${token}`
+    //   }})
+    // .then(res => {
+    //   console.log(res.data);
+    //   setMyFeed(prev=>([...prev, res.data]))
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    // })
+    // setImageInfo(prev=>({...prev, post:"", image:""}))
+    // }
 
 //toggle image model
 function toggleImage (){
@@ -148,7 +148,7 @@ useEffect(()=>{
 }, [logout])
 
     return(
-        <PostContext.Provider value={{imageInfo, addLikeToPost, addDislikeToPost, toggleImage, toggleAddImage, setToggleAddImage, addImageToFeed, addImageChangeHandler, replies, comments, postReply, postComment, clearMyFeed, getMyFeed,  myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <PostContext.Provider value={{imageInfo, addLikeToPost, addDislikeToPost, toggleImage, toggleAddImage, setToggleAddImage, replies, comments, postComment, clearMyFeed, getMyFeed,  myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
 {props.children}
         </PostContext.Provider>
     )}

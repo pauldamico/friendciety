@@ -1,22 +1,38 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface PostsState {
-  posts: any[];
+
+
+interface Post {
+  _id:string,
+  post:string,
+  image:string,
+  postOrder:string,
+  username:string,
+  userId:string,
+  likes:[],
+  dislikes:[],
+  __v:number
 }
 
-const initialMyFeedState: PostsState = {
-  posts: [],
+interface PostsState {
+  posts: Post[];
+}
+
+const initialMyFeedState:PostsState = {
+  posts: [
+  ],
 };
-
-
 
 /// posts
 export const postsSlice = createSlice({
   name: 'posts',
   initialState: initialMyFeedState,
   reducers: {
-    setPosts: (state, action: PayloadAction<PostsState['posts']>) => {
-      state.posts = action.payload;
-    },
+    setPosts: (state, action:PayloadAction<Post[]>) => {
+      state.posts = action.payload     
+    }, 
+    addPost:(state,action:PayloadAction<Post>)=>{
+      state.posts.push(action.payload)
+    }
   },
 });

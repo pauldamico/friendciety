@@ -12,10 +12,9 @@ function App() {
 
   // const { currentUser, token } = useContext(AuthContext); 
   const {currentUser} = useSelector((state)=>state.currentUser)
-const {myFeed} = useContext(PostContext)
-const allPosts = myFeed?.sort((a,b)=>a.postOrder - b.postOrder) || []
-// const currentUserPosts = myFeed?.filter(post=>post.userId === currentUser.user._id) || []
-const friendsPosts = myFeed?.filter(post=>post.userId !== currentUser.user._id) || []
+  const {posts} = useSelector(state=>state.posts) || ""
+const allPosts = posts.map(post=>post).sort((a,b)=>a.postOrder - b.postOrder) || []
+const friendsPosts = posts?.filter(post=>post.userId !== currentUser.user._id) || []
 console.log(currentUser)
   return (
     <div className="app">
