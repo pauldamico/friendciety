@@ -46,6 +46,22 @@ const dispatch = useDispatch()
   function parentCommentOnChange(e) {
     setParentComment(e.target.value);
   }
+      //deletes a post by id
+      const deletePost = (id) => {    
+        axios.delete(`/auth/post/${id}`, config)
+        .then(res=>dispatch(setPosts(posts.filter(post=>id !== post._id && {...post}))))
+        .catch(err=>console.log(err))
+      }
+     
+      console.log(parentComment)
+      //updates the post (component is UpdatePostModel.js)
+      const updatePost = (id, editedPost)=>{   
+        const updatedPost= {post:editedPost}
+        console.log(updatedPost)
+      axios.put(`/auth/post/${id}`, updatedPost, config)
+      .then(res=>dispatch(setPosts(posts.map(post=>props._id === post._id ? {...post, post:editedPost} : {...post}))))
+      .catch(err=>console.log(err))  
+      }
 
     //add comment to post   need to setup authentcation for only friends posts
     const postComment=(event)=>{  
@@ -75,7 +91,7 @@ const dispatch = useDispatch()
         posts.find(post=>post._id === props._id) &&
         dispatch(setPosts(posts.map(post=>post._id === props._id  ? {...post, likes:[...res.data.likes], dislikes:[...res.data.dislikes]}  : post)))
       })}
-      
+
     //adds dislike to post  can prob make this reusable with likes
   const addDislikeToPost =()=>{  
     axios.post(`/auth/post/dislike`, {id:props._id}, config)
@@ -125,7 +141,7 @@ const dispatch = useDispatch()
                         <h3
                           style={{ cursor: "pointer" }}
                           onClick={() => {
-                            props.deletePost(props._id);
+                            deletePost(props._id);
                           }}
                         >
                           Delete
@@ -190,7 +206,7 @@ const dispatch = useDispatch()
               <UpdatePostModal
                 post={props.post}
                 _id={props._id}
-                updatePost={props.updatePost}
+                updatePost={updatePost}
                 toggleEditHandler={toggleEditHandler}
                 toggleMenuHandler={toggleMenuHandler}
               />

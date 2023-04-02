@@ -1,6 +1,4 @@
-import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../context/authProvider";
 import {People, House} from 'react-bootstrap-icons'
 import {Avatar} from '@mui/material'
 import WindowSize from "./WindowSize";
@@ -8,7 +6,7 @@ import { useSelector } from "react-redux";
 
 
 export default function SideBar() {
-  const { currentUser} = useSelector(state=>state.currentUser);
+  const { currentUser} = useSelector(state=>state.currentUser)
   const {token} = currentUser || null
 
 
@@ -16,10 +14,7 @@ export default function SideBar() {
     <div className="sidebar-div">
       {token ? (
         <div>   
-
-          <div className="sidebar-div2">
-       
-          
+          <div className="sidebar-div2">           
              
             {token ? (
             <Link to={`/profile/${currentUser?.user.username}`} className="profile-icon">

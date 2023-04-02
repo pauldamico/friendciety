@@ -45,7 +45,7 @@ const [toggleAddImage,setToggleAddImage] = useState(false)
     }
 
     //get all friends
-    function refreshFriendData (){   
+    function getFriendData (){   
       axios.get('/auth/friends/friends', config)    
       .then(res=>{
         dispatch(setFriends(res.data))   
@@ -72,7 +72,7 @@ const [toggleAddImage,setToggleAddImage] = useState(false)
       getPosts()
       getComments()
       getReplies()
-      refreshFriendData()
+      getFriendData()
     }, [])
     return (              
               <div className="my-feed-div">             
