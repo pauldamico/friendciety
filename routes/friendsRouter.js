@@ -37,6 +37,7 @@ friendsRouter.get(`/friends`, (req, res, next) => {
               res.status(500);
               return next(err);
             }
+            console.log(foundFriend)
             // console.log(req.app.get("io"))
             // req.app.get("io").emit("currentUser", foundFriend.username);
             res.send(foundFriend.username);

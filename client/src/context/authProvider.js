@@ -10,8 +10,8 @@ function AuthContextProvider(props) {
     const initValue =  JSON.parse(localStorage.getItem("userInfo"))||{token:null, user:{}}
     const [currentUser, setCurrentUser] = useState(initValue)
     // const [currentError, setCurrentError] = useState("")
-    const [allUsers, setAllUsers] = useState([])
-    const [search, setSearch] = useState("")  
+    // const [allUsers, setAllUsers] = useState([])
+    // const [search, setSearch] = useState("")  
 
     // const socket = io("http://localhost:4000");
 
@@ -24,7 +24,7 @@ function AuthContextProvider(props) {
     function logout (){
     localStorage.clear()
     setCurrentUser(prev=>({...prev, token:null, user:{}}))  
-    resetSearch()
+    // resetSearch()
     }
 
     //signUp
@@ -49,26 +49,26 @@ function AuthContextProvider(props) {
       .catch((err) => console.log(err));
   }
 // need to run this after adding friends or removing friends    check this may not need it
-  function getAllUsers (){
-    axios.get('/auth/allusers', config)
-    .then(res=>{      
-      setAllUsers(res.data)
-    })     
-  } 
+  // function getAllUsers (){
+  //   axios.get('/auth/allusers', config)
+  //   .then(res=>{      
+  //     setAllUsers(res.data)
+  //   })     
+  // } 
 
   //gets list of searchable users
-  function getListOfAllUsers (filter){
-  setSearch(filter)
-  }
+  // function getListOfAllUsers (filter){
+  // setSearch(filter)
+  // }
 
-  //resets the text in search users
-  function resetSearch (){
-    setSearch("") 
-  }
+  // //resets the text in search users
+  // function resetSearch (){
+  //   setSearch("") 
+  // }
 
 
   return (
-    <AuthContext.Provider value={{resetSearch, config, getAllUsers, search, currentUser, logout, signUpUser, loginUser, token, getListOfAllUsers, allUsers}}>
+    <AuthContext.Provider value={{config,  currentUser, logout, signUpUser, loginUser, token}}>
       {props.children}
     </AuthContext.Provider>
   );

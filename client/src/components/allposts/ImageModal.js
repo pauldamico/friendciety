@@ -12,15 +12,7 @@ export default function ImageModal(props) {
   const dispatch = useDispatch()
     const [imageUrl, setImageUrl] = useState(null)
     const [imageInfo, setImageInfo] = useState({ post: "",image:null }); 
-
-
-
-    // function addToFeed(event){
-    //   event.preventDefault()
-    //     addImageToFeed()
-    //     props.toggleImage()
-    //     setImageUrl(null)
-    // }  
+ 
 
     //uploads image to backend/database
     const addImageToFeed = (event) => {

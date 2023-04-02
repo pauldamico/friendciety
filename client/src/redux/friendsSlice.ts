@@ -9,9 +9,10 @@ interface FriendsState {
 
   const initialState: FriendsState = {
     friends:[], friendRequest:[], pendingRequest:[], username:"", _id:"", userId:""};
+    
 export const friendsSlice = createSlice({    
 name:"friends",
-initialState,
+initialState:initialState,
 reducers:{
     setFriends:(state, action:PayloadAction<FriendsState["friends"]>)=>{
         state.friends = action.payload 

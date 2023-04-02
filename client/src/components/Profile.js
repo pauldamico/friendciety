@@ -1,22 +1,20 @@
-import React, {useContext} from "react"
 import {useSelector} from 'react-redux'
-import {PostContext} from "../context/postProvider"
 import Feed from "./Feed"
 import {useParams} from "react-router-dom"
-import { FriendContext } from "../context/friendProvider"
 
-
-export default function Profile (){
+export default function Profile (){    
     const{currentUser} = useSelector(state=>state.currentUser)
-    const{friends} = useContext(FriendContext)
-    const {myFeed} = useContext(PostContext)
+    const {friends} = useSelector(state=>state.friends)   
+    const {posts} = useSelector(state=>state.posts)  
     const navigatedUser = useParams().userprofile
 
-    
+
+
 //maps combines all friends and username into one array
 const profile = [...friends.friends.map(friend=>friend.user), currentUser?.user.username]
+console.log(profile)
 //shows posts according to the endpoint
-const userPosts = myFeed?.filter(post=>post.username === navigatedUser) || []
+const userPosts = posts?.filter(post=>post.username === navigatedUser) || ""
 //shows the username according to the endpoint
 const selectedUser = profile.find(user=>user === navigatedUser) || null
 

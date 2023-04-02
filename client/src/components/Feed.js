@@ -4,21 +4,25 @@ import Post from "./allposts/Post"
 import ImageModal from "./allposts/ImageModal"
 import { PostContext } from "../context/postProvider"
 import {useDispatch, useSelector} from 'react-redux'
-import { postsSlice, commentsSlice, repliesSlice } from "../redux"
+import { postsSlice, commentsSlice, repliesSlice, friendsSlice } from "../redux"
 
-const {setPosts} = postsSlice.actions
+const {setPosts, addPost} = postsSlice.actions
 const {setComments} = commentsSlice.actions
 const {setReplies} = repliesSlice.actions
+const {setFriends} = friendsSlice.actions
 
 export default function Feed (props){
   const dispatch = useDispatch()
 
 
 const {currentUser} = useSelector((state)=>state.currentUser)
-
 const {token} = currentUser || null
-  const config = {headers:{Authorization: `Bearer ${token}`}}
-    const {toggleImage, toggleAddImage, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed} = useContext(PostContext)
+const config = {headers:{Authorization: `Bearer ${token}`}}
+const [imageInfo, setImageInfo] = useState({ post: "",image:null }); 
+const [toggleAddImage,setToggleAddImage] = useState(false)
+ const {deletePost, updatePost} = useContext(PostContext)
+
+    const [addToFeed, setAddToFeed] = useState({ post: "" }); 
     //this will show friends and current user posts
     const posts = props.feed?.map(item=><Post key={item._id} deletePost={deletePost} updatePost={updatePost} {...item}/>)
 
@@ -40,11 +44,35 @@ const {token} = currentUser || null
       .catch(err=>console.log(err))
     }
 
+    //get all friends
+    function refreshFriendData (){   
+      axios.get('/auth/friends/friends', config)    
+      .then(res=>{
+        dispatch(setFriends(res.data))   
+      })}
+
+      function toggleImage (){
+        setToggleAddImage(!toggleAddImage)       
+      }
+      const addToMyFeed = (event) => {
+        event.preventDefault()    
+        axios.post(`/auth/post/addPost`, addToFeed, config)    
+          .then((res) => dispatch(addPost(res.data)))
+          .catch(err=>console.log(err));
+          setAddToFeed({ post: "" })          
+      };
+
+      const addPostChangeHandler = (event) => {    
+        const { name, value } = event.target;    
+        setAddToFeed((prev) => ({ ...prev, [name]: value }));
+      };
+ 
     
     useEffect(()=>{
       getPosts()
       getComments()
       getReplies()
+      refreshFriendData()
     }, [])
     return (              
               <div className="my-feed-div">             

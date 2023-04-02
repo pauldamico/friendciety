@@ -10,9 +10,9 @@ const { config, token, logout} = useContext(AuthContext)
 
 //State for myFeed array and state for addToFeed which is any new post change handler
     const [myFeed, setMyFeed] = useState([]);
-    const [toggleAddImage,setToggleAddImage] = useState(false)
-    const [addToFeed, setAddToFeed] = useState({ post: "" }); 
-    const [imageInfo, setImageInfo] = useState({ post: "",image:null }); 
+    // const [toggleAddImage,setToggleAddImage] = useState(false)
+    // const [addToFeed, setAddToFeed] = useState({ post: "" }); 
+    // const [imageInfo, setImageInfo] = useState({ post: "",image:null }); 
     const [comments, setComments] = useState([])
     const [replies, setReplies] = useState([])
 
@@ -30,13 +30,13 @@ const { config, token, logout} = useContext(AuthContext)
   }
 
   //adds new post for current user
-    const addToMyFeed = (event) => {
-      event.preventDefault()    
-      axios.post(`/auth/post/addPost`, addToFeed, config)    
-        .then((res) => setMyFeed(prev=>([...prev, res.data])))
-        .catch(err=>console.log(err));
-        setAddToFeed({ post: "" })          
-    };
+    // const addToMyFeed = (event) => {
+    //   event.preventDefault()    
+    //   axios.post(`/auth/post/addPost`, addToFeed, config)    
+    //     .then((res) => setMyFeed(prev=>([...prev, res.data])))
+    //     .catch(err=>console.log(err));
+    //     setAddToFeed({ post: "" })          
+    // };
 
   //   //adds like to post  can prob make this reusable with likes
   //   const addLikeToPost =(currentPostId)=>{      
@@ -59,10 +59,10 @@ const { config, token, logout} = useContext(AuthContext)
   //   }
     
     //change handler for adding new post
-    const addPostChangeHandler = (event) => {    
-      const { name, value } = event.target;    
-      setAddToFeed((prev) => ({ ...prev, [name]: value }));
-    };
+    // const addPostChangeHandler = (event) => {    
+    //   const { name, value } = event.target;    
+    //   setAddToFeed((prev) => ({ ...prev, [name]: value }));
+    // };
     // //change handler for adding post and image
     // const addImageChangeHandler = (event, post, file) => {
     //   const {name, value, type,  files} = event.target
@@ -135,10 +135,10 @@ const getReplies = ()=>{
     // }
 
 //toggle image model
-function toggleImage (){
-  setToggleAddImage(!toggleAddImage)
-  setImageInfo( prev=>({...prev, post: "",image:null}))
-}
+// function toggleImage (){
+//   setToggleAddImage(!toggleAddImage)
+//   setImageInfo( prev=>({...prev, post: "",image:null}))
+// }
 
 useEffect(()=>{
  token && getComments()
@@ -148,7 +148,7 @@ useEffect(()=>{
 }, [logout])
 
     return(
-        <PostContext.Provider value={{imageInfo, toggleImage, toggleAddImage, setToggleAddImage, replies, comments, clearMyFeed, getMyFeed,  myFeed, addToMyFeed, addPostChangeHandler, deletePost, updatePost, addToFeed}}>
+        <PostContext.Provider value={{ replies, comments, clearMyFeed, getMyFeed,  myFeed, deletePost, updatePost}}>
 {props.children}
         </PostContext.Provider>
     )}

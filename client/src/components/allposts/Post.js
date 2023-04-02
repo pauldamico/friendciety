@@ -39,8 +39,7 @@ const dispatch = useDispatch()
   }
 
   //this allows the comments to show per prop post id
-  const postComments = comments.filter((item) => item.postId === props._id) || null;
-  console.log(postComments)
+  const postComments = comments.filter((item) => item.postId === props._id) || null; 
   const commentList = postComments.map((item) => <Comment key={item._id} {...item} />) || null;
 
   //onChange for the input of the top level comment
@@ -51,8 +50,10 @@ const dispatch = useDispatch()
     //add comment to post   need to setup authentcation for only friends posts
     const postComment=(event)=>{  
       event.preventDefault()
+    
       axios.post(`/auth/comment/${props._id}`, {comment:parentComment, postOwner:props.username}, config)
         .then(res=>{ 
+          console.log(res.data)
        dispatch(addComment(res.data))
       })
     setParentComment("")
@@ -70,11 +71,11 @@ const dispatch = useDispatch()
     //adds like to post  can prob make this reusable with likes
     const addLikeToPost =()=>{      
       axios.post(`/auth/post/like`, {id:props._id}, config)
-      .then(res=>{console.log(res.data.likes)
-        console.log(posts)
+      .then(res=>{console.log(res.data.likes)        
         posts.find(post=>post._id === props._id) &&
         dispatch(setPosts(posts.map(post=>post._id === props._id  ? {...post, likes:[...res.data.likes], dislikes:[...res.data.dislikes]}  : post)))
       })}
+      
     //adds dislike to post  can prob make this reusable with likes
   const addDislikeToPost =()=>{  
     axios.post(`/auth/post/dislike`, {id:props._id}, config)
@@ -228,6 +229,7 @@ const dispatch = useDispatch()
           )}
         </div>
 
+{/* This is a comment not a reply */}
         <ReplyModal
           reply={parentComment}
           onChange={parentCommentOnChange}

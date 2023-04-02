@@ -7,29 +7,29 @@ const { setFriends } = friendsSlice.actions;
 
 export default function FriendRequest(props) {
   const { currentUser } = useSelector((state) => state.currentUser);
+  const { friends } = useSelector((state) => state.friends);
   const dispatch = useDispatch()
   const { token } = currentUser || null;
   const config = {headers:{Authorization: `Bearer ${token}`}}
 
-  //Accept friend request or add friend
+  //Accept friend request or add friend   this prob needs to be fixed
   function acceptFriendRequest() {
     console.log(props.user);
     axios
       .put("/auth/friends/acceptfriend", { user: props.user }, config)
       .then((res) => {
         console.log(res.data);
-        dispatch(setFriends)((prev) => ({
-          ...prev,
-          friends: [...prev.friends, res.data],
-          friendRequest: prev.friendRequest.filter(
-            (item) => item !== props.user
-          ),
-        }));
-        refreshFriendData();
+        dispatch(setFriends(friends.map(friend=> ({
+            ...friend,
+            friends: [...friend.friends, res.data],
+            friendRequest: friend.friendRequest.filter(
+              (item) => item !== props.user
+            )})) ))
+        // refreshFriendData();
       });
   }
 
-  //Decline friend request or add friend
+  //Decline friend request or add friend   this prob needs to be fixed
   function declineFriendRequest() {
     axios
       .delete("/auth/friends/declinefriend", {
@@ -37,27 +37,27 @@ export default function FriendRequest(props) {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        dispatch(setFriends)((prev) => ({
-          ...prev,
-          user: {
-            ...prev.user,
-            friendRequest: prev.user.friendRequest.filter(
-              (item) => item !== props.user
-            ),
-          },
-        }));
+        dispatch(setFriends(friends.map(friend => ({
+            ...friend,
+            user: {
+              ...friend.user,
+              friendRequest: friend.user.friendRequest.filter(
+                (item) => item !== props.user
+              ),
+            },
+          })) ))
         console.log(res.data);
-        refreshFriendData();
+        // refreshFriendData();
       });
     console.log(config);
   }
 
-  //may not need this
-  function refreshFriendData (){   
-    axios.get('/auth/friends/friends', config)    
-    .then(res=>{
-      dispatch(setFriends)(prev=>({...prev, ...res.data}))    
-    })}
+  // //may not need this
+  // function refreshFriendData (){   
+  //   axios.get('/auth/friends/friends', config)    
+  //   .then(res=>{
+  //     dispatch(setFriends)(prev=>({...prev, ...res.data}))    
+  //   })}
 
 
 

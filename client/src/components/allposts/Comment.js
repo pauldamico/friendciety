@@ -2,13 +2,14 @@ import ReplyModal from "./ReplyModal"
 import React, {useState} from "react";
 import Reply from "./Reply";
 import axios from "axios";
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import { repliesSlice } from "../../redux";
 
 
-const {setReplies} = repliesSlice.actions
+const {addReply} = repliesSlice.actions
 
-export default function Comment (props){   
+export default function Comment (props){  
+  const dispatch = useDispatch() 
     const {replies} = useSelector(state=>state.replies)
     const {currentUser} = useSelector(state=>state.currentUser)
     const [commentToggle, setCommentToggle] = useState(false)
@@ -21,11 +22,6 @@ export default function Comment (props){
         setReply(e.target.value)        
     }
 
-//  function replyOnSubmit (e){
-//     e.preventDefault()
-//     postReply(props._id, reply, props.postOwner)
-//     setReply("")
-//  }
 
    //add reply to comment or reply
 const postReply =(e)=>{  
@@ -33,7 +29,7 @@ const postReply =(e)=>{
   const postOwner = props.postOwner || null
   axios.post(`/auth/reply/${props._id}`, {reply, postOwner}, config)
   .then(res=>{ 
- setReplies(prev=>[...prev, res.data])
+    dispatch(addReply(res.data))
  setReply("")
   // updateFriendFeedComments(postId, res.data)
 })}

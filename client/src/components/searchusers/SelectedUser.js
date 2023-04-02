@@ -1,21 +1,50 @@
 import React,{useContext} from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { FriendContext } from "../../context/friendProvider";
+import { friendsSlice } from "../../redux";
+
+const {setFriends} = friendsSlice.actions
+
 export default function SelectedUser(props) {
+  const dispatch = useDispatch()
+  const {friends} = useSelector(state=>state.friends)
+  const {currentUser} = useSelector(state=>state.currentUser)
   const navigate = useNavigate()
-  const { user, toggleSearch } = props; 
-  const {friends, friendRequest}= useContext(FriendContext)
+  const { token } = currentUser || null;
+  const config = {headers:{Authorization: `Bearer ${token}`}}
 
   
-  function addNewFriend() {   
-    friendRequest(user);
-  }
+  const { user, toggleSearch } = props; 
+  const {friendRequest}= useContext(FriendContext)
+
+
+      
+// function addNewFriend (){   
+    
+//   axios.put(`/auth/friends/addfriend`, {user:user}, config)
+//   .then(res=>{console.log(res.data)
+//     setFriends(prev=>({...prev,  pendingRequest:[...prev.pendingRequest, res.data]})) 
+//     // resetSearch()
+//   })
+//   .catch(err=>console.log(err))
+// }
+function addNewFriend (){   
+    
+  axios.put(`/auth/friends/addfriend`, {user:user}, config)
+  .then(res=>{console.log(res.data)
+    // dispatch(setFriends(friends.map(friend=>({...friend,  pendingRequest:[...friend.pendingRequest, res.data]}))) )
+    // resetSearch()
+  })
+  .catch(err=>console.log(err))
+}
 
   function navToFriendsPage (){
     toggleSearch()
     navigate(`profile/${user}`)
   }
-
+console.log(friends)
 //shows  add, pending, or friend in searchbox
 function addFriend () {
 if(friends?.friends.find((item) => item.user === user )) {
@@ -35,7 +64,7 @@ else{return <section style={{ cursor: "pointer" }} onClick={addNewFriend}>Add</s
         }}
       >
         {user}
-      </p>{" "}
+      </p>
      {addFriend ()}
       
     </div>

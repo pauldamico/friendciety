@@ -7,15 +7,15 @@ function FriendContextProvider (props){
 const {loginUser, signUpuser, resetSearch, config, token} = useContext(AuthContext)
     const [friends, setFriends] = useState({friends:[], friendRequest:[], pendingRequest:[], username:"", _id:"", userId:""})
     
-function friendRequest (selectedUser){   
+// function friendRequest (selectedUser){   
     
-    axios.put(`/auth/friends/addfriend`, {user:selectedUser}, config)
-    .then(res=>{console.log(res.data)
-      setFriends(prev=>({...prev,  pendingRequest:[...prev.pendingRequest, res.data]})) 
-      resetSearch()
-    })
-    .catch(err=>console.log(err))
-  }
+//     axios.put(`/auth/friends/addfriend`, {user:selectedUser}, config)
+//     .then(res=>{console.log(res.data)
+//       setFriends(prev=>({...prev,  pendingRequest:[...prev.pendingRequest, res.data]})) 
+//       resetSearch()
+//     })
+//     .catch(err=>console.log(err))
+//   }
 
 //   //Accept friend request or add friend
 // function acceptFriendRequest (addedUser){
@@ -39,19 +39,19 @@ function friendRequest (selectedUser){
 //       }
 
        //refreshes friend data
-  function refreshFriendData (){   
-    axios.get('/auth/friends/friends', config)    
-    .then(res=>{
-      setFriends(prev=>({...prev, ...res.data}))    
-    })}
+  // function refreshFriendData (){   
+  //   axios.get('/auth/friends/friends', config)    
+  //   .then(res=>{
+  //     setFriends(prev=>({...prev, ...res.data}))    
+  //   })}
 
-  useState(()=>{
-   token && refreshFriendData ()
-  }, [loginUser, signUpuser ])
+  // useState(()=>{
+  //  token && refreshFriendData ()
+  // }, [loginUser, signUpuser ])
     
 
 return(
-    <FriendContext.Provider value={{refreshFriendData, friends, friendRequest}}>
+    <FriendContext.Provider value={{friends,}}>
 {props.children}
     </FriendContext.Provider>
 )
