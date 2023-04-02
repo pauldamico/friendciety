@@ -20,11 +20,11 @@ const {token} = currentUser || null
 const config = {headers:{Authorization: `Bearer ${token}`}}
 const [imageInfo, setImageInfo] = useState({ post: "",image:null }); 
 const [toggleAddImage,setToggleAddImage] = useState(false)
- const {deletePost, updatePost} = useContext(PostContext)
+
 
     const [addToFeed, setAddToFeed] = useState({ post: "" }); 
     //this will show friends and current user posts
-    const posts = props.feed?.map(item=><Post key={item._id} deletePost={deletePost} updatePost={updatePost} {...item}/>)
+    const posts = props.feed?.map(item=><Post key={item._id}  {...item}/>)
 
     const getPosts = () =>{
       token && axios.get(`/auth/post/currentUserPosts`, config)    

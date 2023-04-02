@@ -1,8 +1,7 @@
-import React,{useContext} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { FriendContext } from "../../context/friendProvider";
+
 import { friendsSlice } from "../../redux";
 
 const {setFriends} = friendsSlice.actions
@@ -17,37 +16,27 @@ export default function SelectedUser(props) {
 
   
   const { user, toggleSearch } = props; 
-  const {friendRequest}= useContext(FriendContext)
 
 
-      
-// function addNewFriend (){   
-    
-//   axios.put(`/auth/friends/addfriend`, {user:user}, config)
-//   .then(res=>{console.log(res.data)
-//     setFriends(prev=>({...prev,  pendingRequest:[...prev.pendingRequest, res.data]})) 
-//     // resetSearch()
-//   })
-//   .catch(err=>console.log(err))
-// }
+///this is broken
 function addNewFriend (){   
     
   axios.put(`/auth/friends/addfriend`, {user:user}, config)
   .then(res=>{console.log(res.data)
-    // dispatch(setFriends(friends.map(friend=>({...friend,  pendingRequest:[...friend.pendingRequest, res.data]}))) )
+    dispatch(setFriends(res.data) )
     // resetSearch()
   })
   .catch(err=>console.log(err))
 }
-
+console.log(friends)
   function navToFriendsPage (){
     toggleSearch()
     navigate(`profile/${user}`)
   }
-console.log(friends)
+
 //shows  add, pending, or friend in searchbox
 function addFriend () {
-if(friends?.friends.find((item) => item.user === user )) {
+if(friends?.friends?.find((item) => item.user === user )) {
 return <section>Friend</section>
 }
 if(friends?.pendingRequest.find((item) => item === user )|| friends?.friendRequest.find((item) => item === user )) {

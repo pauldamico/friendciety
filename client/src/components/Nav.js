@@ -16,8 +16,7 @@ export default function Nav (){
    const dispatch = useDispatch()
     const {currentUser} = useSelector(state=>state.currentUser)
     const {token} = currentUser || null
-    const { logout} = useContext(AuthContext)
-    const {clearMyFeed} = useContext(PostContext)
+ 
   
     function logoff (){
         localStorage.clear()

@@ -37,10 +37,10 @@ friendsRouter.get(`/friends`, (req, res, next) => {
               res.status(500);
               return next(err);
             }
-            console.log(foundFriend)
+            
             // console.log(req.app.get("io"))
             // req.app.get("io").emit("currentUser", foundFriend.username);
-            res.send(foundFriend.username);
+            res.send(foundUser);
           }
         );
       }
@@ -88,11 +88,8 @@ friendsRouter.get(`/friends`, (req, res, next) => {
               if (err) {
                 res.status(500);
                 return next(err);
-              }
-              res.send({
-                user: selectedUser.username,
-                id: req.auth._id,
-              });
+              }            
+              res.send(currentUser);
             }
           );
         }
@@ -120,7 +117,7 @@ friendsRouter.get(`/friends`, (req, res, next) => {
               res.status(500);
               return next(err);
             }
-            res.send(acceptedUser.username);
+            res.send(currentUser);
           }
         );
       }

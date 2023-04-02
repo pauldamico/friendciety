@@ -53,7 +53,6 @@ const dispatch = useDispatch()
         .catch(err=>console.log(err))
       }
      
-      console.log(parentComment)
       //updates the post (component is UpdatePostModel.js)
       const updatePost = (id, editedPost)=>{   
         const updatedPost= {post:editedPost}

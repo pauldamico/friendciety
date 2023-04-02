@@ -51,7 +51,7 @@ const {loginUser, signUpuser, resetSearch, config, token} = useContext(AuthConte
     
 
 return(
-    <FriendContext.Provider value={{friends,}}>
+    <FriendContext.Provider value={{}}>
 {props.children}
     </FriendContext.Provider>
 )

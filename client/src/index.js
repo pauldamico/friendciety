@@ -15,15 +15,15 @@ root.render(
 
   <Router>
   <React.StrictMode>
-    <AuthContextProvider>
+    {/* <AuthContextProvider>
     <FriendContextProvider>
-    <PostContextProvider>
+    <PostContextProvider> */}
      <Provider store = {store}>
     <App />
     </Provider>
-</PostContextProvider>
+{/* </PostContextProvider>
 </FriendContextProvider>
-    </AuthContextProvider>
+    </AuthContextProvider> */}
   </React.StrictMode>
   </Router>
 );

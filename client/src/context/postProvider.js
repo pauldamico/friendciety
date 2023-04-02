@@ -9,25 +9,25 @@ function PostContextProvider (props){
 const { config, token, logout} = useContext(AuthContext) 
 
 //State for myFeed array and state for addToFeed which is any new post change handler
-    const [myFeed, setMyFeed] = useState([]);
+    // const [myFeed, setMyFeed] = useState([]);
     // const [toggleAddImage,setToggleAddImage] = useState(false)
     // const [addToFeed, setAddToFeed] = useState({ post: "" }); 
     // const [imageInfo, setImageInfo] = useState({ post: "",image:null }); 
-    const [comments, setComments] = useState([])
-    const [replies, setReplies] = useState([])
+    // const [comments, setComments] = useState([])
+    // const [replies, setReplies] = useState([])
 
   
-  function getMyFeed (){
-    // setMyFeed([])
-    token && axios.get(`/auth/post/currentUserPosts`, config)    
-    .then((res) => setMyFeed((res.data)))
-    .catch(err=>console.log(err));      
-  }
+  // function getMyFeed (){
+  //   // setMyFeed([])
+  //   token && axios.get(`/auth/post/currentUserPosts`, config)    
+  //   .then((res) => setMyFeed((res.data)))
+  //   .catch(err=>console.log(err));      
+  // }
 
-  // set feed to a empty array when logout is clicked
-  function clearMyFeed(){
-    setMyFeed([])
-  }
+  // // set feed to a empty array when logout is clicked
+  // function clearMyFeed(){
+  //   setMyFeed([])
+  // }
 
   //adds new post for current user
     // const addToMyFeed = (event) => {
@@ -71,33 +71,33 @@ const { config, token, logout} = useContext(AuthContext)
  
 
     //deletes a post by id
-  const deletePost = (id) => {    
-    axios.delete(`/auth/post/${id}`, config)
-    .then(res=>setMyFeed(prev=>prev.filter(post=>id !== post._id && {...post})))
-    .catch(err=>console.log(err))
-  }
+  // const deletePost = (id) => {    
+  //   axios.delete(`/auth/post/${id}`, config)
+  //   .then(res=>setMyFeed(prev=>prev.filter(post=>id !== post._id && {...post})))
+  //   .catch(err=>console.log(err))
+  // }
   
-  //updates the post (component is UpdatePostModel.js)
-  const updatePost = (id, editedPost)=>{   
-    const updatedPost= {post:editedPost}
-    console.log(updatedPost)
-  axios.put(`/auth/post/${id}`, updatedPost, config)
-  .then(res=>setMyFeed(prev=>prev.map(post=>id === post._id ? {...post, post:editedPost} : {...post})))
-  .catch(err=>console.log(err))  
-  }
+  // //updates the post (component is UpdatePostModel.js)
+  // const updatePost = (id, editedPost)=>{   
+  //   const updatedPost= {post:editedPost}
+  //   console.log(updatedPost)
+  // axios.put(`/auth/post/${id}`, updatedPost, config)
+  // .then(res=>setMyFeed(prev=>prev.map(post=>id === post._id ? {...post, post:editedPost} : {...post})))
+  // .catch(err=>console.log(err))  
+  // }
 
-// get all comments for user and user's friends
-const getComments = ()=>{
-  axios.get('/auth/comment', config)
-  .then(res=>{setComments(res.data)})
-  .catch(err=>console.log(err))
-}
-// get all replies 
-const getReplies = ()=>{
-  axios.get('/auth/reply', config)
-  .then(res=>{setReplies(res.data)})
-  .catch(err=>console.log(err))
-}
+// // get all comments for user and user's friends
+// const getComments = ()=>{
+//   axios.get('/auth/comment', config)
+//   .then(res=>{setComments(res.data)})
+//   .catch(err=>console.log(err))
+// }
+// // get all replies 
+// const getReplies = ()=>{
+//   axios.get('/auth/reply', config)
+//   .then(res=>{setReplies(res.data)})
+//   .catch(err=>console.log(err))
+// }
 
 //   //add comment to post   need to setup authentcation for only friends posts
 //   const postComment=(postId, comment, postOwner)=>{
@@ -140,15 +140,15 @@ const getReplies = ()=>{
 //   setImageInfo( prev=>({...prev, post: "",image:null}))
 // }
 
-useEffect(()=>{
- token && getComments()
- token && getMyFeed()
- token && getReplies() 
- // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [logout])
+// useEffect(()=>{
+//  token && getComments()
+//  token && getMyFeed()
+//  token && getReplies() 
+//  // eslint-disable-next-line react-hooks/exhaustive-deps
+// }, [logout])
 
     return(
-        <PostContext.Provider value={{ replies, comments, clearMyFeed, getMyFeed,  myFeed, deletePost, updatePost}}>
+        <PostContext.Provider value={{}}>
 {props.children}
         </PostContext.Provider>
     )}

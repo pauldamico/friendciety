@@ -3,11 +3,10 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import {friendsSlice} from "../../redux/index"
 
-const { setFriends } = friendsSlice.actions;
+const { setFriends} = friendsSlice.actions;
 
 export default function FriendRequest(props) {
-  const { currentUser } = useSelector((state) => state.currentUser);
-  const { friends } = useSelector((state) => state.friends);
+  const { currentUser } = useSelector((state) => state.currentUser);  
   const dispatch = useDispatch()
   const { token } = currentUser || null;
   const config = {headers:{Authorization: `Bearer ${token}`}}
@@ -19,12 +18,7 @@ export default function FriendRequest(props) {
       .put("/auth/friends/acceptfriend", { user: props.user }, config)
       .then((res) => {
         console.log(res.data);
-        dispatch(setFriends(friends.map(friend=> ({
-            ...friend,
-            friends: [...friend.friends, res.data],
-            friendRequest: friend.friendRequest.filter(
-              (item) => item !== props.user
-            )})) ))
+        dispatch(setFriends(res.data))
         // refreshFriendData();
       });
   }
@@ -37,19 +31,11 @@ export default function FriendRequest(props) {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        dispatch(setFriends(friends.map(friend => ({
-            ...friend,
-            user: {
-              ...friend.user,
-              friendRequest: friend.user.friendRequest.filter(
-                (item) => item !== props.user
-              ),
-            },
-          })) ))
+        dispatch(setFriends(res.data))
         console.log(res.data);
         // refreshFriendData();
       });
-    console.log(config);
+   
   }
 
   // //may not need this
