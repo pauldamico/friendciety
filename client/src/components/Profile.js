@@ -43,7 +43,7 @@ console.log(friends)
                      </div>
                      </>
             : null}
-           {navigatedUser !== selectedUser && count.current <= 2 ? <div className="profile-div flexbox center">User must be a friend to view this page</div> : null}
+           {navigatedUser !== selectedUser && count.current >= 1? <div className="profile-div flexbox center">User must be a friend to view this page</div> : null}
    
     </div>)
 }

@@ -4,24 +4,18 @@ import React, { useState } from "react";
 import {useDispatch} from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { authSlice } from "../../redux/index.js";
-import {ApiCalls} from "../ApiCalls.js"
 
   const { setCurrentUser } = authSlice.actions;
 
-
-  const Login =()=>{
-    const {getPosts, getComments, getReplies, getFriends} = ApiCalls()
+  const Login =()=>{   
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [loginFormData, setLoginFormData] = useState({username:"", password:""})
   const [toggleSignUp, setToggleSignUp] = useState(false);
 
-//   function submitSignUpInfo (event){
-//     event.preventDefault()
-//     signUpUser(loginFormData)
-//     setLoginFormData(prev=>({...prev, username:"", password:""}))
-//   }
 
+
+  //user login
   function loginUser(event) {
 event.preventDefault()
     axios
