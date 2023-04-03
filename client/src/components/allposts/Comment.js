@@ -35,8 +35,8 @@ const postReply =(e)=>{
 })}
 
  //replies
-const currentCommentReplies = replies.filter(reply=>reply.commentId === props._id)
-const listedReplies = currentCommentReplies.map(reply=><Reply key={reply._id} {...reply}/>)
+ const currentCommentReplies = Array.isArray(replies) && replies.filter(reply => reply.commentId === props._id) 
+const listedReplies = Array.isArray(currentCommentReplies) && currentCommentReplies.map(reply=><Reply key={reply._id} {...reply}/>)
 
     //onSubmit
     return (

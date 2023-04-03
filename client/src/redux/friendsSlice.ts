@@ -17,7 +17,9 @@ reducers:{
     setFriends:(state, action:PayloadAction<FriendsState["friends"]>)=>{
         state.friends = action.payload 
     },
-  
+    resetFriends:(state)=>{
+        state.friends = initialState.friends
+      }
 }
 })
 

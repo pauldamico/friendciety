@@ -39,8 +39,8 @@ const dispatch = useDispatch()
   }
 
   //this allows the comments to show per prop post id
-  const postComments = comments.filter((item) => item.postId === props._id) || null; 
-  const commentList = postComments.map((item) => <Comment key={item._id} {...item} />) || null;
+  const postComments =  Array.isArray(comments) && comments?.filter((item) => item.postId === props._id)
+  const commentList = Array.isArray(postComments) && postComments.map((item) => <Comment key={item._id} {...item} />)
 
   //onChange for the input of the top level comment
   function parentCommentOnChange(e) {

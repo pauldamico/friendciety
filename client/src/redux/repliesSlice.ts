@@ -17,6 +17,9 @@ interface RepliesState {
       },
       addReply:(state,action)=>{
         state.replies.push(action.payload)
+      },
+      resetReplies:(state)=>{
+        state.replies = initialRepliesState.replies
       }
     },
   });

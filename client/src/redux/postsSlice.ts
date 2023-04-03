@@ -18,7 +18,7 @@ interface PostsState {
   posts: Post[];
 }
 
-const initialMyFeedState:PostsState = {
+const initialPostsState:PostsState = {
   posts: [
   ],
 };
@@ -26,13 +26,16 @@ const initialMyFeedState:PostsState = {
 /// posts
 export const postsSlice = createSlice({
   name: 'posts',
-  initialState: initialMyFeedState,
+  initialState: initialPostsState,
   reducers: {
     setPosts: (state, action:PayloadAction<Post[]>) => {
       state.posts = action.payload     
     }, 
     addPost:(state,action:PayloadAction<Post>)=>{
       state.posts.push(action.payload)
+    },
+    resetPosts:(state)=>{
+      state.posts = initialPostsState.posts
     }
   },
 });

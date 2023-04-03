@@ -28,7 +28,7 @@ function addNewFriend (){
   })
   .catch(err=>console.log(err))
 }
-console.log(friends)
+
   function navToFriendsPage (){
     toggleSearch()
     navigate(`profile/${user}`)

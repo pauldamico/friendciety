@@ -19,6 +19,9 @@ interface CommentsState {
       },
       addComment:(state, action)=>{
         state.comments.push(action.payload)
+      },
+      resetComments:(state)=>{
+        state.comments = initialCommentsState.comments
       }
     },
   });

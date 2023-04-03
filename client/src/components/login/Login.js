@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import {useDispatch} from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { authSlice } from "../../redux/index.js";
+import {ApiCalls} from "../ApiCalls.js"
 
   const { setCurrentUser } = authSlice.actions;
 
 
   const Login =()=>{
-  
+    const {getPosts, getComments, getReplies, getFriends} = ApiCalls()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [loginFormData, setLoginFormData] = useState({username:"", password:""})
@@ -25,14 +26,15 @@ import { authSlice } from "../../redux/index.js";
 event.preventDefault()
     axios
       .post("/login", loginFormData)  
-      .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))
-      console.log(res.data)
+      .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))      
       dispatch(setCurrentUser(res.data) )
       navigate("/")
+      
     })
-      .catch((err) => console.log(err));
 
+      .catch((err) => console.log(err));
       setLoginFormData(prev=>({...prev, username:"", password:""}))
+
   }
 
   //signUp

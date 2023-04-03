@@ -19,12 +19,23 @@ interface AuthState {
       otpauthUrl: "",
     },
   };
+
+  const resetState: AuthState = {
+    currentUser: {
+      token: null,
+      user: {},
+      otpauthUrl: null,
+    },
+  };
 export const authSlice = createSlice({    
 name:"currentUser",
 initialState,
 reducers:{
     setCurrentUser:(state, action:PayloadAction<AuthState["currentUser"]>)=>{
         state.currentUser = action.payload 
+    },
+    resetCurrentUser:(state)=>{
+      state.currentUser = resetState.currentUser
     }
 }
 })

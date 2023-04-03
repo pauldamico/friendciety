@@ -25,8 +25,7 @@ event.preventDefault()
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`
       }})
-    .then(res => {
-      console.log(res.data);
+    .then(res => {    
       dispatch(addPost(res.data))
     })
     .catch(error => {
@@ -36,7 +35,6 @@ event.preventDefault()
     props.toggleImage()
     setImageUrl(null)
     }
-console.log(posts)
 
     //change handler for adding post and image
     const addImageChangeHandler = (event) => {
