@@ -52,8 +52,10 @@ export default function MessageModel(props) {
    .catch(err=>console.log(err))   
     setMessageContent("")
   }
-const combinedMessageArray = messages.messages.sentMessages.filter(sentMessage=>sentMessage.to === props.user).map(message=><div key={message._id}><section>{message.from}<span>{message.message}</span></section></div>).concat(messages.messages.receivedMessages.filter(receivedMessage=>receivedMessage.from === props.user).map(message=><div key={message._id}><section>{message.from}<span>{message.message}</span></section></div>))
-const listMessages =combinedMessageArray.sort((a,b)=>a.chatOrder - b.chatOrder)
+const combinedMessageArray = messages.messages.sentMessages.filter(sentMessage=>sentMessage.to === props.user).concat(messages.messages.receivedMessages.filter(receivedMessage=>receivedMessage.from === props.user))
+const sortedArray =combinedMessageArray.sort((a,b)=>b.chatOrder - a.chatOrder )
+
+const listMessages =sortedArray.map(message=><div order={message.postorder} key={message._id}><section>{message.from}<span>{message.message}</span></section></div>)
 
 
   const onChange = (e)=>{
