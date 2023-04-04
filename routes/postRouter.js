@@ -64,8 +64,7 @@ postRouter.get('/currentUserPosts', (req, res, next)=>{
                 res.status(500)
                 return next(err)
             }    
-            const allArray = [...friendsFeed, ...currentUserFeed] 
-            console.log(allArray)         
+            const allArray = [...friendsFeed, ...currentUserFeed]            
             return res.send(allArray)          
             })
     })    

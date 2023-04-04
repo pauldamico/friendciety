@@ -63,7 +63,7 @@ friendsRouter.get(`/friends`, (req, res, next) => {
       Friends.findOneAndUpdate(
         { userId: req.auth._id },
         {
-          $addToSet: { friends: { user: req.body.user, id: selectedUser.id } },
+          $addToSet: { friends: { user: req.body.user, id: selectedUser.userId } },
           $pull: { friendRequest: selectedUser.username },
         },
         { new: true },

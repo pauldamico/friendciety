@@ -29,8 +29,7 @@ messageRouter.get(`/`, (req, res, next) => {
 
 
   //handles sending messages
-  messageRouter.put(`/sendmessage`, (req, res, next) => {
-    console.log(getCurrentDate())
+  messageRouter.put(`/sendmessage`, (req, res, next) => {  
     req.body.image = req.file ? req.file.filename : null;
     Messages.findOneAndUpdate(
       { userId: req.auth._id },

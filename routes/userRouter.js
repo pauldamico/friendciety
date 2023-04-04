@@ -33,7 +33,7 @@ userRouter.post("/signup", (req, res, next) => {
       const secret = speakeasy.generateSecret({ length: 20 });
       //creates user token
       const token = jwt.sign(newUser.withoutPassword(), process.env.SECRET);
-      console.log(newUser.withoutPassword())
+  
       //creates secret for 2fa
       const otpauthUrl = speakeasy.otpauthURL({
         secret: secret.base32,

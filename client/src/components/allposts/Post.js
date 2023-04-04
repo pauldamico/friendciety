@@ -23,6 +23,8 @@ const dispatch = useDispatch()
  const {comments} = useSelector(state=>state.comments)
  const {posts} = useSelector(state=>state.posts)
 
+ console.log(comments)
+
 
  const {token} = currentUser || null
  const [toggleEdit, setToggleEdit] = useState(false);
