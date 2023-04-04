@@ -4,6 +4,7 @@ const speakeasy = require("speakeasy");
 const User = require("../models/user.js");
 const Friends = require("../models/friends.js");
 const Files = require("../models/files.js");
+const Messages = require("../models/messages.js")
 const userRouter = express.Router();
 
 
@@ -38,7 +39,7 @@ userRouter.post("/signup", (req, res, next) => {
         secret: secret.base32,
         label: newUser.withoutPassword().username,
       });
-      //creates friendsList for user
+      //creates files model for user
       if(newUser){     
         const newFilesModel = new Files({
           username:newUser.withoutPassword().username, userId:newUser.withoutPassword()._id
@@ -48,10 +49,8 @@ userRouter.post("/signup", (req, res, next) => {
               res.status(500)
               return next(err)
             }   
-          }  )    
-         
-  
-        //////////////
+          }  )      
+        //creates friendsmodel for user
         const newFriendsModel = new Friends({
           friends:[], username:newUser.username, userId:newUser._id})
           newFriendsModel.save((err, friendsList)=>{
@@ -59,9 +58,22 @@ userRouter.post("/signup", (req, res, next) => {
               res.status(500)
               return next(err)
             }           
-        if(friendsList){          
-          return res.send({ user: newUser.withoutPassword(), token, otpauthUrl});
-        }})}        
+     // creates messages moel for user
+        const newMessagesModel = new Messages({
+          username:newUser.withoutPassword().username, userId:newUser.withoutPassword()._id
+        })  
+        newMessagesModel.save((err, messages)=>{
+            if(err){
+              res.status(500)
+              return next(err)
+            }   
+            if(messages){          
+              return res.send({ user: newUser.withoutPassword(), token, otpauthUrl});
+            }})
+          }  )    
+      
+      
+      }        
       })})})
       
      

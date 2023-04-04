@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
@@ -12,8 +12,10 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import {useSelector} from 'react-redux'
 import MessageModel from './MessageModel';
+import { ApiCalls } from '../ApiCalls'; 
 
 export default function ChatDrawer() {
+  const {getMessages} = ApiCalls()
   const {friends} = useSelector(state=>state.friends)
   const [state, setState] = React.useState({
     top: false,
@@ -56,6 +58,10 @@ export default function ChatDrawer() {
 
     </Box>
   );
+
+  useEffect(()=>{
+    getMessages()
+  }, [])
 
   return (
     <div>

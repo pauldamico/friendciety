@@ -1,11 +1,12 @@
 import { useSelector, useDispatch} from 'react-redux'
 import axios from 'axios'
-import { postsSlice, commentsSlice, repliesSlice, friendsSlice, authSlice } from "../redux"
+import { postsSlice, commentsSlice, repliesSlice, friendsSlice, authSlice, messagesSlice } from "../redux"
 
 const {setPosts} = postsSlice.actions
 const {setComments} = commentsSlice.actions
 const {setReplies} = repliesSlice.actions
 const {setFriends} = friendsSlice.actions
+const {setMessages} = messagesSlice.actions
 const {setCurrentUserLocalStorage} = authSlice.actions
 
 export const ApiCalls = () => {
@@ -38,9 +39,16 @@ export const ApiCalls = () => {
       .catch(err => console.log(err));
   }
 
+  const getMessages= () => {
+    token &&  axios.get('/auth/messages/', config)
+      .then(res => {       
+        dispatch(setMessages(res.data))})
+      .catch(err => console.log(err));
+  }
+
   const updateUserInfo = () =>{
     dispatch(setCurrentUserLocalStorage())
   }
 
-  return { getPosts, getComments, getReplies, getFriends, updateUserInfo};
+  return { getPosts, getComments, getReplies, getFriends, updateUserInfo, getMessages};
 }

@@ -8,7 +8,7 @@ export const store = configureStore({
     posts:postsSlice.reducer,
     comments:commentsSlice.reducer,
     replies:repliesSlice.reducer,
-    loading:messagesSlice.reducer,
+    messages:messagesSlice.reducer,
     loading:loadingSlice.reducer,   
 
   },

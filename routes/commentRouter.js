@@ -7,6 +7,7 @@ const Friends = require('../models/friends.js')
 //get comments
 commentRouter.get('/', (req,res,next)=>{
   Friends.findOne({userId:req.auth._id}, (err, foundUser)=>{
+  
 const allIds = [...foundUser.friends.map(friend=>friend.id), req.auth._id]
 Comment.find({userId:{$in:allIds}}, (err, foundComments)=>{
 res.send(foundComments)
@@ -22,6 +23,10 @@ res.send(foundComments)
     const { postId} = req.params;    
     const addedComment = new Comment({postId,postOwner, comment, username, userId:_id, })    
     addedComment.save((err, newComment)=>{
+      if(err){
+        res.status(500)
+        return next(err)
+      }
 return res.send(newComment)
      })
 } )
