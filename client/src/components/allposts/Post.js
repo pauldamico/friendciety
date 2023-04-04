@@ -86,7 +86,7 @@ const dispatch = useDispatch()
     //adds like to post  can prob make this reusable with likes
     const addLikeToPost =()=>{      
       axios.post(`/auth/post/like`, {id:props._id}, config)
-      .then(res=>{console.log(res.data.likes)        
+      .then(res=>{      
         posts.find(post=>post._id === props._id) &&
         dispatch(setPosts(posts.map(post=>post._id === props._id  ? {...post, likes:[...res.data.likes], dislikes:[...res.data.dislikes]}  : post)))
       })}
@@ -94,7 +94,7 @@ const dispatch = useDispatch()
     //adds dislike to post  can prob make this reusable with likes
   const addDislikeToPost =()=>{  
     axios.post(`/auth/post/dislike`, {id:props._id}, config)
-    .then(res=>{console.log(res.data.dislikes)
+    .then(res=>{
       posts.find(post=>post._id === props._id) &&
       dispatch(setPosts(posts.map(post=>post._id === props._id  ? {...post, dislikes:[...res.data.dislikes], likes:[...res.data.likes]}  : post)))      
     })}

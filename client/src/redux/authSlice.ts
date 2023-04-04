@@ -36,6 +36,9 @@ reducers:{
     },
     resetCurrentUser:(state)=>{
       state.currentUser = resetState.currentUser
+    },
+    setCurrentUserLocalStorage:(state)=>{
+      state.currentUser = initialState.currentUser
     }
 }
 })

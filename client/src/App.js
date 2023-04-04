@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import Feed from './components/Feed'
 import Nav from "./components/Nav";
 import Login from "./components/login/Login";
@@ -6,18 +6,17 @@ import Profile from "./components/Profile";
 import SideBar from "./components/SideBar";
 import "./App.css";
 import { Routes, Route} from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector} from "react-redux";
+
 
 
 function App() {
 
-
   const {currentUser} = useSelector((state)=>state.currentUser)
-  const {friends} = useSelector((state)=>state.friends)
+  // const {friends} = useSelector((state)=>state.friends)
   const {posts} = useSelector(state=>state.posts) || ""
 const allPosts = posts.map(post=>post).sort((a,b)=>a.postOrder - b.postOrder) || []
 const friendsPosts = posts?.filter(post=>post.userId !== currentUser.user._id) || []
-
 
 
 

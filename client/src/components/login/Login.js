@@ -20,10 +20,9 @@ import { authSlice } from "../../redux/index.js";
 event.preventDefault()
     axios
       .post("/login", loginFormData)  
-      .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))      
+      .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))     
       dispatch(setCurrentUser(res.data) )
-      navigate("/")
-      
+      navigate("/")      
     })
 
       .catch((err) => console.log(err));
@@ -42,7 +41,7 @@ event.preventDefault()
       navigate("/")
     })
       .catch((err) => console.log(err));  
-      localStorage.setItem("userInfo", JSON.stringify(loginFormData))
+      setLoginFormData(prev=>({...prev, username:"", password:""}))
   }
 
 

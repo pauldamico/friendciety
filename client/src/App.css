@@ -16,7 +16,7 @@ color: black;
 /* custom */
 .flexbox{
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
 }
 
 .row{
