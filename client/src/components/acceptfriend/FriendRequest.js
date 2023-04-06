@@ -49,8 +49,9 @@ export default function FriendRequest(props) {
 
   return (
     <div className="friend-request">
-      {props.user}{" "}
+      {props.user}
       <span style={{ cursor: "pointer" }} onClick={acceptFriendRequest}>
+        
         Add
       </span>
       <span

@@ -10,6 +10,7 @@ import { useSelector} from "react-redux";
 
 
 
+
 function App() {
 
   const {currentUser} = useSelector((state)=>state.currentUser)
@@ -19,9 +20,9 @@ const allPosts = posts.map(post=>post).sort((a,b)=>a.postOrder - b.postOrder) ||
 const friendsPosts = posts?.filter(post=>post.userId !== currentUser.user._id) || []
 
   return (
-    <div className="app">
+    <div className="app"> 
       <Nav />
-      <SideBar />
+      {currentUser.token ?  <SideBar /> : null}
       <Routes>
         <Route path="/" element={currentUser.token ? <Feed user={currentUser.user.username} feed={allPosts} /> : <Login/>} />
         <Route path="/profile/:userprofile" element={currentUser.token ? <Profile  /> : <Login />} />     

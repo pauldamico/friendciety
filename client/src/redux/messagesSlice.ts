@@ -18,6 +18,9 @@ export const messagesSlice = createSlice({
     reducers:{
         setMessages:(state, action:PayloadAction<typeof initialState['messages']>)=>{
             state.messages = action.payload
+        },
+        resetMessages:(state, action:PayloadAction<typeof initialState['messages']>)=>{
+            state.messages = initialState.messages
         }
     }
 

@@ -7,6 +7,7 @@ import {
   repliesSlice,
   friendsSlice,
   commentsSlice,
+  messagesSlice
 } from "../redux";
 import { useNavigate } from "react-router-dom";
 import WindowSize from "./WindowSize";
@@ -14,12 +15,15 @@ import FriendRequests from "./acceptfriend/FriendRequests";
 import SearchUserModal from "./searchusers/SearchUserModal";
 import BasicMenu from "./MUI/BasicMenu";
 import { ApiCalls } from "./ApiCalls";
+import Notify from "./MUI/Notify";
 
 const { resetCurrentUser } = authSlice.actions;
 const { resetPosts } = postsSlice.actions;
 const { resetComments } = commentsSlice.actions;
 const { resetReplies } = repliesSlice.actions;
 const { resetFriends } = friendsSlice.actions;
+const {resetMessages} = messagesSlice.actions;
+
 
 export default function Nav() {
   const { getPosts, getComments, getReplies, getFriends } = ApiCalls();
@@ -36,15 +40,17 @@ export default function Nav() {
     dispatch(resetPosts());
     dispatch(resetReplies());
     dispatch(resetFriends());
+    dispatch(resetMessages())
     return navigate("/Login");
     // resetSearch()
   }
 
   return (
-    <div>
+    <div>     
+
       {token ? (
         <div className="nav-div">
-          {token ? <FriendRequests /> : null}
+      
           <WindowSize arrow="<">
             {" "}
             <BasicMenu />
@@ -52,7 +58,10 @@ export default function Nav() {
 
           {token ? (
             <div className="nav-div-div">
-              {token ? <SearchUserModal /> : null}
+              {token ? 
+              <SearchUserModal /> 
+              : null}
+              {token ? <FriendRequests /> : null}
               {!token ? (
                 <Link to="/login"> Login</Link>
               ) : (

@@ -2,11 +2,14 @@ import React, {useEffect,useState, useContext} from "react"
 import axios from "axios"
 import { friendsSlice } from "../../redux"
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import SelectedUser from "./SelectedUser"
+
 
 const{setFriends} = friendsSlice.actions
 
 export default function SearchUserModal (props){
+  const navigate = useNavigate()
     const dispatch = useDispatch()
    const {currentUser} = useSelector(state=>state.currentUser)
    const {friends} = useSelector(state=>state.friends)
@@ -43,6 +46,11 @@ function searchUsersHandler (event){
    
     }
 
+    function navToFriendsPage (user){
+      console.log(user)
+           navigate(`profile/${user}`)
+    }
+
 function refreshFriendData (){   
     axios.get('/auth/friends/friends', config)    
     .then(res=>{
@@ -57,18 +65,20 @@ function refreshFriendData (){
           setAllUsers(res.data)
         })     
       } 
-      const listFriendsElement =filterBySearch.map(user=>user !== currentUser.user.username &&<li>{user}</li> )
+      const listFriendsElement =filterBySearch.filter(user=>user !== currentUser.user.username && user )
 
 useEffect(()=>{
-
 getAllUsers()  
-// refreshFriendData ()
+
 }, [])
-    return(<div  onClick={toggleSearch} className="search-user-main-div"> 
+
+    return(
+    <div onClick={toggleSearch} className="search-user-main-div"> 
            <input style={inputStyle} onChange ={searchUsersHandler} onClick={toggleSearch}  placeholder='Search Users...'/>
           {searchToggle && <div className="search-user-div" >
         {filterBySearch.map(user=>user!== currentUser.user.username && <SelectedUser resetSearch={resetSearch} key={user} user={user} toggleSearch={toggleSearch}/>)}
-        {/* {listFriendsElement} */}
+ 
         </div>}       
-    </div>)
+    </div>
+    )
 }

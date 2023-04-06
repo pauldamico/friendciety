@@ -44,7 +44,7 @@ messageRouter.get(`/`, (req, res, next) => {
           { username: req.body.user },
           { $addToSet: { receivedMessages: {date:getCurrentDate(), message:req.body.message,to:req.body.user, from:req.auth.username, image:req.body.image} } },
           { new: true },
-          (err) => {
+          (err, ) => {
             if (err) {
               res.status(500);
               return next(err);

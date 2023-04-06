@@ -55,7 +55,7 @@ event.preventDefault()
     <div className={"image-modal-div"}>
    
         <form className="flexbox" encType="multipart/form-data" onSubmit={addImageToFeed} >
-        <input style ={{borderRadius:"10px", padding:"5px", marginBottom:"5px"}} placeholder="Add Description..." name="post" value={imageInfo.post} onChange={addImageChangeHandler} type="text" />
+        <input required style ={{borderRadius:"10px", padding:"5px", marginBottom:"5px"}} placeholder="Add Description..." name="post" value={imageInfo.post} onChange={addImageChangeHandler} type="text" />
         <input name="image" value={imageInfo.file} onChange={addImageChangeHandler} type="file" accept="image/png, image/jpeg" />
         <button  type="submit" style={{cursor:"pointer", width:"100%", textAlign:"center"}}>Submit</button>
         </form>
