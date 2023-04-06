@@ -18,6 +18,7 @@ import { ApiCalls } from '../ApiCalls';
 export default function ChatDrawer() {
   const {getMessages} = ApiCalls()
   const {friends} = useSelector(state=>state.friends)
+  const {messages} = useSelector(state=>state.messages)
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -37,6 +38,23 @@ export default function ChatDrawer() {
     setState({ ...state, messageModal:!state.messageModal });
   };
 
+// this lists the users who sent messages from newest to oldest
+const uniqueMessages = [...new Map(messages.receivedMessages.slice().sort((a,b)=>b.chatOrder-a.chatOrder).map(message => [message.from, message])).values()].map(item=>item.from).reverse()
+//this sorts all of your friends with users that sent the latest messages to you first
+const friendsSortedByNewMessages = friends.friends.slice().sort((a, b) => b.user.localeCompare(a.user))
+    .map(({ user }) => user)
+    .sort((a, b) => {
+      const indexA = uniqueMessages.indexOf(a);
+      const indexB = uniqueMessages.indexOf(b);
+      return indexA < indexB ? -1 : indexA > indexB ? 1 : 0;
+    })
+    .reverse();
+
+
+
+
+
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
@@ -48,11 +66,11 @@ export default function ChatDrawer() {
       <List >
       <Divider sx={{marginBottom:"1vh"}}/>
       
-        {friends.friends.map((friend) => (
-          <ListItem key={friend.user} disablePadding>
+        {friendsSortedByNewMessages.map((friend) => (
+          <ListItem key={friend} disablePadding>
               
             <ListItemButton sx={{height:"40px", padding:"0", marginBottom:"1vh"}}>              
-            <MessageModel user={friend.user}/>
+            <MessageModel user={friend}/>
               {/* <ListItemText onClick={toggleMessage} primary={friend.user} /> */}
             </ListItemButton>
           </ListItem>

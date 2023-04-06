@@ -15,7 +15,9 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "30vw",
+  maxWidth:"40vh",
+  minWidth: "250px",
+  width:"100%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -72,7 +74,7 @@ export default function MessageModel(props) {
     (a, b) => b.chatOrder - a.chatOrder
   );
 
-  console.log(messages)
+  
 
   const listMessages = sortedArray.map((message) => (
     <Box

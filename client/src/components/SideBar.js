@@ -8,13 +8,13 @@ import { useSelector } from "react-redux";
 export default function SideBar() {
   const { currentUser} = useSelector(state=>state.currentUser)
   const {token} = currentUser || null
-
-
-  return (<WindowSize arrow=">">
+   return (<WindowSize arrow=">">
     <div className="sidebar-div">
       {token ? (
         <div>   
-          <div className="sidebar-div2">           
+          <div className="sidebar-div2">      
+
+      
              
             {token ? (
             <Link to={`/profile/${currentUser?.user.username}`} className="profile-icon">

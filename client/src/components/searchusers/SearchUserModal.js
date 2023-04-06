@@ -21,6 +21,8 @@ const [allUsers, setAllUsers] = useState([])
    const [search, setSearch] = useState("")  
 const inputStyle = { borderRadius:"10px", gridColumn:"1/2"}
 
+
+
 //this allows the search function to work correctly
 const filterBySearch = allUsers.length > 0 ? allUsers.filter(user=>user.includes(search)) : []
 
@@ -41,23 +43,6 @@ function searchUsersHandler (event){
 }
 
 
-  //gets list of searchable users
-  function getListOfAllUsers (filter){
-   
-    }
-
-    function navToFriendsPage (user){
-      console.log(user)
-           navigate(`profile/${user}`)
-    }
-
-function refreshFriendData (){   
-    axios.get('/auth/friends/friends', config)    
-    .then(res=>{
-       console.log(res.data)
-      dispatch(setFriends(res.data))
-    })}
-
     function getAllUsers (){
         axios.get('/auth/allusers', config)
         .then(res=>{      
@@ -65,7 +50,7 @@ function refreshFriendData (){
           setAllUsers(res.data)
         })     
       } 
-      const listFriendsElement =filterBySearch.filter(user=>user !== currentUser.user.username && user )
+
 
 useEffect(()=>{
 getAllUsers()  
@@ -76,7 +61,7 @@ getAllUsers()
     <div onClick={toggleSearch} className="search-user-main-div"> 
            <input style={inputStyle} onChange ={searchUsersHandler} onClick={toggleSearch}  placeholder='Search Users...'/>
           {searchToggle && <div className="search-user-div" >
-        {filterBySearch.map(user=>user!== currentUser.user.username && <SelectedUser resetSearch={resetSearch} key={user} user={user} toggleSearch={toggleSearch}/>)}
+        {filterBySearch.sort().map(user=>user!== currentUser.user.username && <SelectedUser resetSearch={resetSearch} key={user} user={user} toggleSearch={toggleSearch}/>)}
  
         </div>}       
     </div>

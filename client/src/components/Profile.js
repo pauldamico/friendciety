@@ -17,11 +17,13 @@ const {friends} = useSelector(state=>state.friends)
 const {posts} = useSelector(state=>state.posts)  
 const navigatedUser = useParams().userprofile
 
+
+
  
 
 useEffect(()=>{
     count.current = count.current + 1;
-    dispatch(setCurrentUserLocalStorage())
+    // dispatch(setCurrentUserLocalStorage())
     getFriends()    
 }, [])
 
@@ -33,7 +35,6 @@ const profile = friends?.friends?.map(friend=>friend.user).concat(currentUser?.u
 const userPosts = posts?.filter(post=>post.username === navigatedUser) || ""
 //shows the username according to the endpoint
 const selectedUser = profile?.find(user=>user === navigatedUser) || null
-
 
 
     return (<div className="flexbox" >

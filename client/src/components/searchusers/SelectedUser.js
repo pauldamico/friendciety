@@ -32,6 +32,7 @@ function addNewFriend (){
   function navToFriendsPage (){
     toggleSearch()
     navigate(`profile/${user}`)
+  
   }
 
 //shows  add, pending, or friend in searchbox

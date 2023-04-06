@@ -100,17 +100,20 @@ userRouter.post("/login", (req, res, next) => {
           if(!isMatch){ 
             res.status(403) 
             return next(new Error("Username or Password are incorrect")) 
-          } })
-      //creates secret for 2fa
+          }
+              //creates secret for 2fa
       const secret = speakeasy.generateSecret({ length: 20 });
-       //creates user token
-      const token = jwt.sign(foundUser.withoutPassword() , process.env.SECRET);
-      //creates qrcode url
-      const otpauthUrl = speakeasy.otpauthURL({
-        secret: secret.base32,
-        label: foundUser.username,
-      });
-      return res.send({ user: foundUser.withoutPassword(), token, otpauthUrl });
+      //creates user token
+     const token = jwt.sign(foundUser.withoutPassword() , process.env.SECRET);
+     //creates qrcode url
+     const otpauthUrl = speakeasy.otpauthURL({
+       secret: secret.base32,
+       label: foundUser.username,
+     });
+     return res.send({ user: foundUser.withoutPassword(), token, otpauthUrl });
+        
+        })
+
     }
   });
 });

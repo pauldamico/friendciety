@@ -25,31 +25,6 @@ const [toggleAddImage,setToggleAddImage] = useState(false)
     //this will show friends and current user posts
     const posts = props.feed?.map(item=><Post key={item._id}  {...item}/>)
 
-    // const getPosts = () =>{
-    //   token && axios.get(`/auth/post/currentUserPosts`, config)    
-    //   .then((res) => dispatch(setPosts(res.data)))
-    //   .catch(err=>console.log(err));   
-    // }
-
-    // const getComments = ()=>{
-    //   axios.get('/auth/comment', config)
-    //   .then(res=>{dispatch(setComments(res.data))})
-    //   .catch(err=>console.log(err))
-    // }
-    // // get all replies 
-    // const getReplies = ()=>{
-    //   axios.get('/auth/reply', config)
-    //   .then(res=>{dispatch(setReplies(res.data))})
-    //   .catch(err=>console.log(err))
-    // }
-
-    // //get all friends
-    // function getFriendData (){   
-    //   axios.get('/auth/friends/friends', config)    
-    //   .then(res=>{
-    //     dispatch(setFriends(res.data))   
-    //   })}
-
       function toggleImage (){
         setToggleAddImage(!toggleAddImage)       
       }

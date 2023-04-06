@@ -71,7 +71,7 @@ margin-right:1vw;
 
 }
 .search-user-main-div {
-  width: fit-content;
+  width: 15vw;
   top: 3%;
   display: flex;
   flex-direction: column;
@@ -82,7 +82,7 @@ margin-right:1vw;
 .search-user-div {
   position: absolute;
   top:30px;
-  width: 168px;
+  width: 15vw;
   color: grey;
   box-shadow: -1px 7px 11px 3px grey;
   height: 60px;
@@ -471,10 +471,10 @@ box-shadow: 0px 0px 7px 2px rgb(145, 145, 145);
     width: 80vw;
   }
   .search-user-main-div {
-width: 20vw;
+width: 30vw;
   }
   .search-user-div{
-    width: 40vw;
+    width: 30vw;
   }
   .login-form{
     width:60vw;
