@@ -19,6 +19,7 @@ function App() {
 const allPosts = posts.map(post=>post).sort((a,b)=>a.postOrder - b.postOrder) || []
 const friendsPosts = posts?.filter(post=>post.userId !== currentUser.user._id) || []
 
+
   return (
     <div className="app"> 
       <Nav />

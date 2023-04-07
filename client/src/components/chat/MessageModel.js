@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { messagesSlice } from "../../redux";
 import Divider from "@mui/material/Divider";
 import axios from "axios";
+import { io } from "socket.io-client";
+import {ApiCalls} from '../ApiCalls'
 
 const style = {
   position: "absolute",
@@ -37,6 +39,7 @@ const conversationStyle = {
 const { setMessages } = messagesSlice.actions;
 
 export default function MessageModel(props) {
+  const {getMessages} = ApiCalls()
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.currentUser);
   const { token } = currentUser || null;
@@ -61,6 +64,13 @@ export default function MessageModel(props) {
         dispatch(setMessages(res.data));
       })
       .catch((err) => console.log(err));
+
+      //websocket
+      const userSocket = io('http://localhost:4000/user', {auth:{username:currentUser.user.username}});
+      userSocket.on('connect', () => {
+        userSocket.emit('message',  {room:props.user, msg:messageContent});
+      });
+      ///reset state
     setMessageContent("");
   };
   const combinedMessageArray = messages.messages.sentMessages
@@ -109,6 +119,26 @@ export default function MessageModel(props) {
   const onChange = (e) => {
     setMessageContent(e.target.value);
   };
+
+  useEffect(() => {
+    // Connect to the server using socket.io-client
+    const userSocket = io('http://localhost:4000/user', {auth:{username:currentUser.user.username}});
+
+    // Join the user's room
+    userSocket.emit('joinRoom',currentUser.user.username);
+
+    // Listen for incoming messages
+    userSocket.on('message', (data) => {
+      console.log(data)
+      // Update the state with the new message
+      getMessages()
+    });
+
+    // Clean up the userSocket connection when the component unmounts
+    return () => {
+      userSocket.disconnect();
+    };
+  }, []);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>

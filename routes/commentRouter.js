@@ -9,9 +9,9 @@ commentRouter.get('/', (req,res,next)=>{
   Friends.findOne({userId:req.auth._id}, (err, foundUser)=>{
   
 const allIds = [...foundUser.friends.map(friend=>friend.id), req.auth._id]
-console.log(allIds)
+
 Comment.find({userId:{$in:allIds}}, (err, foundComments)=>{
-  console.log(foundComments)
+
 res.send(foundComments)
 })
 
