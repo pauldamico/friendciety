@@ -66,7 +66,7 @@ const friendsSortedByNewMessages = friends.friends.slice().sort((a, b) => b.user
       <List >
       <Divider sx={{marginBottom:"1vh"}}/>
       
-        {friendsSortedByNewMessages.map((friend) => (
+        {uniqueMessages.map((friend) => (
           <ListItem key={friend} disablePadding>
               
             <ListItemButton sx={{height:"40px", padding:"0", marginBottom:"1vh"}}>              

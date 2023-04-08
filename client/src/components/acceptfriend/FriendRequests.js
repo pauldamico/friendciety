@@ -19,7 +19,7 @@ export default function FriendRequests() {
   return (
     <div style={{  position:'absolute', left: "50%", }}>
         
-      <div onClick={toggler}>
+      <div style ={{display:"flex"}}onClick={toggler}>
 
         {friends?.friendRequest?.length > 0 ? (
           <section 

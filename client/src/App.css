@@ -108,10 +108,10 @@ margin-right:1vw;
 
 
 .friend-request-div {
-  position: absolute;
-
- margin-left: -3vw;
-  width: 100px;
+  position: relative;
+  top: 42px;
+  margin-left: -54px;
+  width: 90px;
   color: grey;
   box-shadow: -1px 7px 11px 3px grey;
   height: 60px;
@@ -132,18 +132,34 @@ margin-right:1vw;
 
   margin-top:55px;
 }
-.sidebar-div {
+.leftbar-div {
   position: fixed;
   top: 52px;
   left: 1vw;
   grid-column: 1/2;
   grid-row: 2/-1;
 }
-.sidebar-div2 {
+.leftbar-div2 {
   display: flex;
   gap: 1vh;
   margin-top: 10px;
   margin-left: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.rightbar-div {
+  position: absolute;
+  top: 52px;
+  right: 1vw;
+  padding-right: 100px;
+  grid-column: 1/2;
+  grid-row: 2/-1;
+}
+.rightbar-div2 {
+  display: flex;
+  gap: 1vh;
+  margin-top: 10px;
+  
   flex-direction: column;
   align-items: flex-start;
 }

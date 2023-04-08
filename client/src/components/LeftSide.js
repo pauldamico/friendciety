@@ -5,14 +5,14 @@ import WindowSize from "./WindowSize";
 import { useSelector } from "react-redux";
 
 
-export default function SideBar() {
+export default function LeftSide() {
   const { currentUser} = useSelector(state=>state.currentUser)
   const {token} = currentUser || null
    return (<WindowSize arrow=">">
-    <div className="sidebar-div">
+    <div className="leftbar-div">
       {token ? (
         <div>   
-          <div className="sidebar-div2">      
+          <div className="leftbar-div2">      
 
       
              

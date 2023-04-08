@@ -3,7 +3,8 @@ import Feed from './components/Feed'
 import Nav from "./components/Nav";
 import Login from "./components/login/Login";
 import Profile from "./components/Profile";
-import SideBar from "./components/SideBar";
+import LeftSide from "./components/LeftSide";
+import RightSide from "./components/RightSide";
 import "./App.css";
 import { Routes, Route} from "react-router-dom";
 import { useSelector} from "react-redux";
@@ -23,7 +24,8 @@ const friendsPosts = posts?.filter(post=>post.userId !== currentUser.user._id) |
   return (
     <div className="app"> 
       <Nav />
-      {currentUser.token ?  <SideBar /> : null}
+      {currentUser.token ?  <LeftSide /> : null}
+      {currentUser.token ?  <RightSide /> : null}
       <Routes>
         <Route path="/" element={currentUser.token ? <Feed user={currentUser.user.username} feed={allPosts} /> : <Login/>} />
         <Route path="/profile/:userprofile" element={currentUser.token ? <Profile  /> : <Login />} />     
