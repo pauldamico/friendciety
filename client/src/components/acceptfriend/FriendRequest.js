@@ -1,15 +1,16 @@
 import React from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import {friendsSlice} from "../../redux/index"
+import { friendsSlice } from "../../redux/index";
+import { Avatar } from "@mui/material";
 
-const { setFriends} = friendsSlice.actions;
+const { setFriends } = friendsSlice.actions;
 
 export default function FriendRequest(props) {
-  const { currentUser } = useSelector((state) => state.currentUser);  
-  const dispatch = useDispatch()
+  const { currentUser } = useSelector((state) => state.currentUser);
+  const dispatch = useDispatch();
   const { token } = currentUser || null;
-  const config = {headers:{Authorization: `Bearer ${token}`}}
+  const config = { headers: { Authorization: `Bearer ${token}` } };
 
   //Accept friend request or add friend   this prob needs to be fixed
   function acceptFriendRequest() {
@@ -18,7 +19,7 @@ export default function FriendRequest(props) {
       .put("/auth/friends/acceptfriend", { user: props.user }, config)
       .then((res) => {
         console.log(res.data);
-        dispatch(setFriends(res.data))
+        dispatch(setFriends(res.data));
         // refreshFriendData();
       });
   }
@@ -31,35 +32,39 @@ export default function FriendRequest(props) {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        dispatch(setFriends(res.data))
+        dispatch(setFriends(res.data));
         console.log(res.data);
         // refreshFriendData();
       });
-   
   }
 
   // //may not need this
-  // function refreshFriendData (){   
-  //   axios.get('/auth/friends/friends', config)    
+  // function refreshFriendData (){
+  //   axios.get('/auth/friends/friends', config)
   //   .then(res=>{
-  //     dispatch(setFriends)(prev=>({...prev, ...res.data}))    
+  //     dispatch(setFriends)(prev=>({...prev, ...res.data}))
   //   })}
-
-
 
   return (
     <div className="friend-request">
-      {props.user}
-      <span style={{ cursor: "pointer" }} onClick={acceptFriendRequest}>
-        
-        Add
-      </span>
-      <span
-        style={{ color: "red", cursor: "pointer" }}
-        onClick={declineFriendRequest}
-      >
-        X
-      </span>
+      <div style ={{display:"flex", alignItems:"center"}}>
+      <Avatar sx={{marginRight:"5px"}} />
+{props.user}</div>
+
+      <div>
+        <span
+          style={{ cursor: "pointer", color: "green", marginRight:"10px" }}
+          onClick={acceptFriendRequest}
+        >
+          Add
+        </span>
+        <span
+          style={{ color: "red", cursor: "pointer" }}
+          onClick={declineFriendRequest}
+        >      
+          X
+        </span>
+      </div>
     </div>
   );
 }

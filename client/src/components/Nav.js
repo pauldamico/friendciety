@@ -62,11 +62,12 @@ export default function Nav() {
               {token ? 
               <SearchUserModal /> 
               : null}
-              {token ? <FriendRequests /> : null}
+             
               {!token ? (
                 <Link to="/login"> Login</Link>
               ) : (
                 <div className="logout-div">
+                   {token ? <FriendRequests /> : null}
                   <ChatDrawer />
                   <h3 onClick={logoff}>
                     {" "}

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import FriendRequest from "./FriendRequest";
+import FriendRequestModal from "./FriendRequestModal";
+
 import { useSelector } from "react-redux";
-import { Badge } from "@mui/material";
+
 
 
 export default function FriendRequests() {
@@ -12,12 +13,10 @@ export default function FriendRequests() {
     setToggle(!toggle);
   }
 
-  const friendRequests = friends?.friendRequest?.map((item) => (
-    <FriendRequest key={item} toggler={toggler} user={item} />
-  ));
+
 
   return (
-    <div style={{  position:'absolute', left: "50%", }}>
+    <div >
         
       <div style ={{display:"flex"}}onClick={toggler}>
 
@@ -25,18 +24,14 @@ export default function FriendRequests() {
           <section 
             style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
           >
-            <Badge badgeContent={friends?.friendRequest.length} color="primary">
-              <img
-                height="20px"
-                width="20px"
-                src={require("../../images/addFriend.png")}
-              />
-            </Badge>{" "}
+              <FriendRequestModal friends={friends} />
+    
           </section>
         ) : null}
-        {toggle ? (
+        {/* {toggle ? (
+        
           <div className="friend-request-div">{friendRequests}</div>
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );

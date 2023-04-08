@@ -13,7 +13,7 @@ export default function WindowSize(props) {
     };
   }, []);
 
-  const size = props.arrow === ">" ? windowSize > 500 : windowSize < 500;
+  const size = props.arrow === ">" ? windowSize > 670 : windowSize < 670;
 
   return <>{size ? props.children : null}</>;
 }
