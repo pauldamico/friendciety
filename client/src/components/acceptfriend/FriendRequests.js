@@ -17,7 +17,7 @@ export default function FriendRequests() {
   ));
 
   return (
-    <div style={{  left: "50vw" }}>
+    <div style={{  position:'absolute', left: "50%", }}>
         
       <div onClick={toggler}>
 

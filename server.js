@@ -6,6 +6,7 @@ cors:{
 }
 })
 require('dotenv').config()
+const jwt = require("jsonwebtoken");
 const {expressjwt} = require('express-jwt')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
@@ -23,22 +24,25 @@ mongoose.connect("mongodb://localhost:27017/friendciety")
 //socket.io
 const userIo = io.of('/user')
 userIo.use((socket,next)=>{
-   socket.handshake.auth.username   
-   if(socket.handshake.auth.username){
-      socket.username=(socket.handshake.auth.username)
-   socket.join(socket.username)
-   }
-   else(null)
-   next()
+   socket.handshake.auth.username 
+   const token =   socket.handshake.auth.token
+   jwt.verify(token, process.env.SECRET, (err, decoded)=>{      
+if(err){ 
+   return next(new Error("Authentication Error"))
+}
+socket.username=socket.handshake.auth.username
+socket.join(socket.username)
+next()
+   })
 })
 userIo.on('connection', socket =>{
-   console.log("connected to room " + socket.username)
+   // console.log("connected to room " + socket.username)
    socket.on('message', ({ room, msg }) => {
-      console.log(`Received message from user ${socket.username} in room ${room}: ${msg}`)
+      // console.log(`Received message from user ${socket.username} in room ${room}: ${msg}`)
       socket.to(room).emit('message', { username:socket.username, msg })  
    })
    socket.on('disconnect', () => {
-      console.log(`User ${socket.username} disconnected from the server`)
+      // console.log(`User ${socket.username} disconnected from the server`)
    })   
 })
 instrument(io, {auth:false})
@@ -48,7 +52,6 @@ instrument(io, {auth:false})
 app.get('/auth',(req, res)=>{ 
 res.send("Welcome")
    })
-
 
    app.use("/auth", expressjwt({ secret: process.env.SECRET, algorithms:["HS256"] }))
    app.use(require('./routes/userRouter.js'))     

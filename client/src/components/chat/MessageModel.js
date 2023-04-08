@@ -66,7 +66,7 @@ export default function MessageModel(props) {
       .catch((err) => console.log(err));
 
       //websocket
-      const userSocket = io('http://localhost:4000/user', {auth:{username:currentUser.user.username}});
+      const userSocket = io('http://localhost:4000/user', {auth:{username:currentUser.user.username, token:token}});
       userSocket.on('connect', () => {
         userSocket.emit('message',  {room:props.user, msg:messageContent});
       });
@@ -122,7 +122,7 @@ export default function MessageModel(props) {
 
   useEffect(() => {
     // Connect to the server using socket.io-client
-    const userSocket = io('http://localhost:4000/user', {auth:{username:currentUser.user.username}});
+    const userSocket = io('http://localhost:4000/user', {auth:{username:currentUser.user.username, token:token}});
 
     // Join the user's room
     userSocket.emit('joinRoom',currentUser.user.username);
