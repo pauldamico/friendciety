@@ -6,7 +6,7 @@ cors:{
 }
 })
 require('dotenv').config()
-const jwt = require("jsonwebtoken");
+
 const {expressjwt} = require('express-jwt')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
@@ -20,6 +20,9 @@ app.use('/uploads', express.static('uploads'));
 mongoose.connect("mongodb://localhost:27017/friendciety")
 .then(()=>console.log("Connected to MongoDB"))
 .catch(()=>console.log("Unable to connect to database"))
+
+
+
 
 //socket.io
 const userIo = io.of('/user')
@@ -52,6 +55,7 @@ instrument(io, {auth:false})
 app.get('/auth',(req, res)=>{ 
 res.send("Welcome")
    })
+
 
    app.use("/auth", expressjwt({ secret: process.env.SECRET, algorithms:["HS256"] }))
    app.use(require('./routes/userRouter.js'))     

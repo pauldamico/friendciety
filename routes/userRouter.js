@@ -6,8 +6,18 @@ const Friends = require("../models/friends.js");
 const Files = require("../models/files.js");
 const Messages = require("../models/messages.js")
 const userRouter = express.Router();
+const fs = require('fs');
 
-
+const cert = fs.readFileSync('./cert.cer');
+const verifyOptions = {
+  algorithms: ['RS256'], 
+  issuer: 'https://dev-0zd4zxu226vwide7.us.auth0.com/', // The expected issuer of the token
+  audience: 'friendciety', // The expected audience of the token
+  clockTolerance: 30, 
+  // subject: '1234567890', 
+  ignoreExpiration: false, 
+  key: cert,
+};
 
 //signs up user
 userRouter.post("/signup", (req, res, next) => {  
@@ -116,6 +126,20 @@ userRouter.post("/login", (req, res, next) => {
 
     }
   });
+});
+
+//Auth 0 Login
+userRouter.post("/auth0/auth0login", (req, res, next) => { 
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(' ')[1];
+  jwt.verify(token, cert, verifyOptions, (err, decoded) => {
+    if (err) {
+      console.error('Token verification failed:', err.message);
+    } else {
+      console.log('Token verification succeeded:', decoded);
+    }
+  });
+
 });
 
 //sends current token and user info

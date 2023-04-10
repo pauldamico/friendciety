@@ -1,9 +1,17 @@
+import React, { useState } from "react";
 import NewLoginForm from "./LoginForm";
 import axios from "axios";
-import React, { useState } from "react";
+
+import Auth0LoginButton from "./Auth0LoginButton";
+import Auth0LogoutButton from "./Auth0LogoutButton";
+import Auth0Token from "./Auth0Token";
 import {useDispatch} from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { authSlice } from "../../redux/index.js";
+import Auth0ProfileInfo from "./Auth0ProfileInfo";
+import { useAuth0 } from "@auth0/auth0-react";
+
+
 
   const { setCurrentUser } = authSlice.actions;
 
@@ -20,7 +28,9 @@ import { authSlice } from "../../redux/index.js";
 event.preventDefault()
     axios
       .post("/login", loginFormData)  
-      .then(res=>{localStorage.setItem("userInfo", JSON.stringify(res.data))     
+      .then(res=>{
+   
+        localStorage.setItem("userInfo", JSON.stringify(res.data))     
       dispatch(setCurrentUser(res.data) )
       navigate("/")      
     })
@@ -46,12 +56,6 @@ event.preventDefault()
 
 
 
-  // function submitLoginInfo (event){
-  //   event.preventDefault()
-  //   loginUser(loginFormData)
-  //   setLoginFormData(prev=>({...prev, username:"", password:""}))
-  // }
-
   function onChange(event) {
     const {name, value} = event.target;
     setLoginFormData(prev=>({...prev, [name]:value}))
@@ -61,9 +65,14 @@ event.preventDefault()
     setToggleSignUp(!toggleSignUp)
   }
 
+
+
   return (
     <>
-
+<Auth0LoginButton/>
+<Auth0LogoutButton/>
+{/* <Auth0Token/> */}
+<Auth0ProfileInfo/>
 
     {!toggleSignUp && <NewLoginForm onChange={onChange} onSubmit={loginUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/>}
 
