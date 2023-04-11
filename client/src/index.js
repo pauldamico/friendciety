@@ -19,7 +19,7 @@ clientId="rYDu0MvukudaG6ef3g4OGV85MaZWoLYD"
  authorizationParams={{
   redirect_uri: window.location.origin,
   audience: "https://dev-0zd4zxu226vwide7.us.auth0.com/api/v2/",
-  scope: "read:current_user update:current_user_metadata"
+  scope: "read:current_user update:current_user_metadata openid profile email username openid"
  }}
 >
   <Router>

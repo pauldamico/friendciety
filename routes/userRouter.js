@@ -84,7 +84,10 @@ userRouter.post("/signup", (req, res, next) => {
       
       
       }        
-      })})})
+      })
+    })
+    
+    })
       
      
 
@@ -123,12 +126,13 @@ userRouter.post("/login", (req, res, next) => {
      return res.send({ user: foundUser.withoutPassword(), token, otpauthUrl });
         
         })
-
     }
   });
 });
 
-//Auth 0 Login
+///////////////////////////////////////////////////////////////////////////////////////
+
+//Auth 0 Login/signup
 userRouter.post("/auth0/auth0login", (req, res, next) => { 
   const authHeader = req.headers.authorization;
   const token = authHeader.split(' ')[1];
@@ -136,12 +140,77 @@ userRouter.post("/auth0/auth0login", (req, res, next) => {
     if (err) {
       console.error('Token verification failed:', err.message);
     } else {
-      console.log('Token verification succeeded:', decoded);
+            // console.log('Token verification succeeded:', decoded);
+            const auth0Id = decoded.sub
+            User.findOne({ auth0Id }, (err, foundUser) => {
+              if (err) {
+                res.status(500);
+                return next(err);
+              }
+         
+              ///
+              const newSavedUser = new User({username:req.body.email, auth0Id, avatar:req.body.picture});  
+          if(!foundUser){
+            newSavedUser.save((err, newUser) => {
+              console.log(newUser)
+              if (err) {
+                res.status(500);
+                return next(err);
+              }       
+              //creates user token
+              const token = jwt.sign(newUser.withoutPassword(), process.env.SECRET);
+          
+                      
+              //creates files model for user
+              if(newUser){     
+                const newFilesModel = new Files({
+                  username:newUser.withoutPassword().username, userId:newUser.withoutPassword()._id
+                })  
+                  newFilesModel.save((err)=>{
+                    if(err){
+                      res.status(500)
+                      return next(err)
+                    }   
+                  }  )      
+                //creates friendsmodel for user
+                const newFriendsModel = new Friends({
+                  friends:[], username:newUser.username, userId:newUser._id})
+                  newFriendsModel.save((err, friendsList)=>{
+                    if(err){
+                      res.status(500)
+                      return next(err)
+                    }           
+             // creates messages model for user
+                const newMessagesModel = new Messages({
+                  username:newUser.withoutPassword().username, userId:newUser.withoutPassword()._id
+                })  
+                newMessagesModel.save((err, messages)=>{
+                    if(err){
+                      res.status(500)
+                      return next(err)
+                    }   
+                    if(messages){          
+                      return res.send({ user: newUser.withoutPassword(), token});
+                    }}
+                    )
+                  }
+                    )}       
+              })
+          
+          }     
+
+          if(foundUser){
+            console.log(foundUser)
+            const token = jwt.sign(foundUser.withoutPassword(), process.env.SECRET);
+            return res.send({ user: foundUser, token});
+          }
+
+          //
+            })
     }
   });
-
 });
-
+//////////////////////////////////////////////////////////////////////////////////////////////
 //sends current token and user info
 userRouter.get(`/currentuser`, (req, res, next) => {
   User.findOne({ _id: req.auth._id }, (err, foundUser) => {

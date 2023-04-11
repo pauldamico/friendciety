@@ -6,7 +6,7 @@ cors:{
 }
 })
 require('dotenv').config()
-
+const jwt = require("jsonwebtoken");
 const {expressjwt} = require('express-jwt')
 const mongoose = require('mongoose')
 const morgan = require('morgan')

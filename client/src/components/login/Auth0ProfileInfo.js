@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
+
 const Auth0ProfileInfo = () => {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [userMetadata, setUserMetadata] = useState(null);
@@ -12,8 +13,8 @@ const Auth0ProfileInfo = () => {
       try {
         const accessToken = await getAccessTokenSilently({
           authorizationParams: {
-            audience: `https://${domain}/api/v2/`,
-            scope: "read:current_user",
+            audience: `friendciety`,
+            scope: "read:current_user update:current_user_metadata openid profile email username openid"
           },
         });
   
@@ -35,6 +36,7 @@ const Auth0ProfileInfo = () => {
   
     getUserMetadata();
   }, [getAccessTokenSilently, user?.sub]);
+
 
   return (
     isAuthenticated && (

@@ -37,14 +37,14 @@ const userPosts = posts?.filter(post=>post.username === navigatedUser) || ""
 const selectedUser = profile?.find(user=>user === navigatedUser) || null
 
 
-    return (<div className="flexbox" >
+    return (<div className="flexbox center">
        
         {navigatedUser === selectedUser && count.current > 1 ?<><div className="profile-div flexbox center">
          <h1>Username: {navigatedUser}</h1>
             <img src={require('../images/red.jpg')} alt="" width="100px" height="100px" />
            {currentUser.user.username !== navigatedUser ? <h3>Remove Friend</h3> : null}
             </div>
-                     <div>
+                     <div >
                      <Feed user={navigatedUser} feed={userPosts}/>
                      </div>
                      </>

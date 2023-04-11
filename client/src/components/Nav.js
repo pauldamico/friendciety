@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import ChatDrawer from "./chat/ChatDrawer";
 import { useSelector, useDispatch } from "react-redux";
+import Auth0LogoutButton from "./login/Auth0LogoutButton";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   authSlice,
   postsSlice,
@@ -26,6 +28,7 @@ const {resetMessages} = messagesSlice.actions;
 
 
 export default function Nav() {
+  const { isAuthenticated } = useAuth0();
   const { getPosts, getComments, getReplies, getFriends } = ApiCalls();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -69,7 +72,7 @@ export default function Nav() {
                 <div className="logout-div">
                    {token ? <FriendRequests /> : null}
                   <ChatDrawer />
-                  <h3 onClick={logoff}>
+               { !isAuthenticated  ? <h3 onClick={logoff}>
                     {" "}
                     <img
                       alt=""
@@ -78,7 +81,9 @@ export default function Nav() {
                       src={require("../images/logout.png")}
                     />
                     Logout
-                  </h3>
+                  </h3> 
+                  :
+                  <Auth0LogoutButton logoff={logoff}/> }
                 </div>
               )}
             </div>

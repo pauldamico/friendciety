@@ -3,9 +3,14 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt')
 const userSchema = new Schema({
   username: { type: String, unique:true, required: true}, 
-  password: {type:String, required:true},
-  auth0Id:{type:String, unique:true},
-  profilePicture:{type:String}, });
+  // password: {type:String, required:true},
+  firstName:{type:String},
+  lastName:{type:String},
+  auth0Id:{type:String},
+  profilePicture:{type:String}, 
+avatar:{type:String},
+password:{type:String}
+});
 
 userSchema.pre("save", function (next){     
                             //encrypts password on signup
