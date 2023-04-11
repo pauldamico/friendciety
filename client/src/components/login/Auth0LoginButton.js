@@ -73,7 +73,7 @@ const Auth0LoginButton = () => {
 
 
 
-  return <button onClick={() => loginWithRedirect()}>Log In</button>;
+  return <button onClick={() => loginWithRedirect()}>Log In With Auth 0</button>;
 };
 
 export default Auth0LoginButton;

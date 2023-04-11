@@ -4,12 +4,11 @@ import Feed from "./Feed"
 import {useParams} from "react-router-dom"
 import {useDispatch, useSelector} from 'react-redux'
 import {ApiCalls} from "./ApiCalls"
-import { authSlice } from "../redux"
 
 
-const {setCurrentUserLocalStorage}= authSlice.actions
-export default function Profile (){    
-const dispatch = useDispatch()
+
+export default function Profile (){   
+
 const count = useRef(0);
 const {getFriends} = ApiCalls()
 const{currentUser} = useSelector(state=>state.currentUser)
@@ -17,16 +16,12 @@ const {friends} = useSelector(state=>state.friends)
 const {posts} = useSelector(state=>state.posts)  
 const navigatedUser = useParams().userprofile
 
-
-
  
 
 useEffect(()=>{
-    count.current = count.current + 1;
-    // dispatch(setCurrentUserLocalStorage())
+    count.current = count.current + 1; 
     getFriends()    
 }, [])
-
 
 
 //maps combines all friends and username into one array
@@ -41,7 +36,7 @@ const selectedUser = profile?.find(user=>user === navigatedUser) || null
        
         {navigatedUser === selectedUser && count.current > 1 ?<><div className="profile-div flexbox center">
          <h1>Username: {navigatedUser}</h1>
-            <img src={require('../images/red.jpg')} alt="" width="100px" height="100px" />
+            <img src={require('../images/red.jpg')} alt="" width="100px" height="100px" style={{borderRadius:"100px"}} />
            {currentUser.user.username !== navigatedUser ? <h3>Remove Friend</h3> : null}
             </div>
                      <div >

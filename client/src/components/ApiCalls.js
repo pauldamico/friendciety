@@ -9,6 +9,8 @@ const {setFriends} = friendsSlice.actions
 const {setMessages} = messagesSlice.actions
 const {setCurrentUserLocalStorage} = authSlice.actions
 
+//this is a location where you can store reusable api calls that update redux state
+
 export const ApiCalls = () => {
   const dispatch = useDispatch();
   const {currentUser} = useSelector(state => state.currentUser)

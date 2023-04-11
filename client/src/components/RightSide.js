@@ -31,11 +31,8 @@ const friendsSortedByNewMessages = friends.friends.slice().sort((a, b) => b.user
       
           <div className="rightbar-div2">      
 {friends.friends.slice().sort((a, b) => a.user.localeCompare(b.user)).map(friend=><MessageModel user={friend.user} key={friend.user} style={{display:"flex", gap:"1vw", alignItems:"center"}}/>)}
-      
-             
- 
-           
-      
+          
+
         </div>
       ) : null}
     </div>

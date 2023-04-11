@@ -27,6 +27,7 @@ mongoose.connect("mongodb://localhost:27017/friendciety")
 //socket.io
 const userIo = io.of('/user')
 userIo.use((socket,next)=>{
+  
    socket.handshake.auth.username 
    const token =   socket.handshake.auth.token
    jwt.verify(token, process.env.SECRET, (err, decoded)=>{      
