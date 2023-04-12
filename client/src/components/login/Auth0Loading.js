@@ -4,11 +4,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { authSlice, loadingSlice } from "../../redux/index.js";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const { setCurrentUser } = authSlice.actions;
 const { setLoading } = loadingSlice.actions;
 
-const Auth0LoginButton = (props) => {
+const Auth0Loading = (props) => {
 
 const {loading} = useSelector(state=>state.loading)
   
@@ -76,10 +78,16 @@ if(isAuthenticated){
 
 
 
+return(<>
+ <Backdrop
+  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+  open={open}
+  onClick={handleClose}
+>
+  <CircularProgress color="inherit" />
+</Backdrop>
+</>)
 
+}
 
-
-  return <button onClick={() => props.onClick()}>Log In With Auth 0</button>;
-};
-
-export default Auth0LoginButton;
+export default Auth0Loading

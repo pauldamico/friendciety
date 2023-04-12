@@ -6,7 +6,7 @@ interface LoadingState {
   }
   
   const initialLoadingState: LoadingState = {
-    loading:true
+    loading:false
   };
   
   /// comments

@@ -15,14 +15,15 @@ import { useAuth0,  } from "@auth0/auth0-react";
 
   const Login =()=>{   
     const {currentUser} = useSelector(state=>state.currentUser)
+    const { loginWithRedirect } = useAuth0();
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [loginFormData, setLoginFormData] = useState({username:"", password:""})
   const [toggleSignUp, setToggleSignUp] = useState(false);
+const [toggleAuthLogin, setToggleAuthLogin] = useState(false)
 
+console.log(toggleAuthLogin)
 
-
-console.log(currentUser)
   //user login
   function loginUser(event) {
 event.preventDefault()
@@ -65,15 +66,19 @@ event.preventDefault()
     setToggleSignUp(!toggleSignUp)
   }
 
+  function authLoginOnClick (){
+    setToggleAuthLogin(true)
+    loginWithRedirect({ screen_hint: 'signup' })
+  }
 
   return (
     <>
-<Auth0LoginButton/>
+<Auth0LoginButton onClick={authLoginOnClick}/>
 {/* <Auth0LogoutButton/> */}
 
 {/* This is not using auth0 to login and just creates a token with jwt. */}
-    {!toggleSignUp && <NewLoginForm onChange={onChange} onSubmit={loginUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/>}
-    {toggleSignUp && <NewLoginForm onChange={onChange} onSubmit ={signUpUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/>} 
+    {!toggleSignUp & !toggleAuthLogin? <NewLoginForm onChange={onChange} onSubmit={loginUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/> : null}
+    {toggleSignUp & !toggleAuthLogin ? <NewLoginForm onChange={onChange} onSubmit ={signUpUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/> : null} 
 
     </> 
   );
