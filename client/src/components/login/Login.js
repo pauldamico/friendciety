@@ -2,7 +2,7 @@ import React, { useState,  } from "react";
 import NewLoginForm from "./LoginForm";
 import axios from "axios";
 import Auth0LoginButton from "./Auth0LoginButton";
-// import Auth0LogoutButton from "./Auth0LogoutButton";
+import Auth0LogoutButton from "./Auth0LogoutButton";
 import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { authSlice } from "../../redux/index.js";
@@ -74,7 +74,7 @@ event.preventDefault()
   return (
     <>
 <Auth0LoginButton onClick={authLoginOnClick}/>
-{/* <Auth0LogoutButton/> */}
+<Auth0LogoutButton/>
 
 {/* This is not using auth0 to login and just creates a token with jwt. */}
     {!toggleSignUp & !toggleAuthLogin? <NewLoginForm onChange={onChange} onSubmit={loginUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/> : null}

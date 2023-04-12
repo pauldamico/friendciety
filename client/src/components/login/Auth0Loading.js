@@ -10,29 +10,26 @@ import CircularProgress from '@mui/material/CircularProgress';
 const { setCurrentUser } = authSlice.actions;
 const { setLoading } = loadingSlice.actions;
 
-const Auth0Loading = (props) => {
+const Auth0Loading = () => {
 
-const {loading} = useSelector(state=>state.loading)
-  
-  const { loginWithRedirect } = useAuth0();
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently, } = useAuth0();
+const {loading} = useSelector(state=>state.loading)  
+  const { user, isAuthenticated, getAccessTokenSilently, } = useAuth0();
   const [userMetadata, setUserMetadata] = useState(null);
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [redirecting, setRedirecting] = useState(false)
-  // console.log(loading)
 
  useEffect(() => {
 if(isAuthenticated){
-
+dispatch(setLoading(true))
     const getUserMetadata = async () => {
-      const domain = "dev-0zd4zxu226vwide7.us.auth0.com";
+      const domain = process.env.REACT_APP_AUTH0_DOMAIN;
   
       try {
         const accessToken = await getAccessTokenSilently({
           authorizationParams: {
             audience: `friendciety`,
-            scope: "read:current_user update:current_user_metadata openid profile email username openid"
+            scope: process.env.REACT_APP_AUTH0_SCOPE
           },
         });
 
@@ -53,7 +50,9 @@ if(isAuthenticated){
         .then(()=>{
           console.log("test")
         })
-        .then(()=>{return  navigate("/")    })
+        .then(()=>{
+            dispatch(setLoading(false))
+            return  navigate("/")    })
 
         .catch((err) => console.log(err));
         
@@ -81,8 +80,8 @@ if(isAuthenticated){
 return(<>
  <Backdrop
   sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-  open={open}
-  onClick={handleClose}
+  open={loading}
+
 >
   <CircularProgress color="inherit" />
 </Backdrop>
