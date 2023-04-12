@@ -74,7 +74,7 @@ event.preventDefault()
   return (
     <>
 <Auth0LoginButton onClick={authLoginOnClick}/>
-<Auth0LogoutButton/>
+{/* <Auth0LogoutButton/> */}
 
 {/* This is not using auth0 to login and just creates a token with jwt. */}
     {!toggleSignUp & !toggleAuthLogin? <NewLoginForm onChange={onChange} onSubmit={loginUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/> : null}

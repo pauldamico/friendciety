@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 
-
-
-
-
 const messagesSchema = new Schema({
   receivedMessages: [
     {
@@ -30,8 +26,6 @@ const messagesSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   username: { type: String, required: true },
 });
-
-
 
 
 module.exports = mongoose.model("Messages", messagesSchema);
