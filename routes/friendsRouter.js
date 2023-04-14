@@ -13,7 +13,9 @@ friendsRouter.get(`/friends`, (req, res, next) => {
         return next(new Error("No users have been found"));
       }
       res.status(200);         
-      res.send({friendRequest:foundFriends.friendRequest, pendingRequest:foundFriends.pendingRequest, friends:foundFriends.friends});
+      res.send({friendRequest:foundFriends.friendRequest,
+         pendingRequest:foundFriends.pendingRequest,
+          friends:foundFriends.friends});
     });
   });
   
@@ -37,9 +39,7 @@ friendsRouter.get(`/friends`, (req, res, next) => {
               res.status(500);
               return next(err);
             }
-            
-            // console.log(req.app.get("io"))
-            // req.app.get("io").emit("currentUser", foundFriend.username);
+
             res.send(foundUser);
           }
         );
