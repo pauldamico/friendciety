@@ -4,7 +4,7 @@ const Auth0LoginButton = (props) => {
 
 
 
-  return <button onClick={() => props.onClick()}>Log In With Auth 0</button>;
+  return <h4 style={{cursor:"pointer"}} onClick={() => props.onClick()}>Log In With Google</h4>;
 };
 
 export default Auth0LoginButton;

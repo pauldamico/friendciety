@@ -1,8 +1,7 @@
 import React, { useState,  } from "react";
-import NewLoginForm from "./LoginForm";
+import LoginForm from "./LoginForm";
 import axios from "axios";
 import Auth0LoginButton from "./Auth0LoginButton";
-import Auth0LogoutButton from "./Auth0LogoutButton";
 import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { authSlice } from "../../redux/index.js";
@@ -14,7 +13,6 @@ import { useAuth0,  } from "@auth0/auth0-react";
   const { setCurrentUser } = authSlice.actions;
 
   const Login =()=>{   
-    const {currentUser} = useSelector(state=>state.currentUser)
     const { loginWithRedirect } = useAuth0();
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -73,12 +71,10 @@ event.preventDefault()
 
   return (
     <>
-<Auth0LoginButton onClick={authLoginOnClick}/>
-{/* <Auth0LogoutButton/> */}
 
 {/* This is not using auth0 to login and just creates a token with jwt. */}
-    {!toggleSignUp & !toggleAuthLogin? <NewLoginForm onChange={onChange} onSubmit={loginUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/> : null}
-    {toggleSignUp & !toggleAuthLogin ? <NewLoginForm onChange={onChange} onSubmit ={signUpUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/> : null} 
+    {!toggleSignUp & !toggleAuthLogin? <LoginForm authLoginOnClick={authLoginOnClick} onChange={onChange} onSubmit={loginUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/> : null}
+    {toggleSignUp & !toggleAuthLogin ? <LoginForm onChange={onChange} onSubmit ={signUpUser} loginFormData={loginFormData} toggleSignUp={toggleSignUp} toggle={toggle}/> : null} 
 
     </> 
   );

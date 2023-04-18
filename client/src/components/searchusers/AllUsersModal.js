@@ -17,6 +17,11 @@ const style = {
   pt: 2,
   px: 4,
   pb: 3,
+
+  '@media (max-width: 600px)': {
+    width: 200,
+  }
+
 };
 
 function ChildModal() {
@@ -69,8 +74,8 @@ export default function AllUsers(props) {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 400 }}>
-        <input style={{borderRadius:"10px", gridColumn:"1/2", width:"100%"}} onChange ={props.searchUsersHandler} onClick={props.toggleSearch}  placeholder='Search Users...'/>
+        <Box sx={{ ...style }}>
+        <input style={{borderRadius:"10px", gridColumn:"1/2", width:"100%", marginBottom:"5px"}} onChange ={props.searchUsersHandler} onClick={props.toggleSearch}  placeholder='Search Users...'/>
             {listUsers}
         
           {/* <h2 id="parent-modal-title">Text in a modal</h2>

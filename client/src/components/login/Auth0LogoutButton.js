@@ -10,9 +10,9 @@ const Auth0LogoutButton = (props) => {
   }
 
   return (
-    <button onClick={logoutOfApp}>
+    <h3 onClick={logoutOfApp}>
       Log Out
-    </button>
+    </h3>
   );
 };
 

@@ -149,7 +149,7 @@ export default function MessageModel(props) {
         <Avatar sx={{ marginLeft: "1vw" }} />
         <p style={{ textAlign: "left", width: "100%", marginLeft: ".5vw" }}>
           {" "}
-          {props.user}
+          {props.user.split("@")[0]}
         </p>
       </Button>
       <Modal

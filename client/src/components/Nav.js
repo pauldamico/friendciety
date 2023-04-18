@@ -39,11 +39,10 @@ export default function Nav() {
     // resetSearch()
   }
 
+  console.log(currentUser)
 
   return (
-    <div>    
-             
-
+    <div>          
       {token ? (
         <div className="nav-div">
       
@@ -58,22 +57,25 @@ export default function Nav() {
               <Avatar
                 sx={{ width: 24, height: 24 }}
                 src={require("../images/red.jpg")}
-              />{" "}
+              />
+              
+              {" "}
               <section >{currentUser?.user.username.split("@")[0]}</section>
             </Link>            
           ) : null} 
           </WindowSize>
           {token ? (
             <div className="nav-div-div">
-              {token ? 
-              <AllUsers /> 
-              : null}
+           
              
               {!token ? (
                 <Link to="/login"> Login</Link>
               ) : (
                 <div className="logout-div">
                    {token ? <FriendRequests /> : null}
+                   {token ? 
+              <AllUsers /> 
+              : null}
                   <ChatDrawer />
                { !isAuthenticated  ? <h3 onClick={logoff}>
                     {" "}

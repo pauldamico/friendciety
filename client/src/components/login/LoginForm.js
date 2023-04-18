@@ -1,7 +1,8 @@
-
+import Auth0LoginButton from "./Auth0LoginButton";
 
 export default function LoginForm(props) {
-  const { toggle, toggleSignUp, onSubmit, loginFormData, onChange} = props;
+  const { authLoginOnClick, toggle, toggleSignUp, onSubmit, loginFormData, onChange} = props;
+  
 
 
  
@@ -14,14 +15,17 @@ export default function LoginForm(props) {
           <label>Password</label>
           <input name="password" value={loginFormData.password} onChange={onChange} type="password" autoComplete="false"/>
           <button>{toggleSignUp ? `Create Account` : `Login`}</button>
-          {!toggleSignUp && (
-            <h4 type="onClick" onClick={toggle}>
+          {!toggleSignUp && (<div>
+            <h4 style={{cursor:"pointer"}} type="onClick" onClick={toggle}>
               Don't have an account? Click Here
             </h4>
+            <h4>Or</h4>
+            <h4><Auth0LoginButton onClick={authLoginOnClick}/></h4>
+            </div>
           )}
         
           {toggleSignUp && (
-            <h4 type="onClick" onClick={toggle}>
+            <h4 style={{cursor:"pointer"}} type="onClick" onClick={toggle}>
               Go back to Login
             </h4>
           )}
