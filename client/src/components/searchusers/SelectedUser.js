@@ -15,7 +15,7 @@ export default function SelectedUser(props) {
   const config = {headers:{Authorization: `Bearer ${token}`}}
 
   
-  const { user, toggleSearch } = props; 
+  const { user,  handleClose } = props; 
 
 
 ///this is broken
@@ -29,8 +29,8 @@ function addNewFriend (){
   .catch(err=>console.log(err))
 }
 
-  function navToFriendsPage (){
-    toggleSearch()
+  function navToFriendsPage (){ 
+    handleClose()
     navigate(`profile/${user}`)
   
   }

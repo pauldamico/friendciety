@@ -9,24 +9,18 @@ import Auth0Loading from "./components/login/Auth0Loading";
 import "./App.css";
 import { Routes, Route} from "react-router-dom";
 import { useSelector} from "react-redux";
-import { useAuth0 } from "@auth0/auth0-react";
+// import { useAuth0 } from "@auth0/auth0-react";
 
 
 
 function App() {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  // const { isAuthenticated, loginWithRedirect } = useAuth0();
   const {currentUser} = useSelector((state)=>state.currentUser)
   // const {friends} = useSelector((state)=>state.friends)
   const {posts} = useSelector(state=>state.posts) || ""
 const allPosts = posts.map(post=>post).sort((a,b)=>a.postOrder - b.postOrder) || []
 const friendsPosts = posts?.filter(post=>post.userId !== currentUser.user._id) || []
-console.log(process.env.REACT_APP_AUTH0_AUDIENCE)
 
-console.log(process.env.REACT_APP_AUTH0_DOMAIN)
-console.log(process.env.REACT_APP_AUTH0_CLIENT_ID)
-console.log(process.env.REACT_APP_AUTH0_REDIRECT_URI)
-console.log(process.env.REACT_APP_AUTH0_DOMAIN)
-console.log(process.env.REACT_APP_AUTH0_DOMAIN)
 
 
   return (

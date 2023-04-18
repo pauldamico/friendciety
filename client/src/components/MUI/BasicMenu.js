@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -33,8 +33,7 @@ export default function BasicMenu() {
             <Avatar
               sx={{ width: 24, height: 24 }}
               src={require("../../images/red.jpg")}
-            />{" "}
-            <section>{currentUser?.user?.username}</section>
+            />{" "}           
           </section>
         ) : null}
       </Button>
@@ -63,13 +62,7 @@ export default function BasicMenu() {
           <Link to={currentUser.token ? "/" : "/login"}>
             <House /> Home
           </Link>
-        </MenuItem>
-        {/* <MenuItem onClick={handleClose}>
-          {" "}
-          <Link to="/myfeed">
-            <PersonFill /> My Posts
-          </Link>
-        </MenuItem> */}
+        </MenuItem> 
         <MenuItem onClick={handleClose}>
           {" "}
           <Link to="/friendfeed">
@@ -81,22 +74,4 @@ export default function BasicMenu() {
   );
 }
 
-{
-  /* <div className="sidebar-div2">
-{token ? (
-  <section className="profile-icon">
-    {" "}
-    <Avatar sx={{ width: 24, height: 24 }}
-      src={require("../../images/red.jpg")}
-   
-    />{" "}
-    <section>{currentUser?.user?.username}</section>
-  </section>
-) : null}
 
-
-  <Link to={token ? '/' : '/login'}><House/> Home</Link>   
-  <Link to="/myfeed"><PersonFill/> My Posts</Link>
-  <Link to="/friendfeed"><People/> Friends Posts</Link>
-</div> */
-}

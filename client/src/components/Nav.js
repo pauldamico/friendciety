@@ -1,21 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate  } from "react-router-dom";
 import ChatDrawer from "./chat/ChatDrawer";
 import { useSelector, useDispatch } from "react-redux";
 import Auth0LogoutButton from "./login/Auth0LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
-import {
-  authSlice,
-  postsSlice,
-  repliesSlice,
-  friendsSlice,
-  commentsSlice,
-  messagesSlice
-} from "../redux";
-import { useNavigate } from "react-router-dom";
+import {  authSlice,  postsSlice, repliesSlice, friendsSlice, commentsSlice, messagesSlice} from "../redux";
 import WindowSize from "./WindowSize";
 import FriendRequests from "./acceptfriend/FriendRequests";
-import SearchUserModal from "./searchusers/SearchUserModal";
+import AllUsers from "./searchusers/AllUsers";
 import BasicMenu from "./MUI/BasicMenu";
+import { Avatar } from "@mui/material";
 import { ApiCalls } from "./ApiCalls";
 import Notify from "./MUI/Notify";
 
@@ -29,11 +22,9 @@ const {resetMessages} = messagesSlice.actions;
 
 export default function Nav() {
   const { isAuthenticated } = useAuth0();
-  const { getPosts, getComments, getReplies, getFriends } = ApiCalls();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.currentUser);
-  const { friends } = useSelector((state) => state.friends);
   const { token } = currentUser || null;
 
   function logoff() {
@@ -50,7 +41,8 @@ export default function Nav() {
 
 
   return (
-    <div>     
+    <div>    
+             
 
       {token ? (
         <div className="nav-div">
@@ -59,11 +51,22 @@ export default function Nav() {
             {" "}
             <BasicMenu />
           </WindowSize>
-
+          <WindowSize arrow=">">
+          {token ? (
+            <Link style={{left:"1vw"}} to={`/profile/${currentUser?.user.username}`} className="profile-icon">
+              {" "}
+              <Avatar
+                sx={{ width: 24, height: 24 }}
+                src={require("../images/red.jpg")}
+              />{" "}
+              <section >{currentUser?.user.username.split("@")[0]}</section>
+            </Link>            
+          ) : null} 
+          </WindowSize>
           {token ? (
             <div className="nav-div-div">
               {token ? 
-              <SearchUserModal /> 
+              <AllUsers /> 
               : null}
              
               {!token ? (

@@ -68,7 +68,7 @@ userRouter.post("/signup", (req, res, next) => {
               res.status(500)
               return next(err)
             }           
-     // creates messages moel for user
+     // creates messages model for user
         const newMessagesModel = new Messages({
           username:newUser.withoutPassword().username, userId:newUser.withoutPassword()._id
         })  
@@ -235,13 +235,14 @@ userRouter.get(`/currentuser`, (req, res, next) => {
 // shows all users in database for search users function
 userRouter.get(`/auth/allusers`, (req, res, next) => {
 
-  User.find((err, foundUser) => { 
+  User.find((err, foundUsers) => { 
     if (err) {
       res.status(500);
       return next(new Error("No users have been found"));
     }
     res.status(200);
-    res.send(foundUser.map((user) => user.withoutPassword().username));
+    const allUsersExceptCurrentUser = foundUsers.filter(user=>user.withoutPassword().username !== req.auth.username && user.withoutPassword().username) || []
+    res.send(allUsersExceptCurrentUser.map((user) => user.withoutPassword().username));
   });
 });
 

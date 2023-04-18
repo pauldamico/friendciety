@@ -1,26 +1,16 @@
-import React, {useEffect,useState, useContext} from "react"
+import React, {useEffect,useState} from "react"
 import axios from "axios"
-import { friendsSlice } from "../../redux"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import SelectedUser from "./SelectedUser"
+import {useSelector} from "react-redux"
+import AllUsersModal from "./AllUsersModal"
 
+export default function AllUsers (props){
 
-const{setFriends} = friendsSlice.actions
-
-export default function SearchUserModal (props){
-  const navigate = useNavigate()
-    const dispatch = useDispatch()
    const {currentUser} = useSelector(state=>state.currentUser)
-   const {friends} = useSelector(state=>state.friends)
    const {token} = currentUser || null
    const config = {headers:{Authorization: `Bearer ${token}`}}
-const [searchToggle, setSearchToggle] = useState(false)
-
-const [allUsers, setAllUsers] = useState([])
+   const [searchToggle, setSearchToggle] = useState(false)
+   const [allUsers, setAllUsers] = useState([])
    const [search, setSearch] = useState("")  
-const inputStyle = { borderRadius:"10px", gridColumn:"1/2"}
-
 
 
 //this allows the search function to work correctly
@@ -32,6 +22,7 @@ const filterBySearch = allUsers.length > 0 ? allUsers.filter(user=>user.includes
   }
 
   function toggleSearch (){
+    resetSearch()
     setSearchToggle(!searchToggle) 
    
 }
@@ -59,11 +50,8 @@ getAllUsers()
 
     return(
     <div onClick={toggleSearch} className="search-user-main-div"> 
-           <input style={inputStyle} onChange ={searchUsersHandler} onClick={toggleSearch}  placeholder='Search Users...'/>
-          {searchToggle && <div className="search-user-div" >
-        {filterBySearch.sort().map(user=>user!== currentUser.user.username && <SelectedUser resetSearch={resetSearch} key={user} user={user} toggleSearch={toggleSearch}/>)}
  
-        </div>}       
+   <AllUsersModal resetSearch={resetSearch} searchUsersHandler={searchUsersHandler} filterBySearch={filterBySearch} />
     </div>
     )
 }

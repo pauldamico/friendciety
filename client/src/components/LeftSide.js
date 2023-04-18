@@ -12,20 +12,7 @@ export default function LeftSide() {
     <div className="leftbar-div">
       {token ? (
         <div>   
-          <div className="leftbar-div2">      
-
-      
-             
-            {token ? (
-            <Link to={`/profile/${currentUser?.user.username}`} className="profile-icon">
-              {" "}
-              <Avatar
-                sx={{ width: 24, height: 24 }}
-                src={require("../images/red.jpg")}
-              />{" "}
-              <section >{currentUser?.user.username}</section>
-            </Link>            
-          ) : null}
+          <div className="leftbar-div2">   
            <Link to={token ? '/' : '/login'}><House/> Home</Link> 
             <Link to="/friendfeed"><People/> Friends Posts</Link>
           </div>
