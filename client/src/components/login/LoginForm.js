@@ -10,10 +10,12 @@ export default function LoginForm(props) {
     <div className="login-div">
       <div>
         <form className="login-form" onSubmit={onSubmit}>
-          <label>Username</label>
-          <input name="username" value={loginFormData.username} onChange={onChange} type="text" />
-          <label>Password</label>
-          <input name="password" value={loginFormData.password} onChange={onChange} type="password" autoComplete="false"/>
+          <label>{  !toggleSignUp ? "Username/Email:*" : "Username:*"}</label>
+          <input name="username" value={loginFormData.username} onChange={onChange} type="text" required />
+          {toggleSignUp &&<label>Email:*</label>}
+          {toggleSignUp &&<input name="email" value={loginFormData.email} onChange={onChange} type="email" autoComplete="true" required/>}
+          <label>Password:*</label>
+          <input name="password" value={loginFormData.password} onChange={onChange} type="password" autoComplete="false" required/>
           <button>{toggleSignUp ? `Create Account` : `Login`}</button>
           {!toggleSignUp && (<div>
             <h4 style={{cursor:"pointer"}} type="onClick" onClick={toggle}>

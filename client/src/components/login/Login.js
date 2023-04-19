@@ -16,7 +16,7 @@ import { useAuth0,  } from "@auth0/auth0-react";
     const { loginWithRedirect } = useAuth0();
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [loginFormData, setLoginFormData] = useState({username:"", password:""})
+  const [loginFormData, setLoginFormData] = useState({username:"", password:"", email:""})
   const [toggleSignUp, setToggleSignUp] = useState(false);
 const [toggleAuthLogin, setToggleAuthLogin] = useState(false)
 
@@ -35,7 +35,7 @@ event.preventDefault()
     })
 
       .catch((err) => console.log(err));
-      setLoginFormData(prev=>({...prev, username:"", password:""}))
+      setLoginFormData(prev=>({...prev, username:"", password:"", email:""}))
 
   }
 
@@ -50,7 +50,7 @@ event.preventDefault()
       navigate("/")
     })
       .catch((err) => console.log(err));  
-      setLoginFormData(prev=>({...prev, username:"", password:""}))
+      setLoginFormData(prev=>({...prev, username:"", password:"", email:""}))
   }
 
 

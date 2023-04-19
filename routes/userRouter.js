@@ -31,6 +31,7 @@ userRouter.post("/signup", (req, res, next) => {
       return res.send(next(new Error("Username already exists")));
     }
     req.body.username = req.body.username.toLowerCase();
+    req.body.email = req.body.email.toLowerCase();
     const newSavedUser = new User(req.body);  
 
     
@@ -43,7 +44,8 @@ userRouter.post("/signup", (req, res, next) => {
       const secret = speakeasy.generateSecret({ length: 20 });
       //creates user token
       const token = jwt.sign(newUser.withoutPassword(), process.env.SECRET);
-  
+      const username = newUser.withoutPassword().username
+      const userId = newUser.withoutPassword()._id
       //creates secret for 2fa
       const otpauthUrl = speakeasy.otpauthURL({
         secret: secret.base32,
@@ -52,7 +54,7 @@ userRouter.post("/signup", (req, res, next) => {
       //creates files model for user
       if(newUser){     
         const newFilesModel = new Files({
-          username:newUser.withoutPassword().username, userId:newUser.withoutPassword()._id
+          username, userId
         })  
           newFilesModel.save((err)=>{
             if(err){
@@ -62,7 +64,7 @@ userRouter.post("/signup", (req, res, next) => {
           }  )      
         //creates friendsmodel for user
         const newFriendsModel = new Friends({
-          friends:[], username:newUser.username, userId:newUser._id})
+          friends:[], username, userId})
           newFriendsModel.save((err, friendsList)=>{
             if(err){
               res.status(500)
@@ -70,7 +72,7 @@ userRouter.post("/signup", (req, res, next) => {
             }           
      // creates messages model for user
         const newMessagesModel = new Messages({
-          username:newUser.withoutPassword().username, userId:newUser.withoutPassword()._id
+          username, userId
         })  
         newMessagesModel.save((err, messages)=>{
             if(err){
@@ -94,7 +96,7 @@ userRouter.post("/signup", (req, res, next) => {
 
 //controls user login
 userRouter.post("/login", (req, res, next) => { 
-  User.findOne({ username: req.body.username }, (err, foundUser) => {
+  User.findOne({ $or:[{username: req.body.username},{ email:req.body.username}]}, (err, foundUser) => {
     if (err) {
       res.status(500);
       return next(err);
@@ -133,7 +135,7 @@ userRouter.post("/login", (req, res, next) => {
 ///////////////////////////////////////////////////////////////////////////////////////
 
 //Auth 0 Login/signup
-userRouter.post("/auth0/auth0login", (req, res, next) => { 
+userRouter.post("/auth0/auth0login", (req, res, next) => {  
   const authHeader = req.headers.authorization;
   const token = authHeader.split(' ')[1];
   jwt.verify(token, cert, verifyOptions, (err, decoded) => {
@@ -148,10 +150,9 @@ userRouter.post("/auth0/auth0login", (req, res, next) => {
               }
          
               ///
-              const newSavedUser = new User({username:req.body.email, auth0Id, avatar:req.body.picture});  
+              const newSavedUser = new User({username:req.body.nickname, email:req.body.email, auth0Id, avatar:req.body.picture});  
           if(!foundUser){
-            newSavedUser.save((err, newUser) => {
-              console.log(newUser)
+            newSavedUser.save((err, newUser) => {            
               if (err) {
                 res.status(500);
                 return next(err);
@@ -244,6 +245,13 @@ userRouter.get(`/auth/allusers`, (req, res, next) => {
     res.send(allUsersExceptCurrentUser.map((user) => user.withoutPassword().username));
   });
 });
+
+
+
+
+
+
+
 
 
 module.exports = userRouter;

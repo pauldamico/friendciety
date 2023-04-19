@@ -3,6 +3,14 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt')
 const userSchema = new Schema({
   username: { type: String, unique:true, required: true}, 
+  email:{ type: String, unique:true, required: true,
+validate:{
+  validator:function (value){
+    return  /\S+@\S+\.\S+/.test(value);
+  },
+  message:props=>`${props.value} is not a valid email address`
+}
+  },
   // password: {type:String, required:true},
   firstName:{type:String},
   lastName:{type:String},
