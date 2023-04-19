@@ -20,7 +20,6 @@ import { useAuth0,  } from "@auth0/auth0-react";
   const [toggleSignUp, setToggleSignUp] = useState(false);
 const [toggleAuthLogin, setToggleAuthLogin] = useState(false)
 
-console.log(toggleAuthLogin)
 
   //user login
   function loginUser(event) {

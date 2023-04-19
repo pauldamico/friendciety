@@ -25,6 +25,7 @@ userSchema.pre("save", function (next){
 if(!this.isModified("password")) 
 {return next()}
 bcrypt.hash(this.password, 10, (err, hash)=>{
+
   if(err){
     next(err)
   }
@@ -35,7 +36,9 @@ bcrypt.hash(this.password, 10, (err, hash)=>{
 
 userSchema.methods.checkPassword = function (passwordAttempt, callback){   //checks password with hashed password on login
   bcrypt.compare(passwordAttempt, this.password,(err, isMatch)=>{
+console.log(this.password)
     if(err){
+   
     return callback(err)}
     return callback(null, isMatch)
   })
