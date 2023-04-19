@@ -9,8 +9,7 @@ import FriendRequests from "./acceptfriend/FriendRequests";
 import AllUsers from "./searchusers/AllUsers";
 import BasicMenu from "./MUI/BasicMenu";
 import { Avatar } from "@mui/material";
-import { ApiCalls } from "./ApiCalls";
-import Notify from "./MUI/Notify";
+
 
 const { resetCurrentUser } = authSlice.actions;
 const { resetPosts } = postsSlice.actions;
@@ -38,7 +37,6 @@ export default function Nav() {
     return navigate("/Login");
     // resetSearch()
   }
-
 
 
   return (
