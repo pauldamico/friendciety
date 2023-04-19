@@ -39,7 +39,7 @@ export default function Nav() {
     // resetSearch()
   }
 
-  console.log(currentUser)
+
 
   return (
     <div>          

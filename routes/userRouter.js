@@ -20,83 +20,44 @@ const verifyOptions = {
 };
 
 //signs up user
-userRouter.post("/signup", (req, res, next) => {  
-  User.find({ username: req.body.username }, (err, foundUser) => {  
-    if (err) {
-      res.status(500);
-      return next(err);
+userRouter.post("/signup", async (req, res, next) => {  
+console.log(req.body)
+  try{
+    const user = await findUserByEmail(req.body.email)
+    const {email, username, password} = req.body
+    if(!user){
+  const newUser = await createUser(username, email, password, null)
+  const fileModel = await createFilesModel(newUser)
+  const friendsModel = await createFriendsModel(newUser)
+  const messagesModel = await createMessagesModel(newUser)
+  const token = generateToken(newUser)   
+  const secret = speakeasy.generateSecret({ length: 20 });
+  const otpauthUrl = speakeasy.otpauthURL({
+    secret: secret.base32,
+    label: newUser.withoutPassword().username,
+  });
+  res.send({user:newUser.withoutPassword(), token, otpauthUrl}) 
     }
-    if (foundUser[0]?.username) {
-      res.status(500);
+    else{
+    res.status(500)
       return res.send(next(new Error("Username already exists")));
     }
-    req.body.username = req.body.username.toLowerCase();
-    req.body.email = req.body.email.toLowerCase();
-    const newSavedUser = new User(req.body);  
+  }
+  catch(err){
+console.log(new Error('Token verification Failed', err.message))
+          res.status(500)
+          next(err)
 
-    
-    newSavedUser.save((err, newUser) => {
-      if (err) {
-        res.status(500);
-        return next(err);
-      }
-      //creates secret for 2fa
-      const secret = speakeasy.generateSecret({ length: 20 });
-      //creates user token
-      const token = jwt.sign(newUser.withoutPassword(), process.env.SECRET);
-      const username = newUser.withoutPassword().username
-      const userId = newUser.withoutPassword()._id
-      //creates secret for 2fa
-      const otpauthUrl = speakeasy.otpauthURL({
-        secret: secret.base32,
-        label: newUser.withoutPassword().username,
-      });
-      //creates files model for user
-      if(newUser){     
-        const newFilesModel = new Files({
-          username, userId
-        })  
-          newFilesModel.save((err)=>{
-            if(err){
-              res.status(500)
-              return next(err)
-            }   
-          }  )      
-        //creates friendsmodel for user
-        const newFriendsModel = new Friends({
-          friends:[], username, userId})
-          newFriendsModel.save((err, friendsList)=>{
-            if(err){
-              res.status(500)
-              return next(err)
-            }           
-     // creates messages model for user
-        const newMessagesModel = new Messages({
-          username, userId
-        })  
-        newMessagesModel.save((err, messages)=>{
-            if(err){
-              res.status(500)
-              return next(err)
-            }   
-            if(messages){          
-              return res.send({ user: newUser.withoutPassword(), token, otpauthUrl});
-            }})
-          }  )    
-      
-      
-      }        
-      })
-    })
-    
-    })
-      
+  }
+
+})     
      
 
 
 //controls user login
 userRouter.post("/login", (req, res, next) => { 
   User.findOne({ $or:[{username: req.body.username},{ email:req.body.username}]}, (err, foundUser) => {
+    console.log(req.body)
     if (err) {
       res.status(500);
       return next(err);
@@ -109,7 +70,8 @@ userRouter.post("/login", (req, res, next) => {
     if (foundUser) {
       //checks the password for match (this needs to be removed)
       foundUser.checkPassword(req.body.password, (err, isMatch)=>{ 
-        if(err){ 
+  
+        if(err){          
           res.status(403) 
           return next(err)} 
           if(!isMatch){ 
@@ -135,83 +97,34 @@ userRouter.post("/login", (req, res, next) => {
 ///////////////////////////////////////////////////////////////////////////////////////
 
 //Auth 0 Login/signup
-userRouter.post("/auth0/auth0login", (req, res, next) => {  
-  const authHeader = req.headers.authorization;
-  const token = authHeader.split(' ')[1];
-  jwt.verify(token, cert, verifyOptions, (err, decoded) => {
-    if (err) {
-      console.error('Token verification failed:', err.message);
-    } else {           
-            const auth0Id = decoded.sub
-            User.findOne({ auth0Id }, (err, foundUser) => {
-              if (err) {
-                res.status(500);
-                return next(err);
-              }
-         
-              ///
-              const newSavedUser = new User({username:req.body.nickname, email:req.body.email, auth0Id, avatar:req.body.picture});  
-          if(!foundUser){
-            newSavedUser.save((err, newUser) => {            
-              if (err) {
-                res.status(500);
-                return next(err);
-              }       
-              //creates user token
-              const token = jwt.sign(newUser.withoutPassword(), process.env.SECRET);
-              const username = newUser.withoutPassword().username
-              const userId = newUser.withoutPassword()._id
-          
-                      
-              //creates files model for user
-              if(newUser){     
-                const newFilesModel = new Files({
-                  username, userId
-                })  
-                  newFilesModel.save((err)=>{
-                    if(err){
-                      res.status(500)
-                      return next(err)
-                    }   
-                  }  )      
-                //creates friendsmodel for user
-                const newFriendsModel = new Friends({
-                  friends:[], username, userId})
-                  newFriendsModel.save((err, friendsList)=>{
-                    if(err){
-                      res.status(500)
-                      return next(err)
-                    }           
-             // creates messages model for user
-                const newMessagesModel = new Messages({
-                  username, userId
-                })  
-                newMessagesModel.save((err, messages)=>{
-                    if(err){
-                      res.status(500)
-                      return next(err)
-                    }   
-                    if(messages){          
-                      return res.send({ user: newUser.withoutPassword(), token});
-                    }}
-                    )
-                  }
-                    )}       
-              })
-          
-          }     
+userRouter.post("/auth0/auth0login", async (req, res, next) => {  
+  try{
+  const token = getTokenFromAuthHeader(req.headers.authorization)
+  const decoded = await verifyToken(token)
+  const user = await findUserByAuth0Id(decoded.sub)
+  const {email, picture, nickname} = req.body
+  const username = nickname
+  const avatar = picture
+ 
+  if(!user){   
+            const newUser = await createAuth0User(username, email, decoded.sub, avatar)
+            const fileModel = await createFilesModel(newUser)
+            const friendsModel = await createFriendsModel(newUser)
+            const messagesModel = await createMessagesModel(newUser)
+            const token = generateToken(newUser)        
+            res.send({user:newUser.withoutPassword(), token})          
+        }else{     
+          const token = generateToken(user);
+          res.send({user, token})
+        }               
+      }catch(err){
+          console.log(new Error('Token verification Failed', err.message))
+          res.status(500)
+          next(err)
+        } 
+            })    
+  
 
-          if(foundUser){
-            console.log(foundUser)
-            const token = jwt.sign(foundUser.withoutPassword(), process.env.SECRET);
-            return res.send({ user: foundUser, token});
-          }
-
-          //
-            })
-    }
-  });
-});
 //////////////////////////////////////////////////////////////////////////////////////////////
 //sends current token and user info
 userRouter.get(`/currentuser`, (req, res, next) => {
@@ -251,9 +164,65 @@ userRouter.get(`/auth/allusers`, (req, res, next) => {
 
 
 
+function getTokenFromAuthHeader (authHeader){ 
+return authHeader.split(' ')[1]
+}
 
+function verifyToken (token){
+  return new Promise ((resolve, reject)=>{
+  jwt.verify(token, cert, verifyOptions,(err, decoded)=>{
+  if(err){
+    reject(err)
+  }
+  else{
+    resolve(decoded)
+  }
+  })
+  })
+      }  
 
+function findUserByAuth0Id(auth0Id){
+ return User.findOne({auth0Id})
+ }
+ function findUserByEmail(email){
+  return User.findOne({email})
+  }
+ function createAuth0User (username, email, auth0Id, avatar){
+  const newUser = new User ({username, email, auth0Id, avatar})
+  return newUser.save()
+}
+function createUser (username, email, password, avatar){
+  const newUser = new User ({username, email, password, avatar})
+  return newUser.save()
+}
+function createFilesModel(user){
+  const username = user.withoutPassword().username
+  const userId = user.withoutPassword()._id
+  const newFileModel = new Files ({username, userId})
+  return newFileModel.save()
+}
 
+function createFriendsModel (user){
+  const username = user.withoutPassword().username
+  const userId = user.withoutPassword()._id
+  const newFriendsModel = new Friends({
+    friends:[], username, userId
+  })
+  return newFriendsModel.save()
+}
 
+function createMessagesModel (user){
+  const username = user.withoutPassword().username
+  const userId = user.withoutPassword()._id
+  const newMessagesModel = new Messages({
+    username, userId
+  })
+  return newMessagesModel.save()
+}
+
+function generateToken (user){
+  const token = jwt.sign(user.withoutPassword(), process.env.SECRET);
+  return token
+  }
 
 module.exports = userRouter;
