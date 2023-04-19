@@ -159,12 +159,14 @@ userRouter.post("/auth0/auth0login", (req, res, next) => {
               }       
               //creates user token
               const token = jwt.sign(newUser.withoutPassword(), process.env.SECRET);
+              const username = newUser.withoutPassword().username
+              const userId = newUser.withoutPassword()._id
           
                       
               //creates files model for user
               if(newUser){     
                 const newFilesModel = new Files({
-                  username:newUser.withoutPassword().username, userId:newUser.withoutPassword()._id
+                  username, userId
                 })  
                   newFilesModel.save((err)=>{
                     if(err){
@@ -174,7 +176,7 @@ userRouter.post("/auth0/auth0login", (req, res, next) => {
                   }  )      
                 //creates friendsmodel for user
                 const newFriendsModel = new Friends({
-                  friends:[], username:newUser.username, userId:newUser._id})
+                  friends:[], username, userId})
                   newFriendsModel.save((err, friendsList)=>{
                     if(err){
                       res.status(500)
@@ -182,7 +184,7 @@ userRouter.post("/auth0/auth0login", (req, res, next) => {
                     }           
              // creates messages model for user
                 const newMessagesModel = new Messages({
-                  username:newUser.withoutPassword().username, userId:newUser.withoutPassword()._id
+                  username, userId
                 })  
                 newMessagesModel.save((err, messages)=>{
                     if(err){
