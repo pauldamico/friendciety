@@ -31,7 +31,7 @@ const postImages = multer.diskStorage({
   const postImageUpload = multer({storage:postImages})
 
 //adds post to user feed with or without images
-postRouter.post('/addPost', postImageUpload.single('image'), (req, res, next)=>{
+postRouter.post('/addPost', postImageUpload.single('file'), (req, res, next)=>{
   console.log(req.file)
     req.body.image = req.file ? req.file.filename : null;
     req.body.username = req.auth.username
@@ -48,7 +48,7 @@ res.send(newPost)
 })
 
 //adds post to user feed with or without videos
-postRouter.post('/addPost/video', postVideoUpload.single('image'), (req, res, next)=>{
+postRouter.post('/addPost/video', postVideoUpload.single('file'), (req, res, next)=>{
   console.log(req.file)
     req.body.video = req.file ? req.file.filename : null;
     req.body.username = req.auth.username

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Post from "./allposts/Post";
-import ImageModal from "./allposts/ImageModal";
+import FileModal from "./allposts/FileModel";
 import { useDispatch, useSelector } from "react-redux";
 import {
   postsSlice
@@ -75,7 +75,7 @@ export default function Feed(props) {
               Image
             </section>
             {toggleAddImage ? (
-              <ImageModal
+              <FileModal
               toggleImage={toggleImage}
                 toggleAddFile={toggleAddImage}
               />
@@ -90,7 +90,7 @@ export default function Feed(props) {
               Video
             </section>
             {toggleAddVideo ? (
-              <ImageModal
+              <FileModal
               toggleVideo={toggleVideo}
               toggleAddVideo={toggleAddVideo}
               />

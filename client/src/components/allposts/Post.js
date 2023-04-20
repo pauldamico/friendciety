@@ -33,7 +33,7 @@ const dispatch = useDispatch()
  const [commentToggle, setCommentToggle] = useState(false);
  const [parentComment, setParentComment] = useState("");
 
- console.log(props.video)
+
  const config = {headers:{Authorization: `Bearer ${token}`}}
  
   //Moves cursor to comment input
