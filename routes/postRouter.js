@@ -17,22 +17,40 @@ const postImages = multer.diskStorage({
       cb(null, file.originalname + '-' + uniqueSuffix)
     }
   })  
-  const profileImages = multer.diskStorage({
+  const postVideos = multer.diskStorage({
     destination: (req, file, cb) => {
-      const dir = `./uploads/${req.auth.username}/postedimages`
+      const dir = `./uploads/${req.auth.username}/postedvideos`
       mkdirp(dir).then(() => cb(null, dir)).catch(cb)
     },
     filename: (req, file, cb) => {      
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
-      cb(null, file.originalname + '-' + uniqueSuffix)
+      cb(null, file.originalname)
     }
   })  
-  const profileImageUpload = multer({storage:profileImages})
+  const postVideoUpload = multer({storage:postVideos})
   const postImageUpload = multer({storage:postImages})
 
-//adds post to user feed
+//adds post to user feed with or without images
 postRouter.post('/addPost', postImageUpload.single('image'), (req, res, next)=>{
+  console.log(req.file)
     req.body.image = req.file ? req.file.filename : null;
+    req.body.username = req.auth.username
+    req.body.userId = req.auth._id
+    req.body.postOrder = Date.now()
+    const userSavedPost = new Post(req.body)
+    userSavedPost.save((err, newPost)=>{       
+if(err){
+    res.status(500)
+    return next(err)    
+}
+res.send(newPost)
+    })
+})
+
+//adds post to user feed with or without videos
+postRouter.post('/addPost/video', postVideoUpload.single('image'), (req, res, next)=>{
+  console.log(req.file)
+    req.body.video = req.file ? req.file.filename : null;
     req.body.username = req.auth.username
     req.body.userId = req.auth._id
     req.body.postOrder = Date.now()

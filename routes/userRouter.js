@@ -21,7 +21,6 @@ const verifyOptions = {
 
 //signs up user
 userRouter.post("/signup", async (req, res, next) => {  
-console.log(req.body)
   try{
     const user = await findUserByEmail(req.body.email)
     const {email, username, password} = req.body

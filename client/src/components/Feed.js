@@ -18,6 +18,7 @@ export default function Feed(props) {
   const { token } = currentUser || null;
   const config = { headers: { Authorization: `Bearer ${token}` } };
   const [toggleAddImage, setToggleAddImage] = useState(false);
+  const [toggleAddVideo, setToggleAddVideo] = useState(false);
 
   const [addToFeed, setAddToFeed] = useState({ post: "" });
   //this will show friends and current user posts
@@ -25,6 +26,9 @@ export default function Feed(props) {
 
   function toggleImage() {
     setToggleAddImage(!toggleAddImage);
+  }
+  function toggleVideo() {
+    setToggleAddVideo(!toggleAddVideo);
   }
   const addToMyFeed = (event) => {
     event.preventDefault();
@@ -72,11 +76,11 @@ export default function Feed(props) {
             </section>
             {toggleAddImage ? (
               <ImageModal
-                toggleImage={toggleImage}
-                toggleAddImage={toggleAddImage}
+              toggleImage={toggleImage}
+                toggleAddFile={toggleAddImage}
               />
             ) : null}
-            <section style={{ display: "flex" }}>
+            <section onClick={toggleVideo} style={{ display: "flex" }}>
               <img
                   alt=""
                 height="15px"
@@ -85,6 +89,12 @@ export default function Feed(props) {
               />
               Video
             </section>
+            {toggleAddVideo ? (
+              <ImageModal
+              toggleVideo={toggleVideo}
+              toggleAddVideo={toggleAddVideo}
+              />
+            ) : null}
           </div>
         </div>
       ) : (

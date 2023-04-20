@@ -7,7 +7,6 @@ const {addPost} = postsSlice.actions
 
 export default function ImageModal(props) {    
   const {currentUser} = useSelector(state=>state.currentUser)
-  const {posts} = useSelector(state=>state.posts)
   const {token} = currentUser || null
   const dispatch = useDispatch()
     const [imageUrl, setImageUrl] = useState(null)
@@ -36,6 +35,28 @@ event.preventDefault()
     setImageUrl(null)
     }
 
+      //uploads image to backend/database
+      const addVideoToFeed = (event) => {
+        event.preventDefault()
+              const formData = new FormData();
+              formData.append("post", imageInfo.post);
+              formData.append("image", imageInfo.image);  
+            axios.post("/auth/post/addPost/video", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`
+              }})
+            .then(res => {    
+              dispatch(addPost(res.data))
+            })
+            .catch(error => {
+              console.log(error);
+            })
+            setImageInfo(prev=>({...prev, post:"", image:""}))
+            props.toggleVideo()
+            setImageUrl(null)
+            }
+
     //change handler for adding post and image
     const addImageChangeHandler = (event) => {
       const {name, value, type,  files} = event.target
@@ -43,7 +64,7 @@ event.preventDefault()
       } 
    
 
-    const imageElement = imageUrl ? <img src={imageUrl} width="80%" height="50%"/> : <img  width="80%" height="50%"/>
+    const imageElement = imageUrl ? <img alt="" src={imageUrl} width="80%" height="50%"/> : <img alt=""  width="80%" height="50%"/>
 
    useEffect(()=>{ 
     const file = imageInfo.image
@@ -54,13 +75,15 @@ event.preventDefault()
   return (
     <div className={"image-modal-div"}>
    
-        <form className="flexbox" encType="multipart/form-data" onSubmit={addImageToFeed} >
+        <form className="flexbox" encType="multipart/form-data" onSubmit={props.toggleImage ?addImageToFeed : addVideoToFeed} >
         <input required style ={{borderRadius:"10px", padding:"5px", marginBottom:"5px"}} placeholder="Add Description..." name="post" value={imageInfo.post} onChange={addImageChangeHandler} type="text" />
-        <input name="image" value={imageInfo.file} onChange={addImageChangeHandler} type="file" accept="image/png, image/jpeg" />
+       { props.toggleImage ?<input name="image" value={imageInfo.file} onChange={addImageChangeHandler} type="file" accept="image/png, image/jpeg" />: null}
+       { props.toggleVideo ?<input name="image" value={imageInfo.file} onChange={addImageChangeHandler} type="file" accept="video/x-matroska,video/mkv" />: null}
         <button  type="submit" style={{cursor:"pointer", width:"100%", textAlign:"center"}}>Submit</button>
         </form>
    {imageElement}
-      <p onClick={props.toggleImage}>Close</p>
+     { props.toggleImage ?<p onClick={props.toggleImage}>Close</p> : null}
+     { props.toggleVideo ?<p onClick={props.toggleVideo}>Close</p> : null}
     </div>
   );
 }
