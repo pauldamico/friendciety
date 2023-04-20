@@ -181,14 +181,14 @@ const dispatch = useDispatch()
                     style={{ cursor: "pointer" }}
                     onClick={addLikeToPost}
                   />
-                  {props.likes.length}
+                  {props.likes?.length}
                 </section>
                 <section>
                   <HandThumbsDown
                     style={{ cursor: "pointer" }}
                     onClick={addDislikeToPost}
                   />
-                  {props.dislikes.length}
+                  {props.dislikes?.length}
                 </section>
               </div>
               <div className="post-options-div">

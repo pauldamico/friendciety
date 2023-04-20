@@ -24,15 +24,20 @@ const postImages = multer.diskStorage({
     },
     filename: (req, file, cb) => {      
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
-      cb(null, file.originalname)
+      cb(null, uniqueSuffix + '-' + file.originalname)
     }
   })  
-  const postVideoUpload = multer({storage:postVideos})
-  const postImageUpload = multer({storage:postImages})
+  const postVideoUpload = multer({
+    storage:postVideos,
+    limits: { fileSize: 50 * 1024 * 1024 }
+  })
+  const postImageUpload = multer({storage:postImages,
+    limits: { fileSize: 5 * 1024 * 1024 }
+  })
 
 //adds post to user feed with or without images
 postRouter.post('/addPost', postImageUpload.single('file'), (req, res, next)=>{
-  console.log(req.file)
+
     req.body.image = req.file ? req.file.filename : null;
     req.body.username = req.auth.username
     req.body.userId = req.auth._id
@@ -49,7 +54,12 @@ res.send(newPost)
 
 //adds post to user feed with or without videos
 postRouter.post('/addPost/video', postVideoUpload.single('file'), (req, res, next)=>{
-  console.log(req.file)
+  if (req.file == null) {
+    // No file was uploaded
+    return res.status(400).send('No file was uploaded.');
+  }
+  
+
     req.body.video = req.file ? req.file.filename : null;
     req.body.username = req.auth.username
     req.body.userId = req.auth._id
@@ -63,6 +73,24 @@ if(err){
 res.send(newPost)
     })
 })
+
+// Error handling middleware for Multer errors
+postRouter.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      if (err.fieldname === 'file') {
+        return res.status(400).send(`File size exceeds the limit of ${postImageUpload.limits.fileSize} bytes for images.`);
+      } else if (err.fieldname === 'video') {
+        return res.status(400).send(`File size exceeds the limit of ${postVideoUpload.limits.fileSize} bytes for videos.`);
+      } else {
+        return res.status(400).send('File size exceeds the limit.');
+      }
+    } else {
+      return res.status(500).send(err.message);
+    }
+  }
+  next(err);
+});
 
 
 // list all posts by user

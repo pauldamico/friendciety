@@ -48,6 +48,7 @@ event.preventDefault()
                 Authorization: `Bearer ${token}`
               }})
             .then(res => {    
+              console.log(res.data)
               dispatch(addPost(res.data))
             })
             .catch(error => {
@@ -80,7 +81,7 @@ event.preventDefault()
         <form className="flexbox" encType="multipart/form-data" onSubmit={props.toggleImage ?addImageToFeed : addVideoToFeed} >
         <input required style ={{borderRadius:"10px", padding:"5px", marginBottom:"5px"}} placeholder="Add Description..." name="post" value={fileInfo.post} onChange={addFileChangeHandler} type="text" />
        { props.toggleImage ?<input name="file" value={fileInfo.currentFile} onChange={addFileChangeHandler} type="file" accept="image/png, image/jpeg" />: null}
-       { props.toggleVideo ?<input name="file" value={fileInfo.currentFile} onChange={addFileChangeHandler} type="file" accept="video/x-matroska,video/mkv" />: null}
+       { props.toggleVideo ?<input name="file" value={fileInfo.currentFile} onChange={addFileChangeHandler} type="file" accept="video/x-matroska,video/mkv,video/mp4" />: null}
         <button  type="submit" style={{cursor:"pointer", width:"100%", textAlign:"center"}}>Submit</button>
         </form>
        { props.toggleImage ?imageElement : videoElement}
