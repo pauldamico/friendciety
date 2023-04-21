@@ -10,6 +10,7 @@ import { commentsSlice } from "../../redux/index";
 import {postsSlice} from "../../redux/index"
 import {Avatar} from '@mui/material'
 import ReactPlayer from 'react-player'
+import ImageModal from "./ImageModal";
 
 //redux actions
 const {addComment} = commentsSlice.actions
@@ -32,13 +33,21 @@ const dispatch = useDispatch()
  const [toggleMenu, setToggleMenu] = useState(false);
  const [commentToggle, setCommentToggle] = useState(false);
  const [parentComment, setParentComment] = useState("");
+ const [imageResize, setImageResize] = useState(false)
 
-
+console.log(imageResize)
  const config = {headers:{Authorization: `Bearer ${token}`}}
  
   //Moves cursor to comment input
   function focusCommentInput() {
     document.getElementById(`${props._id}comment-input`).focus();
+  }
+  
+  function openImageResize (){
+    setImageResize(true)
+  }
+  function closeImageResize (){
+    setImageResize(false)
   }
 
   //this allows the comments to show per prop post id
@@ -168,8 +177,9 @@ const dispatch = useDispatch()
 
               <h1>{props.post}</h1>
               {props.image ? (
-                <img alt="" src={`/uploads/${props.username}/postedimages/${props.image}`} />
+                <img onClick={openImageResize} alt="" src={`/uploads/${props.username}/postedimages/${props.image}`} />
               ) : null}
+              {imageResize ? <ImageModal handleClose={closeImageResize} handleOpen={openImageResize} open={imageResize} imgSrc={`/uploads/${props.username}/postedimages/${props.image}`}/> : null}
                   {props.video ? (              
                 <ReactPlayer   width="100%" height="100%" url={`/uploads/${props.username}/postedvideos/${props.video}`} controls />          
               ) : null}
