@@ -1,17 +1,13 @@
 import React, {useEffect,useState} from "react"
-import axios from "axios"
 import {useSelector} from "react-redux"
 import AllUsersModal from "./AllUsersModal"
+import { ApiCalls } from "../ApiCalls"
 
-export default function AllUsers (props){
-
-   const {currentUser} = useSelector(state=>state.currentUser)
-   const {token} = currentUser || null
-   const config = {headers:{Authorization: `Bearer ${token}`}}
+export default function AllUsers (){
+const {allUsers} = useSelector(state=>state.allUsers)
+  const {getAllUsers} = ApiCalls()
    const [searchToggle, setSearchToggle] = useState(false)
-   const [allUsers, setAllUsers] = useState([])
    const [search, setSearch] = useState("")  
-
 
 //this allows the search function to work correctly
 const filterBySearch = allUsers.length > 0 ? allUsers.filter(user=>user.includes(search)) : []
@@ -32,16 +28,6 @@ function searchUsersHandler (event){
   setSearch(event.target.value)
   setSearchToggle(true)
 }
-
-
-    function getAllUsers (){
-        axios.get('/auth/allusers', config)
-        .then(res=>{      
-            // console.log(res.data)
-          setAllUsers(res.data)
-        })     
-      } 
-
 
 useEffect(()=>{
 getAllUsers()  

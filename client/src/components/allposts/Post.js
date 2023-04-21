@@ -6,8 +6,7 @@ import UpdatePostModal from "./UpdatePostModal";
 import ReplyModal from "./ReplyModal";
 import Comment from "./Comment";
 import { useSelector, useDispatch } from "react-redux";
-import { commentsSlice } from "../../redux/index";
-import {postsSlice} from "../../redux/index"
+import { commentsSlice, postsSlice } from "../../redux/index";
 import {Avatar} from '@mui/material'
 import ReactPlayer from 'react-player'
 import ImageModal from "./ImageModal";
@@ -25,9 +24,6 @@ const dispatch = useDispatch()
  const {comments} = useSelector(state=>state.comments)
  const {posts} = useSelector(state=>state.posts)
 
-
-
-
  const {token} = currentUser || null
  const [toggleEdit, setToggleEdit] = useState(false);
  const [toggleMenu, setToggleMenu] = useState(false);
@@ -35,7 +31,6 @@ const dispatch = useDispatch()
  const [parentComment, setParentComment] = useState("");
  const [imageResize, setImageResize] = useState(false)
 
-console.log(imageResize)
  const config = {headers:{Authorization: `Bearer ${token}`}}
  
   //Moves cursor to comment input
@@ -177,11 +172,11 @@ console.log(imageResize)
 
               <h1>{props.post}</h1>
               {props.image ? (
-                <img onClick={openImageResize} alt="" src={`/uploads/${props.username}/postedimages/${props.image}`} />
+                <img style={{cursor:"pointer"}} onClick={openImageResize} alt="" src={`/uploads/${props.username}/postedimages/${props.image}`} />
               ) : null}
               {imageResize ? <ImageModal handleClose={closeImageResize} handleOpen={openImageResize} open={imageResize} imgSrc={`/uploads/${props.username}/postedimages/${props.image}`}/> : null}
                   {props.video ? (              
-                <ReactPlayer   width="100%" height="100%" url={`/uploads/${props.username}/postedvideos/${props.video}`} controls />          
+                <ReactPlayer style={{cursor:"pointer"}}  width="100%" height="100%" url={`/uploads/${props.username}/postedvideos/${props.video}`} controls />          
               ) : null}
 
                                                                                   {/* likes and dislikes */}

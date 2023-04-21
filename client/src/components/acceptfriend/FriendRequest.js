@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { friendsSlice } from "../../redux/index";
 import { Avatar } from "@mui/material";
 
+
 const { setFriends } = friendsSlice.actions;
 
 export default function FriendRequest(props) {
@@ -11,6 +12,7 @@ export default function FriendRequest(props) {
   const dispatch = useDispatch();
   const { token } = currentUser || null;
   const config = { headers: { Authorization: `Bearer ${token}` } };
+
 
   //Accept friend request or add friend   this prob needs to be fixed
   function acceptFriendRequest() {
@@ -22,6 +24,8 @@ export default function FriendRequest(props) {
         dispatch(setFriends(res.data));
         // refreshFriendData();
       });
+
+      
   }
 
   //Decline friend request or add friend   this prob needs to be fixed

@@ -49,6 +49,10 @@ export default function ChatDrawer() {
   ]
     .map((item) => item.from.split("@")[0])
     .reverse();
+
+    
+
+
   //this sorts all of your friends with users that sent the latest messages to you first
   const friendsSortedByNewMessages = friends.friends
     .slice()

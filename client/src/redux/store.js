@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import {authSlice, commentsSlice,friendsSlice, postsSlice, repliesSlice, loadingSlice, messagesSlice} from "./index.js"
+import {authSlice, allUsersSlice, commentsSlice,friendsSlice, postsSlice, repliesSlice, loadingSlice, messagesSlice} from "./index.js"
  
 export const store = configureStore({
   reducer: {
@@ -10,6 +10,7 @@ export const store = configureStore({
     replies:repliesSlice.reducer,
     messages:messagesSlice.reducer,
     loading:loadingSlice.reducer,   
+    allUsers:allUsersSlice.reducer
 
   },
 });

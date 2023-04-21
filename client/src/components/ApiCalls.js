@@ -1,7 +1,7 @@
 import { useSelector, useDispatch} from 'react-redux'
 import axios from 'axios'
-import { postsSlice, commentsSlice, repliesSlice, friendsSlice, authSlice, messagesSlice } from "../redux"
-
+import { postsSlice, commentsSlice, repliesSlice, friendsSlice, authSlice, messagesSlice, allUsersSlice } from "../redux"
+const {setAllUsers} = allUsersSlice.actions
 const {setPosts} = postsSlice.actions
 const {setComments} = commentsSlice.actions
 const {setReplies} = repliesSlice.actions
@@ -52,5 +52,14 @@ export const ApiCalls = () => {
     dispatch(setCurrentUserLocalStorage())
   }
 
-  return { getPosts, getComments, getReplies, getFriends, updateUserInfo, getMessages};
+  const getAllUsers = ()=>{
+    console.log("ran get users")
+    axios.get('/auth/allusers', config)
+    .then(res=>{      
+        // console.log(res.data)
+     dispatch( setAllUsers(res.data))
+    })     
+  } 
+
+  return { getPosts, getComments, getReplies, getFriends, updateUserInfo, getMessages, getAllUsers};
 }

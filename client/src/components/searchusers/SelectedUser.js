@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
+import { io } from "socket.io-client";
 import { friendsSlice } from "../../redux";
 
 const {setFriends} = friendsSlice.actions
@@ -18,16 +18,22 @@ export default function SelectedUser(props) {
   const { user,  handleClose } = props; 
 
 
-///this is broken
-function addNewFriend (){   
-    
+
+function addNewFriend (){       
+  console.log("test")
   axios.put(`/auth/friends/addfriend`, {user:user}, config)
   .then(res=>{console.log(res.data)
     dispatch(setFriends(res.data) )
     // resetSearch()
   })
   .catch(err=>console.log(err))
+  const userSocket = io('http://localhost:4000/user', {auth:{username:currentUser.user.username, token:token}});
+  userSocket.on('connect', () => {  
+    userSocket.emit('notification',  {room:`notifications_${props.user}`, msg:props.user});
+  });
+
 }
+
 
   function navToFriendsPage (){ 
     handleClose()

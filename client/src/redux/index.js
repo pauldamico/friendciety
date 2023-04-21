@@ -5,3 +5,4 @@ export { postsSlice } from "./postsSlice.ts";
 export { repliesSlice } from "./repliesSlice.ts";
 export { messagesSlice } from "./messagesSlice.ts";
 export { loadingSlice } from "./loadingSlice.ts";
+export {allUsersSlice} from './allUsersSlice.ts'

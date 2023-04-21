@@ -50,7 +50,6 @@ export default function MessageModel(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   //send and receive message info from rest API
   const onSubmit = (e) => {
     e.preventDefault();
@@ -68,7 +67,7 @@ export default function MessageModel(props) {
       //websocket
       const userSocket = io('http://localhost:4000/user', {auth:{username:currentUser.user.username, token:token}});
       userSocket.on('connect', () => {
-        userSocket.emit('message',  {room:props.user, msg:messageContent});
+        userSocket.emit('message',  {room:`chat_${props.user}`, msg:messageContent});
       });
       ///reset state
     setMessageContent("");
@@ -125,19 +124,17 @@ export default function MessageModel(props) {
     const userSocket = io('http://localhost:4000/user', {auth:{username:currentUser.user.username, token:token}});
 
     // Join the user's room
-    userSocket.emit('joinRoom',currentUser.user.username);
+    userSocket.emit('joinRoom',`chat_${currentUser.user.username}`);
 
     // Listen for incoming messages
     userSocket.on('message', (data) => {
-      console.log(data)
+      // console.log(data)
       // Update the state with the new message
       getMessages()
     });
 
     // Clean up the userSocket connection when the component unmounts
-    return () => {
-      userSocket.disconnect();
-    };
+
   }, []);
 
   return (

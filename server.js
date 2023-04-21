@@ -35,18 +35,23 @@ if(err){
    return next(new Error("Authentication Error"))
 }
 socket.username=socket.handshake.auth.username
-socket.join(socket.username)
+socket.join(`chat_${socket.username}`)
+socket.join(`notifications_${socket.username}`)
 next()
    })
 })
 userIo.on('connection', socket =>{
-   // console.log("connected to room " + socket.username)
+   console.log("connected to room " + socket.username)
    socket.on('message', ({ room, msg }) => {
       // console.log(`Received message from user ${socket.username} in room ${room}: ${msg}`)
-      socket.to(room).emit('message', { username:socket.username, msg })  
+      socket.to(room).emit('message', { username:`chat_${socket.username}`, msg })  
+   })
+   socket.on('notification', ({ room, msg }) => {   
+      console.log(`${socket.username} requests ${msg} to be friends`)
+      socket.to(room).emit('notification', { username:`notifications_${socket.username}`, msg })  
    })
    socket.on('disconnect', () => {
-      // console.log(`User ${socket.username} disconnected from the server`)
+      console.log(`User ${socket.username} disconnected from the server`)
    })   
 })
 instrument(io, {auth:false})
