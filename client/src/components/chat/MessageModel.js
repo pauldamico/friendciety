@@ -68,10 +68,12 @@ export default function MessageModel(props) {
       const userSocket = io('http://localhost:4000/user', {auth:{username:currentUser.user.username, token:token}});
       userSocket.on('connect', () => {
         userSocket.emit('message',  {room:`chat_${props.user}`, msg:messageContent});
+        console.log(props.user)
       });
       ///reset state
     setMessageContent("");
   };
+
   const combinedMessageArray = messages.messages.sentMessages
     .filter((sentMessage) => sentMessage.to === props.user)
     .concat(

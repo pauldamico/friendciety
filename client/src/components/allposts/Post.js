@@ -214,6 +214,12 @@ const dispatch = useDispatch()
           {toggleEdit ? (
             <div className="myfeed-input">
               <UpdatePostModal
+              closeImageResize={closeImageResize}
+              openImageResize={openImageResize}
+              imageResize={imageResize}
+              username={props.username}
+              image={props.image}
+              video={props.video}
                 post={props.post}
                 _id={props._id}
                 updatePost={updatePost}
